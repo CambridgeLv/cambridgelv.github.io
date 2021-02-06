@@ -1,7 +1,7 @@
 # 开篇
 
 
-![Alt text](https://cambridgelv.github.io/images/1.jpg "The Start")
+![Alt text](/images/1.jpg "The Start")
 
 ## 1 为什么开博客
 感觉年纪越来越大，需要记录一下学到的知识技能，总结过往的经验教训，顺便可能记录记录生活
