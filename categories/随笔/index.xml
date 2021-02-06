@@ -1,9 +1,9 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>所有文章 - Lv</title>
-        <link>https://cambridgelv.github.io/posts/</link>
-        <description>所有文章 | Lv</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Feb 2021 01:31:29 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <title>随笔 - 分类 - Lv</title>
+        <link>https://cambridgelv.github.io/categories/%E9%9A%8F%E7%AC%94/</link>
+        <description>随笔 - 分类 - Lv</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 06 Feb 2021 01:31:29 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/categories/%E9%9A%8F%E7%AC%94/" rel="self" type="application/rss+xml" /><item>
     <title>开篇</title>
     <link>https://cambridgelv.github.io/first_post/</link>
     <pubDate>Sat, 06 Feb 2021 01:31:29 &#43;0800</pubDate>
