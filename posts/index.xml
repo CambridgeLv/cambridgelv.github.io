@@ -3,13 +3,20 @@
         <title>所有文章 - Lv的小站</title>
         <link>https://cambridgelv.github.io/posts/</link>
         <description>所有文章 | Lv的小站</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 22 Oct 2024 18:26:04 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/posts/" rel="self" type="application/rss+xml" /><item>
-    <title>1 开始</title>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 22 Oct 2024 19:27:20 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>1 Introduction</title>
     <link>https://cambridgelv.github.io/dft-1/</link>
-    <pubDate>Tue, 22 Oct 2024 18:26:04 &#43;0800</pubDate>
+    <pubDate>Tue, 22 Oct 2024 19:27:20 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://cambridgelv.github.io/dft-1/</guid>
-    <description><![CDATA[1 引言 集成电路（IC，通常称为微芯片或芯片）问世后，就有了对其进行测试的需求。20 世纪 60 年代初的小规模集成（SSI）器件只有数十个晶体管，6]]></description>
+    <description><![CDATA[1.1 IMPORTANCE OF TESTING ]]></description>
+</item><item>
+    <title>0 开始</title>
+    <link>https://cambridgelv.github.io/dft-0/</link>
+    <pubDate>Tue, 22 Oct 2024 18:26:04 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://cambridgelv.github.io/dft-0/</guid>
+    <description><![CDATA[引言 集成电路（IC，通常称为微芯片或芯片）问世后，就有了对其进行测试的需求。20 世纪 60 年代初的小规模集成（SSI）器件只有数十个晶体管，60]]></description>
 </item><item>
     <title>开篇</title>
     <link>https://cambridgelv.github.io/first_post/</link>
