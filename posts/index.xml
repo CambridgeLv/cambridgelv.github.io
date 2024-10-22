@@ -9,7 +9,7 @@
     <pubDate>Tue, 22 Oct 2024 19:27:20 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://cambridgelv.github.io/dft-1/</guid>
-    <description><![CDATA[1.1 IMPORTANCE OF TESTING ]]></description>
+    <description><![CDATA[1.1 IMPORTANCE OF TESTING 主要就是讲随着芯片器件数量的增多，测试就越来越重要。一个很小的缺陷就可能导致功能或芯片的失效。这里提到了一个rule of ten，该法则]]></description>
 </item><item>
     <title>0 开始</title>
     <link>https://cambridgelv.github.io/dft-0/</link>
