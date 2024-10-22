@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>《设计透视》学习笔记 - 分类 - Lv的小站</title>
+        <link>http://localhost:1313/categories/%E8%AE%BE%E8%AE%A1%E9%80%8F%E8%A7%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <description>《设计透视》学习笔记 - 分类 - Lv的小站</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 19 Mar 2022 14:51:52 &#43;0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E8%AE%BE%E8%AE%A1%E9%80%8F%E8%A7%86%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
+    <title>A Design Perspective 1</title>
+    <link>http://localhost:1313/a-design-perspective-1/</link>
+    <pubDate>Sat, 19 Mar 2022 14:51:52 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>http://localhost:1313/a-design-perspective-1/</guid>
+    <description><![CDATA[<h2 id="1-开坑">1 开坑</h2>
+<p>一直以来想对工作上的内容有更好的归纳总结，另外本人也还没有从头到尾仔细读过数字电路设计中最经典的教材之一，由Jan M. Rabaey等人所著的《Digital Integrated Circuits A Design Perspective》，因此决定一边读一边记记笔记，也记录下结合这几年工作经验的思考。除了会引用原书外，该系列文章还会引用该书的译本，由周润德等人译制的《数字集成电路——电路、系统与设计》，之后对这2本书的引用不会再特别注明。</p>]]></description>
+</item></channel>
+</rss>
