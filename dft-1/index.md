@@ -9,7 +9,7 @@
 
 测试通常包括向被测电路（CUT）的输入端施加一组测试激励，同时分析输出响应，如图 1.1 所示。对于所有输入激励都能产生正确输出响应的电路通过测试，被认为是无故障的。在测试序列期间任何时刻未能产生正确响应的电路则被认为是有故障的。超大规模集成电路（VLSI）器件生命周期的各个阶段都要进行测试，包括在 VLSI 开发过程、电子系统制造过程中，某些情况下还包括系统级运行阶段。
 
-{{<image src="/images/vlsi_test_principles_and_architectures/1.1.png">}}
+![Alt text](/images/vlsi_test_principles_and_architectures/1.1.png "Figure 1.1")
 
 ### 1.2.1 VLSI Development Process
 
