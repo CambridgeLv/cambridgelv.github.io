@@ -131,27 +131,27 @@
 <p>主要就是讲随着芯片器件数量的增多，测试就越来越重要。一个很小的缺陷就可能导致功能或芯片的失效。这里提到了一个<strong>rule of ten</strong>，该法则指出，从器件级到板级、再到系统级，直至现场系统运行，随着制造阶段的推进，检测出故障集成电路的成本会呈数量级增加。</p>
 <h2 id="12-testing-during-the-vlsi-lifecycle">1.2 TESTING DURING THE VLSI LIFECYCLE</h2>
 <p>测试通常包括向被测电路（CUT）的输入端施加一组测试激励，同时分析输出响应，如图 1.1 所示。对于所有输入激励都能产生正确输出响应的电路通过测试，被认为是无故障的。在测试序列期间任何时刻未能产生正确响应的电路则被认为是有故障的。超大规模集成电路（VLSI）器件生命周期的各个阶段都要进行测试，包括在 VLSI 开发过程、电子系统制造过程中，某些情况下还包括系统级运行阶段。</p>
-<p><figure><a class="lightgallery" href="/images/vlsi_test_principles_and_architectures/1.1.png" title="Alt text" data-thumbnail="/images/vlsi_test_principles_and_architectures/1.1.png" data-sub-html="<h2>Figure 1.1</h2><p>Alt text</p>">
+<p><figure><a class="lightgallery" href="/static/images/vlsi_test_principles_and_architectures/1.1.png" title="Alt text" data-thumbnail="/static/images/vlsi_test_principles_and_architectures/1.1.png" data-sub-html="<h2>Figure 1.1</h2><p>Alt text</p>">
         <img
             class="lazyload"
             src="/svg/loading.min.svg"
-            data-src="/images/vlsi_test_principles_and_architectures/1.1.png"
-            data-srcset="/images/vlsi_test_principles_and_architectures/1.1.png, /images/vlsi_test_principles_and_architectures/1.1.png 1.5x, /images/vlsi_test_principles_and_architectures/1.1.png 2x"
+            data-src="/static/images/vlsi_test_principles_and_architectures/1.1.png"
+            data-srcset="/static/images/vlsi_test_principles_and_architectures/1.1.png, /static/images/vlsi_test_principles_and_architectures/1.1.png 1.5x, /static/images/vlsi_test_principles_and_architectures/1.1.png 2x"
             data-sizes="auto"
-            alt="/images/vlsi_test_principles_and_architectures/1.1.png" />
+            alt="/static/images/vlsi_test_principles_and_architectures/1.1.png" />
     </a><figcaption class="image-caption">Figure 1.1</figcaption>
     </figure></p>
 <h3 id="121-vlsi-development-process">1.2.1 VLSI Development Process</h3>
 <p>超大规模集成电路（VLSI）开发过程如图 1.2 所示，可以看到在该过程的每个阶段都涉及某种形式的测试。基于客户或项目需求，确定 VLSI 器件要求并将其制定为设计规范。</p>
 <p>一旦经过验证，VLSI 设计就进入制造阶段。与此同时，测试工程师根据设计规范和与实现技术相关的故障模型制定测试程序。缺陷是可能导致故障的瑕疵或物理缺陷。由于用于制造集成电路的材料和掩模不可避免地存在统计缺陷，任何一种特定的集成电路都不可能 100% 无缺陷。因此，制造过程中进行的第一项测试是对晶圆上制造的集成电路进行测试，以确定哪些器件有缺陷。通过晶圆级测试的芯片被提取并封装。对封装后的器件进行重新测试，以剔除那些在封装过程中可能受损或装入有缺陷封装的器件。还会进行额外测试以确保上市前的最终质量。这种最终测试包括对输入 / 输出时序规范、电压和电流等参数的测量。此外，通常还会进行老化或压力测试，使芯片处于高温和电源电压环境下。老化测试的目的是加速可能导致集成电路在运行早期出现故障的缺陷的影响。故障模式分析（FMA）通常用于集成电路制造测试的各个阶段，以确定对工艺流程的改进措施，从而增加无缺陷器件的生产数量。</p>
-<p><figure><a class="lightgallery" href="/images/vlsi_test_principles_and_architectures/1.2.png" title="Alt text" data-thumbnail="/images/vlsi_test_principles_and_architectures/1.2.png" data-sub-html="<h2>Figure 1.2</h2><p>Alt text</p>">
+<p><figure><a class="lightgallery" href="/static/images/vlsi_test_principles_and_architectures/1.2.png" title="Alt text" data-thumbnail="/static/images/vlsi_test_principles_and_architectures/1.2.png" data-sub-html="<h2>Figure 1.2</h2><p>Alt text</p>">
         <img
             class="lazyload"
             src="/svg/loading.min.svg"
-            data-src="/images/vlsi_test_principles_and_architectures/1.2.png"
-            data-srcset="/images/vlsi_test_principles_and_architectures/1.2.png, /images/vlsi_test_principles_and_architectures/1.2.png 1.5x, /images/vlsi_test_principles_and_architectures/1.2.png 2x"
+            data-src="/static/images/vlsi_test_principles_and_architectures/1.2.png"
+            data-srcset="/static/images/vlsi_test_principles_and_architectures/1.2.png, /static/images/vlsi_test_principles_and_architectures/1.2.png 1.5x, /static/images/vlsi_test_principles_and_architectures/1.2.png 2x"
             data-sizes="auto"
-            alt="/images/vlsi_test_principles_and_architectures/1.2.png" />
+            alt="/static/images/vlsi_test_principles_and_architectures/1.2.png" />
     </a><figcaption class="image-caption">Figure 1.2</figcaption>
     </figure></p>
 <h4 id="1211-design-verification">1.2.1.1 Design Verification</h4>
