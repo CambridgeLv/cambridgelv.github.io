@@ -11,6 +11,8 @@
 
 ![Alt text](/images/vlsi_test_principles_and_architectures/1.1.png "Figure 1.1")
 
+{{< image src="/images/vlsi_test_principles_and_architectures/1.1.png">}}
+
 ### 1.2.1 VLSI Development Process
 
 超大规模集成电路（VLSI）开发过程如图 1.2 所示，可以看到在该过程的每个阶段都涉及某种形式的测试。基于客户或项目需求，确定 VLSI 器件要求并将其制定为设计规范。
