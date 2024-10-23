@@ -11,7 +11,11 @@
 
 ![Alt text](/images/vlsi_test_principles_and_architectures/1.1.png "Figure 1.1")
 
+![Alt text](https://octodex.github.com/images/stormtroopocat.jpg "Figure 1.4")
+
 {{< image src="/images/vlsi_test_principles_and_architectures/1.1.png">}}
+
+
 
 ### 1.2.1 VLSI Development Process
 
