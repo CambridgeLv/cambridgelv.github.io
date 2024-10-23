@@ -21,4 +21,10 @@
 
 #### 1.2.1.1 Design Verification
 
-123
+讲了设计的各个层次
+
+![Figure 1.3](/images/vlsi_test_principles_and_architectures/1.3.png "Figure 1.3")
+
+#### 1.2.1.2 Yield and Reject Rate
+
+$$Yield = \frac{Number \enspace of \enspace acceptable \enspace parts}{Total \enspace number \enspace of \enspace parts \enspace fabricated}$$

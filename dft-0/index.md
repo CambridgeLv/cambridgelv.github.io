@@ -7,4 +7,16 @@
 
 因此对大规模集成电路的测试技术也越来越重要，最近很需要系统的学习一下相应的知识。《VLSI Test Principles and Architectures》是一本权威且系统的介绍DFT知识的书籍，不过比较长而且也没有发现很好的中文笔记，所以想开个坑记录一下，废话不多说，直接开始！
 
+## 缩写
+
+{{< admonition tip "技巧" true >}}
+把出现的缩写总结如下，持续更新！
+{{< /admonition >}}
+
+| Abbr. | Meaning               |
+| ----- | --------------------- |
+| CUT   | circuit under test    |
+| FMA   | failure mode analysis |
+| PPM   | parts per million     |
+
 
