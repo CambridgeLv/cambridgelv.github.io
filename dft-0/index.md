@@ -13,10 +13,12 @@
 把出现的缩写总结如下，持续更新！
 {{< /admonition >}}
 
-| Abbr. | Meaning               |
-| ----- | --------------------- |
-| CUT   | circuit under test    |
-| FMA   | failure mode analysis |
-| PPM   | parts per million     |
+| Abbr. | Meaning                    |
+| ----- | -------------------------- |
+| CUT   | circuit under test         |
+| FMA   | failure mode analysis      |
+| PPM   | parts per million          |
+| MTBF  | mean time between failures |
+| MTTR  | mean time to repair        |
 
 

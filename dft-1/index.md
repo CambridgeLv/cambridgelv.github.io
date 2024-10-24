@@ -28,3 +28,60 @@
 #### 1.2.1.2 Yield and Reject Rate
 
 $$Yield = \frac{Number \enspace of \enspace acceptable \enspace parts}{Total \enspace number \enspace of \enspace parts \enspace fabricated}$$
+
+当IC测试时可能有两种情况：
+
+- 有问题的器件通过了测试
+- 正常的器件没通过测试
+
+第一种情况是不太能接受的，所以要考虑下面的指标：
+
+$$Reject \enspace rate = \frac{Number \enspace of \enspace faulty \enspace parts \enspace passing \enspace final \enspace test}{Total \enspace number \enspace of \enspace parts \enspace passing \enspace final \enspace test}$$
+
+一般**reject rate**低于500PPM是可以接受的，低于100PPM是高质量的，如果以**6 Sigma**为目标需要低于3.4PPM。
+
+### 1.2.2 Electronic System Manufacturing Process
+
+还是再讲每一步都要测试。
+
+![Figure 1.4](/images/vlsi_test_principles_and_architectures/1.4.png "Figure 1.4")
+
+### 1.2.3 System-Level Operation
+
+这一节是在讲生产之后时间长度上的失效，比如可能由金属老化，EM等导致的失效。比如下图0代表正常，1代表失效。
+
+![Figure 1.5](/images/vlsi_test_principles_and_architectures/1.5.png "Figure 1.5")
+
+对于 t<sub>0</sub>- t<sub>1</sub>和 t<sub>2</sub>- t<sub>3</sub>我们叫做正常工作时间（T<sub>n</sub>)是服从指数分布的，也叫做**exponential failure law**。于是一个系统可以正常工作超过时间t的可能性，叫做可靠性（**reliability**）：
+
+$$P(T_n>t)=e^{- \lambda t}$$
+
+其中$\lambda$叫失效率（faliure rate）。因为一个系统是由很多器件组成的，所以应该累加一下：
+
+$$\lambda = \sum_{i=0}^{k}{\lambda _i}$$
+
+MTBF为：
+
+$$MTBF=\int_{0}^\infty e^{- \lambda t}dt=\frac{1}{\lambda}$$
+
+同样的， t<sub>1</sub>- t<sub>2</sub>和 t<sub>3</sub>- t<sub>4</sub>叫修复时间**R**，也服从指数分布
+
+$$P(R>t)=e^{- \mu t}$$
+
+其中$\mu$是修复率（repair rate）。于是MTTR为：
+
+$$MTTR=\frac{1}{\mu}$$
+
+于是我们这样定义系统可用性**system availability**：
+
+$$system \enspace availability=\frac{MTBF}{MTBF+MTTR}$$
+
+这个公式很常用，比如电话系统要达到0.9999。所以我们需要测试来保证系统可用性，包括在线测试**online testing**或离线测试**offline testing**或是两者的结合。在之后也可以确定到底是啥坏了以进行更换维修。
+
+## 1.3 CHALLENGES IN VLSI TESTING
+
+芯片越来越复杂了，所以测试很有挑战。
+
+### 1.3.1 Test Generation
+
+
