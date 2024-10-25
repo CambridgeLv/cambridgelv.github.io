@@ -84,4 +84,32 @@ $$system \enspace availability=\frac{MTBF}{MTBF+MTTR}$$
 
 ### 1.3.1 Test Generation
 
+- **fault**是指一个物理缺陷的表现形式
+
+- **failure**是指电路或系统不符预期且不可逆了，必须要修复
+
+- **error**是指有问题的电路输出的错误的信号
+
+A circuit defect may lead to a **fault**, a **fault** can cause a circuit **error**, and a circuit **error** can result in a system **failure**. 
+
+要用n个输入和m个输出测试一个电路，每个输入叫一个测试向量**test vector**。如果遍历$2^n$个输入的话，这叫**exhaustive testing**。但当n太大了这个不够实际，而且及时遍历也不能保证所有的状态都被尝试过。不过这就是最基本的**functional testing**想法。
+
+一个更现实的想法是，基于电路结构和一套**fault models**来生成特定的test patterns。这个就叫**structural testing**，既节约时间又高效。因为是基于**fault models**来生成的测试向量，所以不能保证所有可能的生产缺陷都被发现。不过，运用**fault models**给了我们一种定量测量的方法，我们把这个测量定义为**fault coverage**：
+
+$$Fault \enspace coverage=\frac{Number \enspace of \enspace detected \enspace faults}{Total \enspace number \enspace of \enspace faults}$$
+
+因为有不可测缺陷的存在，想要100%的**fault coverage**是不可能的，所以我们调整为**fault detection efficiency**或者叫**effective fault coverage**：
+
+$$Fault \enspace detection \enspace effeciency=\frac{Number \enspace of \enspace detected \enspace faults}{Total \enspace number \enspace of \enspace faults-number \enspace of \enspace undetectable \enspace faults}$$
+
+还存在一个如下的关系：
+
+$$Defect \enspace level=1-yield^{(1-fault \enspace coverage)}$$
+
+例如：一个PCB上面有40个芯片，每个都是90%的**fault coverage**和90%的**yield**，可以得到**reject rate**为41.9%，或者说419000PPM。相比提升yield，提升fault coverage一般是更便宜更容易的。
+
+**Test generation**的目标就是找到最有效率的**test vectors**组合，我们也可以用**fault simulation**来分析特定**test vectors**的**fault coverage**。
+
+### 1.3.2 Fault Models
+
 
