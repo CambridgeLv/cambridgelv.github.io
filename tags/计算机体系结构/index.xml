@@ -4,21 +4,18 @@
         <link>https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</link>
         <description>计算机体系结构 - 标签 - Lv的小站</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" rel="self" type="application/rss+xml" /><item>
-    <title>计算机体系结构学习笔记</title>
-    <link>https://cambridgelv.github.io/posts/ca-notes/</link>
-    <pubDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://cambridgelv.github.io/posts/ca-notes/</guid>
-    <description><![CDATA[基于 Computer Architecture: A Quantitative Approach, 6th Edition（Hennessy &amp; Patterson）的中文学习笔记。 本系列覆盖全部 7 个章节 + 3 个核心附录，由浅入深，结合实]]></description>
-</item><item>
     <title>计算机体系结构学习笔记 — 第1章 量化设计与分析基础</title>
-    <link>https://cambridgelv.github.io/ch01-fundamentals/</link>
+    <link>https://cambridgelv.github.io/posts/ch01-fundamentals/</link>
     <pubDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://cambridgelv.github.io/ch01-fundamentals/</guid>
-    <description><![CDATA[<blockquote>
-<p><strong>原著</strong>: <em>Computer Architecture: A Quantitative Approach</em>, 6th Edition — John L. Hennessy &amp; David A. Patterson</p>
-<p>本章是全书的基础，介绍了量化分析体系结构的核心工具：性能度量、功耗模型、成本模型、可靠性以及 Amdahl 定律。</p>
-</blockquote>]]></description>
+    <guid>https://cambridgelv.github.io/posts/ch01-fundamentals/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>计算机体系结构学习笔记 — 第2章 存储层次设计</title>
+    <link>https://cambridgelv.github.io/posts/ch02-memory-hierarchy/</link>
+    <pubDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://cambridgelv.github.io/posts/ch02-memory-hierarchy/</guid>
+    <description><![CDATA[]]></description>
 </item></channel>
 </rss>
