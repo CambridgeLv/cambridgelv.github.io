@@ -5,24 +5,24 @@
         <description>学习笔记 - 分类 - Lv的小站</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 09 Jul 2026 23:30:00 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
     <title>计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</title>
-    <link>https://cambridgelv.github.io/posts/appendixc-pipelining/</link>
+    <link>https://cambridgelv.github.io/appendixc-pipelining/</link>
     <pubDate>Thu, 09 Jul 2026 23:30:00 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://cambridgelv.github.io/posts/appendixc-pipelining/</guid>
+    <guid>https://cambridgelv.github.io/appendixc-pipelining/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>计算机体系结构学习笔记 — 第1章 量化设计与分析基础</title>
-    <link>https://cambridgelv.github.io/posts/ch01-fundamentals/</link>
+    <link>https://cambridgelv.github.io/ch01-fundamentals/</link>
     <pubDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://cambridgelv.github.io/posts/ch01-fundamentals/</guid>
+    <guid>https://cambridgelv.github.io/ch01-fundamentals/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>计算机体系结构学习笔记 — 第2章 存储层次设计</title>
-    <link>https://cambridgelv.github.io/posts/ch02-memory-hierarchy/</link>
+    <link>https://cambridgelv.github.io/ch02-memory-hierarchy/</link>
     <pubDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://cambridgelv.github.io/posts/ch02-memory-hierarchy/</guid>
+    <guid>https://cambridgelv.github.io/ch02-memory-hierarchy/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>
