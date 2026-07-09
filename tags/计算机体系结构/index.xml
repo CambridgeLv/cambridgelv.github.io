@@ -3,7 +3,14 @@
         <title>计算机体系结构 - 标签 - Lv的小站</title>
         <link>https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</link>
         <description>计算机体系结构 - 标签 - Lv的小站</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 09 Jul 2026 23:30:00 &#43;0800</lastBuildDate><atom:link href="https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" rel="self" type="application/rss+xml" /><item>
+    <title>计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</title>
+    <link>https://cambridgelv.github.io/posts/appendixc-pipelining/</link>
+    <pubDate>Thu, 09 Jul 2026 23:30:00 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://cambridgelv.github.io/posts/appendixc-pipelining/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>计算机体系结构学习笔记 — 第1章 量化设计与分析基础</title>
     <link>https://cambridgelv.github.io/posts/ch01-fundamentals/</link>
     <pubDate>Thu, 09 Jul 2026 23:00:00 &#43;0800</pubDate>
