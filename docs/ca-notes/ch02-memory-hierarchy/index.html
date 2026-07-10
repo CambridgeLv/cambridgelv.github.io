@@ -8,10 +8,10 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>计算机体系结构学习笔记 — 第2章 存储层次设计 – Lv的小站</title>
+<title>计算机体系结构学习笔记 — 第2章 存储层次 – Lv的小站</title>
   <meta name="description" content="" /><link rel="canonical" href="https://cambridgelv.github.io/docs/ca-notes/ch02-memory-hierarchy/" itemprop="url" />
 
-<meta property="og:title" content="计算机体系结构学习笔记 — 第2章 存储层次设计">
+<meta property="og:title" content="计算机体系结构学习笔记 — 第2章 存储层次">
 <meta
   property="og:description"
   content="
@@ -28,23 +28,23 @@
 
 <meta
   property="article:published_time"
-  content="2026-07-09T23:00:00+08:00">
+  content="2026-07-10T10:20:00+08:00">
 
 
 <meta
   property="article:modified_time"
-  content="2026-07-09T23:00:00+08:00">
+  content="2026-07-10T10:07:37+08:00">
 
 
 
-	<meta itemprop="name" content="计算机体系结构学习笔记 — 第2章 存储层次设计">
+	<meta itemprop="name" content="计算机体系结构学习笔记 — 第2章 存储层次">
 	<meta itemprop="description" content="Lv的小站 - 芯片架构、数字中端、计算机体系结构学习笔记">
-	<meta itemprop="datePublished" content="2026-07-09T23:00:00+08:00">
-	<meta itemprop="dateModified" content="2026-07-09T23:00:00+08:00">
-	<meta itemprop="wordCount" content="14">
-	<meta itemprop="keywords" content="计算机体系结构,存储层次,缓存">
+	<meta itemprop="datePublished" content="2026-07-10T10:20:00+08:00">
+	<meta itemprop="dateModified" content="2026-07-10T10:07:37+08:00">
+	<meta itemprop="wordCount" content="6143">
+	<meta itemprop="keywords" content="计算机体系结构,存储层次,缓存,内存">
 	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="计算机体系结构学习笔记 — 第2章 存储层次设计">
+	<meta name="twitter:title" content="计算机体系结构学习笔记 — 第2章 存储层次">
 	<meta name="twitter:description" content="Lv的小站 - 芯片架构、数字中端、计算机体系结构学习笔记">
 
     <link rel="preload" href="/css/compiled/main.min.cab6ca91ef67bf58dd994e3dc2e80052930bc9a2a07c35158fe06c6f03cfcbdc.css" as="style" integrity="sha256-yrbKke9nv1jdmU49wugAUpMLyaKgfDUVj&#43;BsbwPPy9w=" />
@@ -60,7 +60,7 @@
 <script src="/js/main-head.min.bbb353731723c08eaf67b231610392e3665384806ddb6bee51d4a965494c762e.js" integrity="sha256-u7NTcxcjwI6vZ7IxYQOS42ZThIBt22vuUdSpZUlMdi4="></script>
 
   
-  
+  <link rel="stylesheet" href="/css/katex.min.6aff82415cedb412f2c82c8c2c57239419d1e6b45f37df0079ef776bc0f2e08fc61f5cb62aeee1f80fb4ee99c229a86d01055999cdbd206b00a82422abdaa230.css" integrity="sha512-av&#43;CQVzttBLyyCyMLFcjlBnR5rRfN98Aee93a8Dy4I/GH1y2Ku7h&#43;A&#43;07pnCKahtAQVZmc29IGsAqCQiq9qiMA==" />
   </head>
 <body>
     <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">跳至内容</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
@@ -137,65 +137,84 @@
       <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
   </div>
               <div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
     <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch04-dlp/"
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/docs/ca-notes/ch02-memory-hierarchy/"
       
     >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第4章 数据级并行：向量、SIMD与GPU</span>
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次</span>
     </a>
   </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch05-tlp/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第5章 线程级并行</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch06-wsc/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第6章 仓库级计算机</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch07-dsa/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第7章 领域专用体系结构</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch03-ilp/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第3章 指令级并行及其利用</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/appendixc-pipelining/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</span>
-    </a>
-  </div>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#21-%e5%bc%95%e8%a8%80--%e5%ad%98%e5%82%a8%e5%a2%99%e4%b8%8e%e6%80%a7%e8%83%bd%e7%93%b6%e9%a2%88"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.1 引言 — 存储墙与性能瓶颈</a>
+            </li>
+          <li>
+              <a
+                href="#22-%e7%bc%93%e5%ad%98%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.2 缓存基础知识</a>
+            </li>
+          <li>
+              <a
+                href="#23-%e7%bc%93%e5%ad%98%e6%80%a7%e8%83%bd%e7%9a%84%e5%8d%81%e7%a7%8d%e4%bc%98%e5%8c%96%e6%96%b9%e6%b3%95"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.3 缓存性能的十种优化方法</a>
+            </li>
+          <li>
+              <a
+                href="#24-%e7%bc%93%e5%ad%98%e8%ae%be%e8%ae%a1%e7%9a%84%e5%85%ad%e4%b8%aa%e5%9f%ba%e6%9c%ac%e9%97%ae%e9%a2%98%e6%80%bb%e7%bb%93"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.4 缓存设计的六个基本问题总结</a>
+            </li>
+          <li>
+              <a
+                href="#25-%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.5 虚拟内存</a>
+            </li>
+          <li>
+              <a
+                href="#26-%e7%8e%b0%e4%bb%a3%e5%a4%84%e7%90%86%e5%99%a8%e7%9a%84%e7%bc%93%e5%ad%98%e5%b1%82%e6%ac%a1"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.6 现代处理器的缓存层次</a>
+            </li>
+          <li>
+              <a
+                href="#27-%e4%b8%bb%e5%ad%98%e7%bb%84%e7%bb%87%e4%b8%8e-dram-%e6%8a%80%e6%9c%af"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.7 主存组织与 DRAM 技术</a>
+            </li>
+          <li>
+              <a
+                href="#28-%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98%e4%b8%8e%e7%bc%93%e5%ad%98%e7%9a%84%e4%ba%a4%e4%ba%92"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.8 虚拟内存与缓存的交互</a>
+            </li>
+          <li>
+              <a
+                href="#29-%e6%a1%88%e4%be%8b%e7%bc%93%e5%ad%98%e5%8f%82%e6%95%b0%e7%9a%84%e5%bd%b1%e5%93%8d%e5%88%86%e6%9e%90"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.9 案例：缓存参数的影响分析</a>
+            </li>
+          <li>
+              <a
+                href="#210-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.10 常见谬误与陷阱</a>
+            </li>
+          <li>
+              <a
+                href="#211-%e6%80%bb%e7%bb%93"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.11 总结</a>
+            </li>
+          </ul>
+  
               
             </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
     <a
@@ -206,17 +225,6 @@
       <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第1章 量化设计与分析基础</span>
     </a>
   </div>
-              
-            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-      href="/docs/ca-notes/ch02-memory-hierarchy/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次设计</span>
-    </a>
-  </div>
-  
               
             </li></ul>
       </div>
@@ -300,63 +308,13 @@
     </a>
       <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
   </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
     <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch04-dlp/"
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/docs/ca-notes/ch02-memory-hierarchy/"
       
     >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第4章 数据级并行：向量、SIMD与GPU</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch05-tlp/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第5章 线程级并行</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch06-wsc/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第6章 仓库级计算机</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch07-dsa/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第7章 领域专用体系结构</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/ch03-ilp/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第3章 指令级并行及其利用</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-      href="/docs/ca-notes/appendixc-pipelining/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</span>
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次</span>
     </a>
   </div>
               
@@ -367,16 +325,6 @@
       
     >
       <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第1章 量化设计与分析基础</span>
-    </a>
-  </div>
-              
-            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
-    <a
-      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-      href="/docs/ca-notes/ch02-memory-hierarchy/"
-      
-    >
-      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次设计</span>
     </a>
   </div>
               
@@ -466,11 +414,187 @@
 </div></div></aside>
     
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="目录">
-    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4">
-      <div class=" hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><div class="hx:flex hx:items-start hx:gap-x-2 hx:font-medium hx:text-xs">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#21-%e5%bc%95%e8%a8%80--%e5%ad%98%e5%82%a8%e5%a2%99%e4%b8%8e%e6%80%a7%e8%83%bd%e7%93%b6%e9%a2%88">2.1 引言 — 存储墙与性能瓶颈
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1">为什么需要存储层次
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1%e7%9a%84%e5%9f%ba%e6%9c%ac%e6%80%9d%e6%83%b3">存储层次的基本思想
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#22-%e7%bc%93%e5%ad%98%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86">2.2 缓存基础知识
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bc%93%e5%ad%98%e7%9a%84%e7%bb%93%e6%9e%84">缓存的结构
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bc%93%e5%ad%98%e7%9a%84%e4%b8%89%e4%b8%aa%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1%e5%8f%82%e6%95%b0">缓存的三个关键设计参数
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#q1-%e5%9d%97-block-%e6%94%be%e5%9c%a8%e5%93%aa%e9%87%8c-%e6%94%be%e7%bd%ae%e7%ad%96%e7%95%a5">Q1: 块 (Block) 放在哪里？— 放置策略
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#q2-%e5%a6%82%e4%bd%95%e6%89%be%e5%88%b0%e5%9d%97-%e6%9f%a5%e6%89%be%e6%9c%ba%e5%88%b6">Q2: 如何找到块？— 查找机制
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#q3-%e7%bc%93%e5%ad%98%e7%bc%ba%e5%a4%b1%e6%97%b6%e6%9b%bf%e6%8d%a2%e5%93%aa%e4%b8%80%e5%9d%97-%e6%9b%bf%e6%8d%a2%e7%ad%96%e7%95%a5">Q3: 缓存缺失时替换哪一块？— 替换策略
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%86%99%e7%ad%96%e7%95%a5">写策略
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%86%99%e5%91%bd%e4%b8%ad">写命中
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%86%99%e7%bc%ba%e5%a4%b1">写缺失
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bc%93%e5%ad%98%e6%80%a7%e8%83%bd%e6%96%b9%e7%a8%8b">缓存性能方程
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bc%ba%e5%a4%b1%e7%8e%87-miss-rate-%e4%b8%8e%e7%bc%ba%e5%a4%b1%e6%83%a9%e7%bd%9a-miss-penalty">缺失率 (Miss Rate) 与缺失惩罚 (Miss Penalty)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#23-%e7%bc%93%e5%ad%98%e6%80%a7%e8%83%bd%e7%9a%84%e5%8d%81%e7%a7%8d%e4%bc%98%e5%8c%96%e6%96%b9%e6%b3%95">2.3 缓存性能的十种优化方法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%ac%ac%e4%b8%80%e7%b1%bb%e5%87%8f%e5%b0%91%e5%91%bd%e4%b8%ad%e6%97%b6%e9%97%b4">第一类：减少命中时间
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%ac%ac%e4%ba%8c%e7%b1%bb%e5%a2%9e%e5%8a%a0%e7%bc%93%e5%ad%98%e5%b8%a6%e5%ae%bd">第二类：增加缓存带宽
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%ac%ac%e4%b8%89%e7%b1%bb%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e7%8e%87">第三类：减少缺失率
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%ac%ac%e5%9b%9b%e7%b1%bb%e9%80%9a%e8%bf%87%e9%a2%84%e5%8f%96%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e6%83%a9%e7%bd%9a%e6%88%96%e7%bc%ba%e5%a4%b1%e7%8e%87">第四类：通过预取减少缺失惩罚或缺失率
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%ac%ac%e4%ba%94%e7%b1%bb%e9%80%9a%e8%bf%87%e7%bc%96%e8%af%91%e5%99%a8%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e7%8e%87">第五类：通过编译器减少缺失率
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%ac%ac%e5%85%ad%e7%b1%bb%e9%80%9a%e8%bf%87%e5%b9%b6%e8%a1%8c%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e6%83%a9%e7%bd%9a">第六类：通过并行减少缺失惩罚
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#24-%e7%bc%93%e5%ad%98%e8%ae%be%e8%ae%a1%e7%9a%84%e5%85%ad%e4%b8%aa%e5%9f%ba%e6%9c%ac%e9%97%ae%e9%a2%98%e6%80%bb%e7%bb%93">2.4 缓存设计的六个基本问题总结
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#25-%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98">2.5 虚拟内存
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98">为什么需要虚拟内存
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%88%86%e9%a1%b5-paging">分页 (Paging)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tlb--%e9%a1%b5%e8%a1%a8%e7%bc%93%e5%ad%98">TLB — 页表缓存
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%bf%9d%e6%8a%a4%e4%b8%8e%e5%85%b1%e4%ba%ab">保护与共享
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#26-%e7%8e%b0%e4%bb%a3%e5%a4%84%e7%90%86%e5%99%a8%e7%9a%84%e7%bc%93%e5%ad%98%e5%b1%82%e6%ac%a1">2.6 现代处理器的缓存层次
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#intel-skylake-%e4%b8%ba%e4%be%8b">Intel Skylake 为例
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bc%93%e5%ad%98%e4%b8%80%e8%87%b4%e6%80%a7-cache-coherence-%e6%a6%82%e8%bf%b0">缓存一致性 (Cache Coherence) 概述
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#27-%e4%b8%bb%e5%ad%98%e7%bb%84%e7%bb%87%e4%b8%8e-dram-%e6%8a%80%e6%9c%af">2.7 主存组织与 DRAM 技术
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#dram-%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c">DRAM 基本操作
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#ddr-%e7%b3%bb%e5%88%97%e6%bc%94%e8%bf%9b">DDR 系列演进
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%86%85%e5%ad%98%e6%8e%a7%e5%88%b6%e5%99%a8">内存控制器
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#3d-%e5%a0%86%e5%8f%a0%e5%86%85%e5%ad%98">3D 堆叠内存
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#28-%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98%e4%b8%8e%e7%bc%93%e5%ad%98%e7%9a%84%e4%ba%a4%e4%ba%92">2.8 虚拟内存与缓存的交互
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tlb--%e7%bc%93%e5%ad%98%e7%9a%84%e8%ae%bf%e9%97%ae%e6%b5%81%e7%a8%8b">TLB &#43; 缓存的访问流程
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%bf%9d%e6%8a%a4%e6%9c%ba%e5%88%b6">保护机制
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#29-%e6%a1%88%e4%be%8b%e7%bc%93%e5%ad%98%e5%8f%82%e6%95%b0%e7%9a%84%e5%bd%b1%e5%93%8d%e5%88%86%e6%9e%90">2.9 案例：缓存参数的影响分析
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%9d%97%e5%a4%a7%e5%b0%8f%e5%af%b9%e7%bc%ba%e5%a4%b1%e7%8e%87%e7%9a%84%e5%bd%b1%e5%93%8d">块大小对缺失率的影响
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%9b%b8%e8%81%94%e5%ba%a6%e5%af%b9%e7%bc%ba%e5%a4%b1%e7%8e%87%e7%9a%84%e5%bd%b1%e5%93%8d">相联度对缺失率的影响
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bc%93%e5%ad%98%e5%a4%a7%e5%b0%8f%e5%af%b9%e7%bc%ba%e5%a4%b1%e7%8e%87%e7%9a%84%e5%bd%b1%e5%93%8dspec2000">缓存大小对缺失率的影响（SPEC2000）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#210-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1">2.10 常见谬误与陷阱
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#211-%e6%80%bb%e7%bb%93">2.11 总结
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><div class="hx:flex hx:items-start hx:gap-x-2 hx:font-medium hx:text-xs">
             <div class="hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">标签</div>
             <div class="hx:flex hx:flex-wrap hx:gap-y-1">
-              <a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">#计算机体系结构</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1/">#存储层次</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E7%BC%93%E5%AD%98/">#缓存</a>
+              <a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">#计算机体系结构</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1/">#存储层次</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E7%BC%93%E5%AD%98/">#缓存</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E5%86%85%E5%AD%98/">#内存</a>
             </div>
           </div>
         <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
@@ -493,30 +617,887 @@
         </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/docs/ca-notes/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">计算机体系结构学习笔记</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">计算机体系结构学习笔记 — 第2章 存储层次设计</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">计算机体系结构学习笔记 — 第2章 存储层次</div>
   </div>
 
         <div class="content">
           
             <div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mb-4">
-              <h1 class="hx:mb-0">计算机体系结构学习笔记 — 第2章 存储层次设计</h1>
+              <h1 class="hx:mb-0">计算机体系结构学习笔记 — 第2章 存储层次</h1>
               
             </div>
           
           
           <blockquote>
-  <p>第2章待撰写&hellip;</p>
+  <p><strong>原著</strong>: <em>Computer Architecture: A Quantitative Approach</em>, 6th Edition — John L. Hennessy &amp; David A. Patterson</p>
+<p>存储层次是计算机体系结构中最核心的设计问题之一。本章详细分析缓存设计、主存组织和虚拟内存技术。</p>
 
 </blockquote>
+<h2>2.1 引言 — 存储墙与性能瓶颈<span class="hx:absolute hx:-mt-20" id="21-引言--存储墙与性能瓶颈"></span>
+    <a href="#21-%e5%bc%95%e8%a8%80--%e5%ad%98%e5%82%a8%e5%a2%99%e4%b8%8e%e6%80%a7%e8%83%bd%e7%93%b6%e9%a2%88" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>为什么需要存储层次<span class="hx:absolute hx:-mt-20" id="为什么需要存储层次"></span>
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>处理器-内存性能差距</strong>是体系结构面临的最根本矛盾之一：</p>
+<table>
+	<thead>
+			<tr>
+					<th>技术</th>
+					<th style="text-align: center">1980</th>
+					<th style="text-align: center">2015</th>
+					<th style="text-align: center">年均改进</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>处理器性能</td>
+					<td style="text-align: center">1</td>
+					<td style="text-align: center">~10,000</td>
+					<td style="text-align: center">~35%/年</td>
+			</tr>
+			<tr>
+					<td>DRAM 延迟</td>
+					<td style="text-align: center">1</td>
+					<td style="text-align: center">~2</td>
+					<td style="text-align: center">~1%/年</td>
+			</tr>
+			<tr>
+					<td>DRAM 容量</td>
+					<td style="text-align: center">1</td>
+					<td style="text-align: center">~1,000</td>
+					<td style="text-align: center">~20%/年</td>
+			</tr>
+	</tbody>
+</table>
+<p>这个不断扩大的差距被称为<strong>存储墙 (Memory Wall)</strong>。处理器的计算能力每 18 个月翻倍，但主存延迟的改进每年不到 5%。这意味着一次主存访问的代价在相对性能中的权重越来越大。</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">你在做 STA 时应该体会过——综合报告里 critical path 经常是那些经过 SRAM/cache 的路径。缓存的 timing 收敛问题本质上是存储墙在物理实现层面的体现。架构上如果不是多用本地寄存器、少穿缓存和主存，你后面的时序根本收不拢。</div>
+  </div>
+</div>
+
+<h3>存储层次的基本思想<span class="hx:absolute hx:-mt-20" id="存储层次的基本思想"></span>
+    <a href="#%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1%e7%9a%84%e5%9f%ba%e6%9c%ac%e6%80%9d%e6%83%b3" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>利用<strong>局部性原理</strong>（第 1 章 1.9 节）：</p>
+<ul>
+<li><strong>时间局部性</strong>：最近访问的数据很可能再次被访问</li>
+<li><strong>空间局部性</strong>：访问一个地址后，相邻地址很可能被访问</li>
+</ul>
+<p>存储层次通过在<strong>快但小</strong>和<strong>大但慢</strong>之间做 trade-off，用成本合理的方案提供接近最快的访问速度：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>寄存器      (1 cycle,  ~1KB)
+    ↓       L1 缓存    (2–4 cycles, 32–64KB)
+    ↓       L2 缓存    (10–20 cycles, 256–512KB)
+    ↓       L3 缓存    (30–50 cycles, 2–32MB)
+    ↓       DRAM 主存  (100–300 cycles, 8–64GB)
+    ↓       磁盘/SSD   (10⁶–10⁷ cycles, 1–10TB)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>层次化存储的关键原则</strong>：</p>
+<ol>
+<li><strong>包含性 (Inclusion)</strong>：上层内容往往是下层的一个子集</li>
+<li><strong>越往上越快、越小、越贵（每字节）</strong></li>
+<li><strong>越往下越慢、越大、越便宜</strong></li>
+<li><strong>数据以块 (block/line) 为单位移动</strong></li>
+</ol>
+<h2>2.2 缓存基础知识<span class="hx:absolute hx:-mt-20" id="22-缓存基础知识"></span>
+    <a href="#22-%e7%bc%93%e5%ad%98%e5%9f%ba%e7%a1%80%e7%9f%a5%e8%af%86" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>缓存的结构<span class="hx:absolute hx:-mt-20" id="缓存的结构"></span>
+    <a href="#%e7%bc%93%e5%ad%98%e7%9a%84%e7%bb%93%e6%9e%84" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>缓存的基本操作单元是<strong>缓存行 (cache line/block)</strong>。当 CPU 请求一个地址时：</p>
+<ol>
+<li><strong>缓存命中 (hit)</strong>：数据在缓存中 → 快速返回</li>
+<li><strong>缓存缺失 (miss)</strong>：数据不在缓存中 → 从下一级获取，加载到本层</li>
+</ol>
+<h3>缓存的三个关键设计参数<span class="hx:absolute hx:-mt-20" id="缓存的三个关键设计参数"></span>
+    <a href="#%e7%bc%93%e5%ad%98%e7%9a%84%e4%b8%89%e4%b8%aa%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1%e5%8f%82%e6%95%b0" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><h4>Q1: 块 (Block) 放在哪里？— 放置策略<span class="hx:absolute hx:-mt-20" id="q1-块-block-放在哪里-放置策略"></span>
+    <a href="#q1-%e5%9d%97-block-%e6%94%be%e5%9c%a8%e5%93%aa%e9%87%8c-%e6%94%be%e7%bd%ae%e7%ad%96%e7%95%a5" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><table>
+	<thead>
+			<tr>
+					<th>策略</th>
+					<th>描述</th>
+					<th>优点</th>
+					<th>缺点</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>直接映射</strong></td>
+					<td>每个块只能放在唯一位置</td>
+					<td>简单、快</td>
+					<td>冲突缺失率高</td>
+			</tr>
+			<tr>
+					<td><strong>全相联</strong></td>
+					<td>每个块可放在任意位置</td>
+					<td>冲突缺失最低</td>
+					<td>硬件复杂、慢</td>
+			</tr>
+			<tr>
+					<td><strong>组相联 (n-way)</strong></td>
+					<td>每个块可放在 n 个位置之一</td>
+					<td>折中方案</td>
+					<td>-</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>组相联</strong>是现代处理器最常用的策略。对于 N 路组相联缓存：</p>
+<ul>
+<li>内存地址划分成：<strong>标记 (tag) | 组索引 (index) | 块内偏移 (offset)</strong></li>
+<li>每组 (set) 包含 N 个缓存行</li>
+<li>一个块可以映射到对应组的 <strong>N 个位置中的任意一个</strong></li>
+</ul>
+<p><strong>组相联的硬件实现</strong>：比较器数量 = 相联度 N，用于并行比较所有候选行的 tag。</p>
+<h4>Q2: 如何找到块？— 查找机制<span class="hx:absolute hx:-mt-20" id="q2-如何找到块-查找机制"></span>
+    <a href="#q2-%e5%a6%82%e4%bd%95%e6%89%be%e5%88%b0%e5%9d%97-%e6%9f%a5%e6%89%be%e6%9c%ba%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><ol>
+<li><strong>直接映射</strong>：索引字段直接定位 → 比较 tag</li>
+<li><strong>组相联</strong>：索引字段定位组 → 并行比较 N 个 tag</li>
+<li><strong>全相联</strong>：无索引 → 并行比较所有 tag（只在小缓存中使用）</li>
+</ol>
+<h4>Q3: 缓存缺失时替换哪一块？— 替换策略<span class="hx:absolute hx:-mt-20" id="q3-缓存缺失时替换哪一块-替换策略"></span>
+    <a href="#q3-%e7%bc%93%e5%ad%98%e7%bc%ba%e5%a4%b1%e6%97%b6%e6%9b%bf%e6%8d%a2%e5%93%aa%e4%b8%80%e5%9d%97-%e6%9b%bf%e6%8d%a2%e7%ad%96%e7%95%a5" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><table>
+	<thead>
+			<tr>
+					<th>策略</th>
+					<th>描述</th>
+					<th style="text-align: center">实现难度</th>
+					<th style="text-align: center">效果</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>LRU (最近最少使用)</strong></td>
+					<td>替换最长时间未访问的</td>
+					<td style="text-align: center">复杂</td>
+					<td style="text-align: center">最佳（实践中）</td>
+			</tr>
+			<tr>
+					<td><strong>FIFO</strong></td>
+					<td>替换最早进入的</td>
+					<td style="text-align: center">简单</td>
+					<td style="text-align: center">较好</td>
+			</tr>
+			<tr>
+					<td><strong>随机</strong></td>
+					<td>随机选一个替换</td>
+					<td style="text-align: center">最简单</td>
+					<td style="text-align: center">出乎意料地好</td>
+			</tr>
+			<tr>
+					<td><strong>伪 LRU (PLRU)</strong></td>
+					<td>近似 LRU，用位追踪</td>
+					<td style="text-align: center">适中</td>
+					<td style="text-align: center">接近 LRU</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>LRU 的硬件实现</strong>：N 路组相联需要 $\log_2(N!)$ 位来追踪最近使用顺序。2 路只需要 1 位，4 路需要 ~5 位（常用 Pseudo-LRU）。</p>
+<h3>写策略<span class="hx:absolute hx:-mt-20" id="写策略"></span>
+    <a href="#%e5%86%99%e7%ad%96%e7%95%a5" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><h4>写命中<span class="hx:absolute hx:-mt-20" id="写命中"></span>
+    <a href="#%e5%86%99%e5%91%bd%e4%b8%ad" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><table>
+	<thead>
+			<tr>
+					<th>策略</th>
+					<th>描述</th>
+					<th>优点</th>
+					<th>缺点</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>写通 (Write-through)</strong></td>
+					<td>数据同时写入缓存和下一级</td>
+					<td>一致性简单</td>
+					<td>带宽浪费</td>
+			</tr>
+			<tr>
+					<td><strong>写回 (Write-back)</strong></td>
+					<td>只写缓存，标记 dirty，逐出时写回</td>
+					<td>节省带宽</td>
+					<td>一致性复杂</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>写缓冲 (Write buffer)</strong>：写通策略中，为了隐藏写主存的延迟，使用写缓冲暂存写入数据。</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0"><p>综合时缓存的设计直接决定了时序和面积：</p>
+<ul>
+<li><strong>写通</strong>：每次写都要穿透到下一级，时序路径更长</li>
+<li><strong>写回</strong>：带宽效率高，但 dirty bit 逻辑增加了状态机复杂度
+做 RTL 时这两种策略的差别很明显，写回的 FSM 通常比写通复杂一个数量级。</li>
+</ul></div>
+  </div>
+</div>
+
+<h4>写缺失<span class="hx:absolute hx:-mt-20" id="写缺失"></span>
+    <a href="#%e5%86%99%e7%bc%ba%e5%a4%b1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><table>
+	<thead>
+			<tr>
+					<th>策略</th>
+					<th>描述</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>写分配 (Write-allocate)</strong></td>
+					<td>先加载块到缓存，再写（与写回搭配）</td>
+			</tr>
+			<tr>
+					<td><strong>非写分配 (No-write-allocate)</strong></td>
+					<td>直接写到下一级，不加载到缓存（与写通搭配）</td>
+			</tr>
+	</tbody>
+</table>
+<h3>缓存性能方程<span class="hx:absolute hx:-mt-20" id="缓存性能方程"></span>
+    <a href="#%e7%bc%93%e5%ad%98%e6%80%a7%e8%83%bd%e6%96%b9%e7%a8%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mi>P</mi><mi>U</mi><mi mathvariant="normal">_</mi><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mo>=</mo><mo stretchy="false">(</mo><mi>C</mi><mi>P</mi><mi>U</mi><mi mathvariant="normal">_</mi><mi>e</mi><mi>x</mi><mi>e</mi><mi>c</mi><mi>u</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi mathvariant="normal">_</mi><mi>c</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi>s</mi><mo>+</mo><mi>M</mi><mi>e</mi><mi>m</mi><mi>o</mi><mi>r</mi><mi>y</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi mathvariant="normal">_</mi><mi>c</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo><mo>×</mo><mi>C</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi mathvariant="normal">_</mi><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">CPU\_Time = (CPU\_execution\_cycles + Memory\_stall\_cycles) \times Cycle\_Time</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">CP</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">CP</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">u</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">cyc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">es</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.06em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord mathnormal" style="margin-right:0.03588em;">ory</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">ll</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">cyc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">es</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">yc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span></span></span></span></span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mi>e</mi><mi>m</mi><mi>o</mi><mi>r</mi><mi>y</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi mathvariant="normal">_</mi><mi>c</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi>s</mi><mo>=</mo><mi>I</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>r</mi><mi>u</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi mathvariant="normal">_</mi><mi>C</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi><mo>×</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi>e</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>p</mi><mi>e</mi><mi>r</mi><mi mathvariant="normal">_</mi><mi>I</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>r</mi><mi>u</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>×</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>e</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>t</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">Memory\_stall\_cycles = Instruction\_Count \times Misses\_per\_Instruction \times Miss\_Penalty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord mathnormal" style="margin-right:0.03588em;">ory</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">ll</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">cyc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">es</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">u</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">sses</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">p</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">u</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ss</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">e</span><span class="mord mathnormal">na</span><span class="mord mathnormal">lt</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><p>或者：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mi>e</mi><mi>m</mi><mi>o</mi><mi>r</mi><mi>y</mi><mi mathvariant="normal">_</mi><mi>s</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>l</mi><mi mathvariant="normal">_</mi><mi>c</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi>s</mi><mo>=</mo><mfrac><mrow><mi>I</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>r</mi><mi>u</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>s</mi></mrow><mrow><mi>P</mi><mi>r</mi><mi>o</mi><mi>g</mi><mi>r</mi><mi>a</mi><mi>m</mi></mrow></mfrac><mo>×</mo><mfrac><mrow><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi>e</mi><mi>s</mi></mrow><mrow><mi>I</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>r</mi><mi>u</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi></mrow></mfrac><mo>×</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>e</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>t</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">Memory\_stall\_cycles = \frac{Instructions}{Program} \times \frac{Misses}{Instruction} \times Miss\_Penalty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord mathnormal" style="margin-right:0.03588em;">ory</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">ll</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">cyc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">es</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2408em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">ro</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">am</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">u</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">u</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">sses</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ss</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">e</span><span class="mord mathnormal">na</span><span class="mord mathnormal">lt</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mi>M</mi><mi>A</mi><mi>T</mi><mo>=</mo><mi>H</mi><mi>i</mi><mi>t</mi><mi mathvariant="normal">_</mi><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mo>+</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>×</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>e</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>t</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">AMAT = Hit\_Time + Miss\_Rate \times Miss\_Penalty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ss</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ss</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">e</span><span class="mord mathnormal">na</span><span class="mord mathnormal">lt</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><p>其中 <strong>AMAT (Average Memory Access Time)</strong> 是平均内存访问时间。</p>
+<h3>缺失率 (Miss Rate) 与缺失惩罚 (Miss Penalty)<span class="hx:absolute hx:-mt-20" id="缺失率-miss-rate-与缺失惩罚-miss-penalty"></span>
+    <a href="#%e7%bc%ba%e5%a4%b1%e7%8e%87-miss-rate-%e4%b8%8e%e7%bc%ba%e5%a4%b1%e6%83%a9%e7%bd%9a-miss-penalty" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li><strong>缺失率</strong> = 缓存缺失次数 / 总访问次数</li>
+<li><strong>缺失惩罚</strong> = 一次缓存缺失导致的额外延迟（从下一级读取数据的时间）</li>
+</ul>
+<p><strong>典型数据</strong>（以 64KB L1 缓存为例）：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">缓存类型</th>
+					<th style="text-align: center">命中时间</th>
+					<th style="text-align: center">缺失率</th>
+					<th style="text-align: center">缺失惩罚 (到 L2)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">L1 指令缓存</td>
+					<td style="text-align: center">1–2 cycles</td>
+					<td style="text-align: center">1–5%</td>
+					<td style="text-align: center">10–20 cycles</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">L1 数据缓存</td>
+					<td style="text-align: center">2–4 cycles</td>
+					<td style="text-align: center">5–10%</td>
+					<td style="text-align: center">10–20 cycles</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">L2 统一缓存</td>
+					<td style="text-align: center">10–12 cycles</td>
+					<td style="text-align: center">1–5%</td>
+					<td style="text-align: center">100–300 cycles (到 DRAM)</td>
+			</tr>
+	</tbody>
+</table>
+<h2>2.3 缓存性能的十种优化方法<span class="hx:absolute hx:-mt-20" id="23-缓存性能的十种优化方法"></span>
+    <a href="#23-%e7%bc%93%e5%ad%98%e6%80%a7%e8%83%bd%e7%9a%84%e5%8d%81%e7%a7%8d%e4%bc%98%e5%8c%96%e6%96%b9%e6%b3%95" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>原著将缓存优化归纳为六个类别、十种方法：</p>
+<h3>第一类：减少命中时间<span class="hx:absolute hx:-mt-20" id="第一类减少命中时间"></span>
+    <a href="#%e7%ac%ac%e4%b8%80%e7%b1%bb%e5%87%8f%e5%b0%91%e5%91%bd%e4%b8%ad%e6%97%b6%e9%97%b4" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>1. 使用小且简单的 L1 缓存</strong></p>
+<p>使用直接映射或低相联度的小缓存来减少命中时间。</p>
+<ul>
+<li>优点：tag 比较逻辑简单，访问延迟低</li>
+<li>缺点：冲突缺失增多</li>
+<li>现代趋势：L1 通常 2–4 路组相联，32–64KB</li>
+</ul>
+<p><strong>2. 路预测 (Way Prediction)</strong></p>
+<p>根据上次访问的路来猜测这次可能在哪一路，先访问该路，猜错时再访问其他路。</p>
+<ul>
+<li>减少平均命中时间</li>
+<li>常用于嵌入式处理器的高相联缓存</li>
+</ul>
+<p><strong>3. 流水线化缓存访问</strong></p>
+<p>将缓存访问拆成多个流水级，允许更高频率。</p>
+<ul>
+<li>常见于乱序执行处理器</li>
+<li>缺点：流水线停顿增加分支误预测惩罚</li>
+</ul>
+<h3>第二类：增加缓存带宽<span class="hx:absolute hx:-mt-20" id="第二类增加缓存带宽"></span>
+    <a href="#%e7%ac%ac%e4%ba%8c%e7%b1%bb%e5%a2%9e%e5%8a%a0%e7%bc%93%e5%ad%98%e5%b8%a6%e5%ae%bd" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>4. 多端缓存 (Multi-banked Cache)</strong></p>
+<p>将缓存分成多个独立 bank，可同时服务多个访问。</p>
+<ul>
+<li>L1 数据缓存通常是多端口的（2–4个读/写端口）</li>
+<li>物理实现代价很大（面积 × 端口数）</li>
+</ul>
+<p><strong>5. 无阻塞缓存 (Non-blocking Cache)</strong></p>
+<p>缓存缺失时不阻塞后续的缓存命中访问。</p>
+<ul>
+<li><strong>全空 (hit under miss)</strong>：缺失进行中，允许命中继续</li>
+<li><strong>全空多缺失 (hit under multiple miss)</strong>：同时处理多个未完成的缺失，需要 MSHR (Miss Status Holding Registers)</li>
+</ul>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">无阻塞缓存对乱序处理器非常关键。你在综合时如果看到某个 SRAM 上有大量 arbitration logic，很可能就是在做 multi-bank 或 non-blocking 的支持。RTL 里 MSHR 的实现是个典型的状态机设计问题。</div>
+  </div>
+</div>
+
+<h3>第三类：减少缺失率<span class="hx:absolute hx:-mt-20" id="第三类减少缺失率"></span>
+    <a href="#%e7%ac%ac%e4%b8%89%e7%b1%bb%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e7%8e%87" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>6. 增大块大小</strong></p>
+<ul>
+<li>增大块大小利用空间局部性 → 减少缺失率</li>
+<li>但过大会增加缺失惩罚（传输时间增加）和污染（不需要的数据挤走了有用的）</li>
+</ul>
+<p><strong>7. 增加缓存容量</strong></p>
+<ul>
+<li>简单逻辑：更大的缓存 → 更低的缺失率</li>
+<li>但命中时间增加、面积和功耗增加</li>
+<li>命中时间和容量的 trade-off 是 L1/L2/L3 划分的根本原因</li>
+</ul>
+<p><strong>8. 高相联度</strong></p>
+<ul>
+<li>增加相联度 → 减少冲突缺失</li>
+<li>但命中时间增加（需要更多的 tag 比较）</li>
+</ul>
+<h3>第四类：通过预取减少缺失惩罚或缺失率<span class="hx:absolute hx:-mt-20" id="第四类通过预取减少缺失惩罚或缺失率"></span>
+    <a href="#%e7%ac%ac%e5%9b%9b%e7%b1%bb%e9%80%9a%e8%bf%87%e9%a2%84%e5%8f%96%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e6%83%a9%e7%bd%9a%e6%88%96%e7%bc%ba%e5%a4%b1%e7%8e%87" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>9. 硬件预取 (Hardware Prefetching)</strong></p>
+<p>根据访问模式预测下一个要访问的地址，提前加载到缓存。</p>
+<ul>
+<li><strong>顺序预取</strong>：预测下一个连续地址（适合数组遍历）</li>
+<li><strong>步长预取</strong>：识别固定步长的访问模式</li>
+<li><strong>指针预取</strong>：追踪指针链预测</li>
+</ul>
+<p><strong>指令预取</strong>：顺序执行时直接取下一个缓存块，简单有效。</p>
+<p><strong>数据预取</strong>：需要识别访存模式，更复杂。</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">你在做 RV32I 核心时，如果以后加上预取器，会发现预取逻辑对时序非常有挑战——因为它需要预测下一个地址的同时不影响主流水线的时序。预取深度和准确性之间的 trade-off 是个经典架构问题，也是很多专利的产出来源。</div>
+  </div>
+</div>
+
+<h3>第五类：通过编译器减少缺失率<span class="hx:absolute hx:-mt-20" id="第五类通过编译器减少缺失率"></span>
+    <a href="#%e7%ac%ac%e4%ba%94%e7%b1%bb%e9%80%9a%e8%bf%87%e7%bc%96%e8%af%91%e5%99%a8%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e7%8e%87" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>10. 编译器优化</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>优化</th>
+					<th>原理</th>
+					<th>效果</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>循环交换 (Loop Interchange)</strong></td>
+					<td>按内存布局方向遍历</td>
+					<td>利用空间局部性</td>
+			</tr>
+			<tr>
+					<td><strong>循环融合 (Loop Fusion)</strong></td>
+					<td>合并两个独立循环</td>
+					<td>提高数据复用</td>
+			</tr>
+			<tr>
+					<td><strong>分块 (Blocking/Tiling)</strong></td>
+					<td>分块处理，提高子块的缓存命中</td>
+					<td>显著减少缺失</td>
+			</tr>
+			<tr>
+					<td><strong>数组对齐</strong></td>
+					<td>确保数组起始在缓存行边界</td>
+					<td>避免行跨越</td>
+			</tr>
+			<tr>
+					<td><strong>预取指令</strong></td>
+					<td>插入 <code>prefetch</code> 指令</td>
+					<td>在数据使用前提前加载</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>矩阵乘法示例</strong>：分块优化的效果</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 简单的 ijk 矩阵乘法（缓存不友好）
+</span></span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 分块优化（缓存友好）
+</span></span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">i</span> <span class="o">+=</span> <span class="n">B</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="n">B</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">k</span> <span class="o">+=</span> <span class="n">B</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">ii</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="n">ii</span> <span class="o">&lt;</span> <span class="nf">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="n">B</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span> <span class="n">ii</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="p">(</span><span class="n">jj</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span> <span class="n">jj</span> <span class="o">&lt;</span> <span class="nf">min</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="n">B</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span> <span class="n">jj</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">for</span> <span class="p">(</span><span class="n">kk</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span> <span class="n">kk</span> <span class="o">&lt;</span> <span class="nf">min</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="n">B</span><span class="p">,</span> <span class="n">N</span><span class="p">);</span> <span class="n">kk</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">C</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="n">jj</span><span class="p">]</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="n">kk</span><span class="p">]</span> <span class="o">*</span> <span class="n">B</span><span class="p">[</span><span class="n">kk</span><span class="p">][</span><span class="n">jj</span><span class="p">];</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>分块后的代码对缓存更友好——当 B 的大小选择合适时，子矩阵完全在缓存中，避免了反复从主存加载。</p>
+<h3>第六类：通过并行减少缺失惩罚<span class="hx:absolute hx:-mt-20" id="第六类通过并行减少缺失惩罚"></span>
+    <a href="#%e7%ac%ac%e5%85%ad%e7%b1%bb%e9%80%9a%e8%bf%87%e5%b9%b6%e8%a1%8c%e5%87%8f%e5%b0%91%e7%bc%ba%e5%a4%b1%e6%83%a9%e7%bd%9a" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>多级缓存</strong>：</p>
+<ul>
+<li>L1 → L2 → L3 → DRAM</li>
+<li>各级缓存逐渐增大、逐渐变慢</li>
+<li>大多数缺失由 L2/L3 捕获，减少对主存的访问</li>
+</ul>
+<h2>2.4 缓存设计的六个基本问题总结<span class="hx:absolute hx:-mt-20" id="24-缓存设计的六个基本问题总结"></span>
+    <a href="#24-%e7%bc%93%e5%ad%98%e8%ae%be%e8%ae%a1%e7%9a%84%e5%85%ad%e4%b8%aa%e5%9f%ba%e6%9c%ac%e9%97%ae%e9%a2%98%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><table>
+	<thead>
+			<tr>
+					<th>问题</th>
+					<th>选项</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Q1: 块放到哪里？</td>
+					<td>直接映射 / 组相联 / 全相联</td>
+			</tr>
+			<tr>
+					<td>Q2: 如何找到？</td>
+					<td>tag 比较 + 索引</td>
+			</tr>
+			<tr>
+					<td>Q3: 替换哪个？</td>
+					<td>LRU / 伪 LRU / 随机</td>
+			</tr>
+			<tr>
+					<td>Q4: 写策略？</td>
+					<td>写通 / 写回</td>
+			</tr>
+			<tr>
+					<td>Q5: 块多大？</td>
+					<td>16B–128B（典型 64B）</td>
+			</tr>
+			<tr>
+					<td>Q6: 缺失时做什么？</td>
+					<td>阻塞 / 非阻塞（hit under miss）</td>
+			</tr>
+	</tbody>
+</table>
+<h2>2.5 虚拟内存<span class="hx:absolute hx:-mt-20" id="25-虚拟内存"></span>
+    <a href="#25-%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>为什么需要虚拟内存<span class="hx:absolute hx:-mt-20" id="为什么需要虚拟内存"></span>
+    <a href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ol>
+<li><strong>隔离</strong>：每个进程拥有独立的地址空间，互不干扰</li>
+<li><strong>简化编程</strong>：程序使用连续虚拟地址，无需关心物理内存碎片</li>
+<li><strong>共享</strong>：不同进程可通过虚拟地址共享物理页面</li>
+<li><strong>保护</strong>：操作系统控制页表的访问权限</li>
+</ol>
+<h3>分页 (Paging)<span class="hx:absolute hx:-mt-20" id="分页-paging"></span>
+    <a href="#%e5%88%86%e9%a1%b5-paging" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>虚拟内存的块称为<strong>页 (page)</strong>，典型大小 4KB（也支持 2MB 大页）。</p>
+<p><strong>页表 (Page Table)</strong>：虚拟地址到物理地址的映射表。</p>
+<ul>
+<li>每个进程有自己的页表</li>
+<li>页表存储在物理内存中</li>
+<li>每次访存都需要查页表（！）</li>
+</ul>
+<h3>TLB — 页表缓存<span class="hx:absolute hx:-mt-20" id="tlb--页表缓存"></span>
+    <a href="#tlb--%e9%a1%b5%e8%a1%a8%e7%bc%93%e5%ad%98" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>如果每次访存都要查一次内存中的页表，等于每次访存变成两次访存。解决方案：<strong>TLB (Translation Lookaside Buffer)</strong> — 页表的硬件缓存。</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi>f</mi><mi>f</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi mathvariant="normal">_</mi><mi>A</mi><mi>c</mi><mi>c</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mo>=</mo><mi>H</mi><mi>i</mi><mi>t</mi><mi mathvariant="normal">_</mi><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi><mo>+</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>×</mo><mi>M</mi><mi>i</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>P</mi><mi>e</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>t</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">Effective\_Access\_Time = Hit\_Time + Miss\_Rate \times Miss\_Penalty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal" style="margin-right:0.10764em;">ff</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">e</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">A</span><span class="mord mathnormal">ccess</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9933em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ss</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ss</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">e</span><span class="mord mathnormal">na</span><span class="mord mathnormal">lt</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><p><strong>TLB 缺失处理</strong>：</p>
+<ul>
+<li>硬件处理（x86, ARM）：MMU 自动遍历页表</li>
+<li>软件处理（MIPS）：TLB 缺失触发异常，OS 处理</li>
+</ul>
+<p><strong>典型 TLB 参数</strong>：</p>
+<ul>
+<li>L1 TLB：64–128 项，全相联或组相联</li>
+<li>L2 TLB：512–1024 项，组相联，更大的页支持</li>
+</ul>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">TLB 缺失的惩罚很大，因为需要去内存中遍历多级页表（4 级页表 = 4 次内存访问）。这就是为什么大页（2MB/1GB）在数据中心和 HPC 中这么重要——TLB 的一个条目能映射更大的地址空间，有效减少 TLB 缺失。
+你做 STA 时可能遇到过 LVS 或综合工具因为内存映射问题变慢的情况，本质就是 TLB 缺失导致的性能损失。</div>
+  </div>
+</div>
+
+<h3>保护与共享<span class="hx:absolute hx:-mt-20" id="保护与共享"></span>
+    <a href="#%e4%bf%9d%e6%8a%a4%e4%b8%8e%e5%85%b1%e4%ba%ab" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li>页表项包含权限位（读、写、执行、用户/内核）</li>
+<li>页表项包含用户态/内核态标志</li>
+<li>通过共享页面实现进程间通信</li>
+</ul>
+<h2>2.6 现代处理器的缓存层次<span class="hx:absolute hx:-mt-20" id="26-现代处理器的缓存层次"></span>
+    <a href="#26-%e7%8e%b0%e4%bb%a3%e5%a4%84%e7%90%86%e5%99%a8%e7%9a%84%e7%bc%93%e5%ad%98%e5%b1%82%e6%ac%a1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>Intel Skylake 为例<span class="hx:absolute hx:-mt-20" id="intel-skylake-为例"></span>
+    <a href="#intel-skylake-%e4%b8%ba%e4%be%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">缓存</th>
+					<th style="text-align: center">大小</th>
+					<th style="text-align: center">相联度</th>
+					<th style="text-align: center">行大小</th>
+					<th style="text-align: center">延迟</th>
+					<th style="text-align: center">策略</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">L1 指令缓存</td>
+					<td style="text-align: center">32KB</td>
+					<td style="text-align: center">8路</td>
+					<td style="text-align: center">64B</td>
+					<td style="text-align: center">4 cycles</td>
+					<td style="text-align: center">-</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">L1 数据缓存</td>
+					<td style="text-align: center">32KB</td>
+					<td style="text-align: center">8路</td>
+					<td style="text-align: center">64B</td>
+					<td style="text-align: center">4 cycles</td>
+					<td style="text-align: center">写回</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">L2</td>
+					<td style="text-align: center">256KB</td>
+					<td style="text-align: center">4路</td>
+					<td style="text-align: center">64B</td>
+					<td style="text-align: center">11 cycles</td>
+					<td style="text-align: center">写回</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">L3</td>
+					<td style="text-align: center">2MB/核</td>
+					<td style="text-align: center">16路</td>
+					<td style="text-align: center">64B</td>
+					<td style="text-align: center">30–40 cycles</td>
+					<td style="text-align: center">写回</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>L3 缓存是 LLC (Last-Level Cache)</strong>，所有核共享。</p>
+<h3>缓存一致性 (Cache Coherence) 概述<span class="hx:absolute hx:-mt-20" id="缓存一致性-cache-coherence-概述"></span>
+    <a href="#%e7%bc%93%e5%ad%98%e4%b8%80%e8%87%b4%e6%80%a7-cache-coherence-%e6%a6%82%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>多核系统中，每个核有自己的私有 L1/L2 缓存，多个缓存副本可能指向同一物理地址。需要一致性协议保证数据一致性。</p>
+<p><strong>MESI 协议</strong>是最经典的缓存一致性协议：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">状态</th>
+					<th>含义</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center"><strong>M</strong> Modified</td>
+					<td>该行仅在本缓存，已被修改（脏），与主存不一致</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>E</strong> Exclusive</td>
+					<td>该行仅在本缓存，未被修改，与主存一致</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>S</strong> Shared</td>
+					<td>该行在多个缓存中存在副本，与主存一致</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>I</strong> Invalid</td>
+					<td>该行无效</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>监听协议 (Snooping)</strong>：每个缓存控制器监听总线上的访存请求，维护一致性。</p>
+<p><strong>目录协议 (Directory-based)</strong>：使用集中式目录跟踪每个缓存行的状态，适合大规模多核。</p>
+<p>（缓存一致性将在第 5 章「线程级并行」中详细讨论。）</p>
+<h2>2.7 主存组织与 DRAM 技术<span class="hx:absolute hx:-mt-20" id="27-主存组织与-dram-技术"></span>
+    <a href="#27-%e4%b8%bb%e5%ad%98%e7%bb%84%e7%bb%87%e4%b8%8e-dram-%e6%8a%80%e6%9c%af" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>DRAM 基本操作<span class="hx:absolute hx:-mt-20" id="dram-基本操作"></span>
+    <a href="#dram-%e5%9f%ba%e6%9c%ac%e6%93%8d%e4%bd%9c" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li><strong>Row Access Strobe (RAS)</strong>：激活行</li>
+<li><strong>Column Access Strobe (CAS)</strong>：读取/写入列</li>
+<li><strong>行缓冲区 (Row Buffer)</strong>：当前激活的行，可快速访问</li>
+<li><strong>行刷新</strong>：DRAM 需要定期刷新（~64ms）以保持电荷</li>
+</ul>
+<p><strong>DRAM 访问延迟</strong>：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>t</mi><mrow><mi>R</mi><mi>A</mi><mi>S</mi></mrow></msub><mo>→</mo><msub><mi>t</mi><mrow><mi>R</mi><mi>C</mi><mi>D</mi></mrow></msub><mo>→</mo><msub><mi>t</mi><mrow><mi>C</mi><mi>A</mi><mi>S</mi></mrow></msub><mo>→</mo><msub><mi>t</mi><mrow><mi>R</mi><mi>P</mi></mrow></msub></mrow><annotation encoding="application/x-tex">t_{RAS} \rightarrow t_{RCD} \rightarrow t_{CAS} \rightarrow t_{RP}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span><span class="mord mathnormal mtight">A</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">RC</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="mord mathnormal mtight">A</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7651em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">RP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><ul>
+<li>$t_{RAS}$ — 行激活 (Row Activate)</li>
+<li>$t_{RCD}$ — 行到列延迟 (Row to Column Delay)</li>
+<li>$t_{CAS}$ — 列访问 (Column Access Strobe)</li>
+<li>$t_{RP}$ — 行预充电 (Row Precharge)</li>
+</ul>
+<h3>DDR 系列演进<span class="hx:absolute hx:-mt-20" id="ddr-系列演进"></span>
+    <a href="#ddr-%e7%b3%bb%e5%88%97%e6%bc%94%e8%bf%9b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">代际</th>
+					<th style="text-align: center">带宽 (每 DIMM)</th>
+					<th style="text-align: center">电压</th>
+					<th style="text-align: center">发布</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">DDR3</td>
+					<td style="text-align: center">8.5 GB/s</td>
+					<td style="text-align: center">1.5V</td>
+					<td style="text-align: center">2007</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">DDR4</td>
+					<td style="text-align: center">17 GB/s</td>
+					<td style="text-align: center">1.2V</td>
+					<td style="text-align: center">2014</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">DDR5</td>
+					<td style="text-align: center">32 GB/s</td>
+					<td style="text-align: center">1.1V</td>
+					<td style="text-align: center">2020</td>
+			</tr>
+	</tbody>
+</table>
+<h3>内存控制器<span class="hx:absolute hx:-mt-20" id="内存控制器"></span>
+    <a href="#%e5%86%85%e5%ad%98%e6%8e%a7%e5%88%b6%e5%99%a8" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>现代处理器的<strong>内存控制器集成在 CPU 内部</strong>（非传统北桥），每个内存控制器管理一个或多个 DIMM 插槽。</p>
+<p><strong>内存交织 (Memory Interleaving)</strong>：将连续地址分布到多个内存通道，并行访问提高总带宽。</p>
+<h3>3D 堆叠内存<span class="hx:absolute hx:-mt-20" id="3d-堆叠内存"></span>
+    <a href="#3d-%e5%a0%86%e5%8f%a0%e5%86%85%e5%ad%98" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li><strong>HBM (High Bandwidth Memory)</strong>：通过硅通孔 (TSV) 堆叠 DRAM die，带宽极高</li>
+<li><strong>HMC (Hybrid Memory Cube)</strong>：类似概念，但包含逻辑层控制</li>
+</ul>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">技术</th>
+					<th style="text-align: center">带宽</th>
+					<th style="text-align: center">容量</th>
+					<th style="text-align: center">功耗/带宽</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">DDR4</td>
+					<td style="text-align: center">~20 GB/s</td>
+					<td style="text-align: center">8–32GB/DIMM</td>
+					<td style="text-align: center">1×</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">HBM2</td>
+					<td style="text-align: center">~256 GB/s</td>
+					<td style="text-align: center">1–8GB/stack</td>
+					<td style="text-align: center">0.3×</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">HBM3</td>
+					<td style="text-align: center">~1 TB/s</td>
+					<td style="text-align: center">2–16GB/stack</td>
+					<td style="text-align: center">0.2×</td>
+			</tr>
+	</tbody>
+</table>
+<h2>2.8 虚拟内存与缓存的交互<span class="hx:absolute hx:-mt-20" id="28-虚拟内存与缓存的交互"></span>
+    <a href="#28-%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98%e4%b8%8e%e7%bc%93%e5%ad%98%e7%9a%84%e4%ba%a4%e4%ba%92" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>TLB + 缓存的访问流程<span class="hx:absolute hx:-mt-20" id="tlb--缓存的访问流程"></span>
+    <a href="#tlb--%e7%bc%93%e5%ad%98%e7%9a%84%e8%ae%bf%e9%97%ae%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ol>
+<li>CPU 发出虚拟地址</li>
+<li>同时查询 TLB（地址翻译）和 L1 缓存（虚拟/物理索引）</li>
+<li>TLB 返回物理地址，L1 缓存返回数据（命中）或转发请求到 L2</li>
+<li>L2 使用物理地址索引（物理标记）</li>
+</ol>
+<p><strong>VIPT vs PIPT vs VIVT</strong>：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">索引方式</th>
+					<th>描述</th>
+					<th style="text-align: center">别名问题</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center"><strong>VIVT</strong></td>
+					<td>虚拟索引 + 虚拟标记</td>
+					<td style="text-align: center">有严重别名问题</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>VIPT</strong></td>
+					<td>虚拟索引 + 物理标记</td>
+					<td style="text-align: center">需页偏移对齐</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>PIPT</strong></td>
+					<td>物理索引 + 物理标记</td>
+					<td style="text-align: center">无别名，但慢</td>
+			</tr>
+	</tbody>
+</table>
+<p>现代处理器普遍使用 <strong>VIPT L1 缓存</strong>（利用虚拟地址的页内偏移位做索引，在 TLB 查询的同时开始索引），L2/L3 使用 <strong>PIPT</strong>。</p>
+<h3>保护机制<span class="hx:absolute hx:-mt-20" id="保护机制"></span>
+    <a href="#%e4%bf%9d%e6%8a%a4%e6%9c%ba%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li><strong>物理地址扩展 (PAE)</strong>：x86 的 36 位物理地址扩展</li>
+<li><strong>SMAP/SMEP</strong>：禁止内核执行用户代码、访问用户数据</li>
+<li><strong>ASLR</strong>：地址空间布局随机化，安全特性</li>
+</ul>
+<h2>2.9 案例：缓存参数的影响分析<span class="hx:absolute hx:-mt-20" id="29-案例缓存参数的影响分析"></span>
+    <a href="#29-%e6%a1%88%e4%be%8b%e7%bc%93%e5%ad%98%e5%8f%82%e6%95%b0%e7%9a%84%e5%bd%b1%e5%93%8d%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>块大小对缺失率的影响<span class="hx:absolute hx:-mt-20" id="块大小对缺失率的影响"></span>
+    <a href="#%e5%9d%97%e5%a4%a7%e5%b0%8f%e5%af%b9%e7%bc%ba%e5%a4%b1%e7%8e%87%e7%9a%84%e5%bd%b1%e5%93%8d" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">块大小</th>
+					<th style="text-align: center">L1 缺失率</th>
+					<th style="text-align: center">内存流量</th>
+					<th>备注</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">16B</td>
+					<td style="text-align: center">高</td>
+					<td style="text-align: center">低</td>
+					<td>空间局部性利用率低</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">32B</td>
+					<td style="text-align: center">中</td>
+					<td style="text-align: center">中</td>
+					<td>常见于嵌入式</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">64B</td>
+					<td style="text-align: center">低</td>
+					<td style="text-align: center">中</td>
+					<td>现代 CPU 标准</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">128B</td>
+					<td style="text-align: center">最低</td>
+					<td style="text-align: center">高</td>
+					<td>可能增加污染</td>
+			</tr>
+	</tbody>
+</table>
+<h3>相联度对缺失率的影响<span class="hx:absolute hx:-mt-20" id="相联度对缺失率的影响"></span>
+    <a href="#%e7%9b%b8%e8%81%94%e5%ba%a6%e5%af%b9%e7%bc%ba%e5%a4%b1%e7%8e%87%e7%9a%84%e5%bd%b1%e5%93%8d" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">策略</th>
+					<th style="text-align: center">缺失率（相对）</th>
+					<th style="text-align: center">命中时间影响</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">直接映射</td>
+					<td style="text-align: center">1.0×</td>
+					<td style="text-align: center">基准</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">2路组相联</td>
+					<td style="text-align: center">~0.8×</td>
+					<td style="text-align: center">+10%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">4路组相联</td>
+					<td style="text-align: center">~0.7×</td>
+					<td style="text-align: center">+20%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">8路组相联</td>
+					<td style="text-align: center">~0.65×</td>
+					<td style="text-align: center">+30%</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+  <p>从直接映射到 2 路组相联的收益最大，再增加相联度的边际收益递减。</p>
+
+</blockquote>
+<h3>缓存大小对缺失率的影响（SPEC2000）<span class="hx:absolute hx:-mt-20" id="缓存大小对缺失率的影响spec2000"></span>
+    <a href="#%e7%bc%93%e5%ad%98%e5%a4%a7%e5%b0%8f%e5%af%b9%e7%bc%ba%e5%a4%b1%e7%8e%87%e7%9a%84%e5%bd%b1%e5%93%8dspec2000" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">L1 数据缓存大小</th>
+					<th style="text-align: center">缺失率 (近似)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">4KB</td>
+					<td style="text-align: center">~20%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">8KB</td>
+					<td style="text-align: center">~12%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">16KB</td>
+					<td style="text-align: center">~7%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">32KB</td>
+					<td style="text-align: center">~4%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">64KB</td>
+					<td style="text-align: center">~2%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">128KB</td>
+					<td style="text-align: center">~1.5%</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">256KB</td>
+					<td style="text-align: center">~1.2%</td>
+			</tr>
+	</tbody>
+</table>
+<h2>2.10 常见谬误与陷阱<span class="hx:absolute hx:-mt-20" id="210-常见谬误与陷阱"></span>
+    <a href="#210-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><ol>
+<li><strong>认为更大的缓存总是更好</strong>：更大的缓存延迟更高，可能在低命中率提升下反而降低性能</li>
+<li><strong>忽略索引冲突</strong>：某些特定的地址访问模式可能导致严重的冲突缺失（高速缓存颠簸）</li>
+<li><strong>假设缓存缺失惩罚是常数</strong>：非阻塞缓存和多级缓存使缺失惩罚的估算更复杂</li>
+<li><strong>忽视 TLB 缺失</strong>：大数据集的程序可能 TLB 缺失频繁，即使数据缓存命中率很高</li>
+<li><strong>误认为写通策略总是慢于写回</strong>：在有写缓冲的情况下，写通策略可能足够快且一致性更简单</li>
+<li><strong>忽略缓存和虚拟内存的交互</strong>：页面着色 (page coloring) 等技术在特定场景很重要</li>
+<li><strong>假设编译器优化对所有程序都有效</strong>：优化效果高度依赖程序的访存模式</li>
+</ol>
+<h2>2.11 总结<span class="hx:absolute hx:-mt-20" id="211-总结"></span>
+    <a href="#211-%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>本章核心要点：</p>
+<ol>
+<li><strong>存储层次</strong>是所有计算机系统性能的关键——处理器等待内存是 CPU 时间中最主要的开销</li>
+<li><strong>局部性原理</strong>是存储层次设计的基础，所有缓存技术都在利用时间和空间局部性</li>
+<li><strong>缓存三问</strong>：放在哪？怎么找到？替换哪个？——所有缓存设计都围绕这三个问题</li>
+<li><strong>十种优化方法</strong>从六个维度提升缓存性能：减少命中时间、增加带宽、降低缺失率、预取、编译器优化、并行</li>
+<li><strong>虚拟内存</strong>提供安全隔离和地址空间抽象，TLB 是解决地址翻译开销的关键</li>
+<li><strong>多级缓存层次</strong>（L1→L2→L3→DRAM）在延迟和容量间做最优折中</li>
+<li><strong>缓存一致性</strong>（MESI）是多核系统的核心挑战，与虚拟内存交互共同形成复杂的内存系统</li>
+</ol>
+<hr>
+<p><strong>下一章 → 第 3 章：指令级并行 (Instruction-Level Parallelism)</strong></p>
           
         </div>
         
     <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">
-      最后更新于 <time datetime="2026-07-09T23:00:00.000Z">2026-07-09</time></div><div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+      最后更新于 <time datetime="2026-07-10T10:07:37.000Z">2026-07-10</time> • CambridgeLv</div><div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
         href="/docs/ca-notes/ch01-fundamentals/"
         title="计算机体系结构学习笔记 — 第1章 量化设计与分析基础"
-        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
-      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>计算机体系结构学习笔记 — 第1章 量化设计与分析基础</a></div>
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >计算机体系结构学习笔记 — 第1章 量化设计与分析基础<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
         
       </main>
     </article>

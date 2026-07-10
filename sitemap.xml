@@ -3,146 +3,78 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://cambridgelv.github.io/categories/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/dsa/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/gpu/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/simd/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/tpu/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E4%BB%93%E5%BA%93%E7%BA%A7%E8%AE%A1%E7%AE%97%E6%9C%BA/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E5%A4%9A%E6%A0%B8/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/ch04-dlp/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/ch05-tlp/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/ch06-wsc/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/ch07-dsa/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8A%A0%E9%80%9F/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BA%A7%E5%B9%B6%E8%A1%8C/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E7%BA%BF%E7%A8%8B%E7%BA%A7%E5%B9%B6%E8%A1%8C/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
-    <lastmod>2026-07-09T23:55:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/ilp/</loc>
-    <lastmod>2026-07-09T23:50:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/</loc>
-    <lastmod>2026-07-09T23:50:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/ch03-ilp/</loc>
-    <lastmod>2026-07-09T23:50:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C/</loc>
-    <lastmod>2026-07-09T23:50:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/appendixc-pipelining/</loc>
-    <lastmod>2026-07-09T23:30:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/</loc>
-    <lastmod>2026-07-09T23:30:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E5%86%92%E9%99%A9/</loc>
-    <lastmod>2026-07-09T23:30:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E8%BD%AC%E5%8F%91/</loc>
-    <lastmod>2026-07-09T23:30:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E6%88%90%E6%9C%AC/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/%E5%AD%98%E5%82%A8%E5%B1%82%E6%AC%A1/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/tags/%E5%8A%9F%E8%80%97/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/%E7%BC%93%E5%AD%98/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
-    <loc>https://cambridgelv.github.io/docs/ca-notes/ch01-fundamentals/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
+    <loc>https://cambridgelv.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/docs/ca-notes/ch02-memory-hierarchy/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/tags/%E5%86%85%E5%AD%98/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/tags/%E6%88%90%E6%9C%AC/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/tags/%E5%8A%9F%E8%80%97/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/docs/ca-notes/ch01-fundamentals/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2026-07-09T23:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/dft/</loc>
-    <lastmod>2024-10-24T21:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/vlsi-test/</loc>
-    <lastmod>2024-10-24T21:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/blog/dft-1-introduction/</loc>
-    <lastmod>2024-10-24T21:00:00+08:00</lastmod>
-  </url><url>
-    <loc>https://cambridgelv.github.io/blog/</loc>
-    <lastmod>2024-10-24T21:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2024-10-24T21:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/blog/dft-0-introduction/</loc>
-    <lastmod>2024-10-24T20:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2024-10-24T19:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/blog/first-post/</loc>
-    <lastmod>2024-10-24T19:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/tags/%E5%BC%80%E7%AF%87/</loc>
-    <lastmod>2024-10-24T19:00:00+08:00</lastmod>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/docs/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/blog/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url><url>
     <loc>https://cambridgelv.github.io/about/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
+  </url><url>
+    <loc>https://cambridgelv.github.io/docs/ca-notes/</loc>
+    <lastmod>2026-07-10T10:07:37+08:00</lastmod>
   </url>
 </urlset>
