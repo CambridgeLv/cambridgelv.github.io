@@ -1,0 +1,669 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lv的小站 – 数据中心</title>
+    <link>https://cambridgelv.github.io/tags/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/</link>
+    <description>Recent content in 数据中心 on Lv的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 10 Jul 2026 10:00:00 +0800</lastBuildDate>
+    
+	  <atom:link href="https://cambridgelv.github.io/tags/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>计算机体系结构学习笔记 — 第6章 仓库级计算机</title>
+      <link>https://cambridgelv.github.io/docs/ca-notes/ch06-wsc/</link>
+      <pubDate>Fri, 10 Jul 2026 10:00:00 +0800</pubDate>
+      
+      <guid>https://cambridgelv.github.io/docs/ca-notes/ch06-wsc/</guid>
+      <description>
+        
+        
+        &lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;原著&lt;/strong&gt;: &lt;em&gt;Computer Architecture: A Quantitative Approach&lt;/em&gt;, 6th Edition — John L. Hennessy &amp;amp; David A. Patterson&lt;/p&gt;
+&lt;p&gt;仓库级计算机（WSC）是支撑现代互联网服务的巨型计算集群。本章覆盖 WSC 的架构、成本模型、能效、容错和编程模型。&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h2&gt;6.1 引言 — 什么是仓库级计算机&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;61-引言--什么是仓库级计算机&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#61-%e5%bc%95%e8%a8%80--%e4%bb%80%e4%b9%88%e6%98%af%e4%bb%93%e5%ba%93%e7%ba%a7%e8%ae%a1%e7%ae%97%e6%9c%ba&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;定义&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;定义&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%ae%9a%e4%b9%89&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;仓库级计算机 (Warehouse-Scale Computer, WSC)&lt;/strong&gt; 是一个通过高速网络连接的、由数万到数十万个服务器组成的集群，以&lt;strong&gt;大规模并行&lt;/strong&gt;的方式提供互联网服务。&lt;/p&gt;
+&lt;h3&gt;WSC 与数据中心&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;wsc-与数据中心&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#wsc-%e4%b8%8e%e6%95%b0%e6%8d%ae%e4%b8%ad%e5%bf%83&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;特性&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;传统数据中心&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;WSC&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;规模&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数百到数千台&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数万到数十万台&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;同质性&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;混合硬件&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;高度同质化&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;工作负载&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;混合业务&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;特定互联网服务&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;管理&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;客户管理&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;统一管理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;成本模型&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;CAPEX 为主&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;TCO 驱动（含 OPEX）&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;你在华为做的事情（基站、网络设备芯片）属于传统数据中心/网络设备的范畴。WSC 则是 Google、AWS、阿里云这些云厂商的领域。理解 WSC 的架构思想对你做架构师也很有用——它本质上是在系统级别&amp;quot;做一个架构&amp;quot;。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;典型 WSC 服务&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;典型-wsc-服务&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%85%b8%e5%9e%8b-wsc-%e6%9c%8d%e5%8a%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;搜索&lt;/strong&gt;：Google/Bing 的索引搜索&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;视频&lt;/strong&gt;：YouTube/抖音的视频转码与分发&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;社交&lt;/strong&gt;：微博、朋友圈的时间线&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;电商&lt;/strong&gt;：淘宝/Amazon 的商品搜索和推荐&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AI/ML&lt;/strong&gt;：GPT/大模型的训练和推理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;6.2 WSC 的成本模型&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;62-wsc-的成本模型&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#62-wsc-%e7%9a%84%e6%88%90%e6%9c%ac%e6%a8%a1%e5%9e%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;TCO (Total Cost of Ownership)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tco-total-cost-of-ownership&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tco-total-cost-of-ownership&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;成本构成&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;占比（典型）&lt;/th&gt;
+					&lt;th&gt;说明&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;服务器硬件&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;45–55%&lt;/td&gt;
+					&lt;td&gt;CPU、内存、存储、网络&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;电力&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;15–25%&lt;/td&gt;
+					&lt;td&gt;服务器用电 + 基础设施用电&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;基础设施&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;15–20%&lt;/td&gt;
+					&lt;td&gt;建筑、制冷、配电、发电&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;人力&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;5–10%&lt;/td&gt;
+					&lt;td&gt;运维、管理&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;网络&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;5–15%&lt;/td&gt;
+					&lt;td&gt;交换设备、光纤、带宽&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;电力成本详解&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;电力成本详解&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e7%94%b5%e5%8a%9b%e6%88%90%e6%9c%ac%e8%af%a6%e8%a7%a3&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;PUE (Power Usage Effectiveness)&lt;/strong&gt;：&lt;/p&gt;
+&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mi&gt;U&lt;/mi&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;_&lt;/mi&gt;&lt;mi&gt;F&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;_&lt;/mi&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;/mrow&gt;&lt;mrow&gt;&lt;mi&gt;I&lt;/mi&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;_&lt;/mi&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;_&lt;/mi&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;/mrow&gt;&lt;/mfrac&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;PUE = \frac{Total\_Facility\_Power}{IT\_Equipment\_Power}&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.6833em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.10903em;&#34;&gt;U&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.05764em;&#34;&gt;E&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:2.3904em;vertical-align:-0.996em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mopen nulldelimiter&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mfrac&#34;&gt;&lt;span class=&#34;vlist-t vlist-t2&#34;&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:1.3944em;&#34;&gt;&lt;span style=&#34;top:-2.314em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:3em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.07847em;&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;mord&#34; style=&#34;margin-right:0.02778em;&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.03588em;&#34;&gt;Eq&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;u&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;m&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;mord&#34; style=&#34;margin-right:0.02778em;&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;o&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02691em;&#34;&gt;w&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02778em;&#34;&gt;er&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;top:-3.23em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:3em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;frac-line&#34; style=&#34;border-bottom-width:0.04em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;top:-3.7em;&#34;&gt;&lt;span class=&#34;pstrut&#34; style=&#34;height:3em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;T&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;o&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.01968em;&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;mord&#34; style=&#34;margin-right:0.02778em;&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;F&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.01968em;&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mord&#34; style=&#34;margin-right:0.02778em;&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;o&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02691em;&#34;&gt;w&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02778em;&#34;&gt;er&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-s&#34;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;vlist-r&#34;&gt;&lt;span class=&#34;vlist&#34; style=&#34;height:0.996em;&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;mclose nulldelimiter&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;ul&gt;
+&lt;li&gt;理想 PUE = 1.0&lt;/li&gt;
+&lt;li&gt;传统数据中心 PUE = 1.8–2.5&lt;/li&gt;
+&lt;li&gt;现代 WSC PUE = 1.1–1.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;冷却技术演进&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传统：CRAC 空调（PUE 1.8+）&lt;/li&gt;
+&lt;li&gt;现代：节能冷却（蒸发、自由空气侧流，PUE 1.2–1.5）&lt;/li&gt;
+&lt;li&gt;先进：液冷、沉浸式冷却（PUE 1.02–1.1）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Amdahl 定律在 WSC 的应用&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;amdahl-定律在-wsc-的应用&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#amdahl-%e5%ae%9a%e5%be%8b%e5%9c%a8-wsc-%e7%9a%84%e5%ba%94%e7%94%a8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在 WSC 层面，Amdahl 定律的关键应用是&lt;strong&gt;请求级并行 (Request-Level Parallelism)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个用户请求是相互独立的&lt;/li&gt;
+&lt;li&gt;理论上 WSC 可以无限扩展（增加更多服务器处理更多并行请求）&lt;/li&gt;
+&lt;li&gt;实际限制：共享服务（数据库、缓存）、网络拥塞、负载不均衡&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;6.3 WSC 的硬件架构&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;63-wsc-的硬件架构&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#63-wsc-%e7%9a%84%e7%a1%ac%e4%bb%b6%e6%9e%b6%e6%9e%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;服务器级别&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;服务器级别&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%ba%a7%e5%88%ab&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;商品服务器 (Commodity Server)&lt;/strong&gt;：WSC 使用标准 x86/ARM 服务器，而非定制大型机。&lt;/p&gt;
+&lt;p&gt;标准 WSC 服务器配置（2020s）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU：1–2 路，32–128 核&lt;/li&gt;
+&lt;li&gt;内存：128–512GB DDR4/DDR5&lt;/li&gt;
+&lt;li&gt;存储：NVMe SSD + 机械硬盘&lt;/li&gt;
+&lt;li&gt;网络：25–100GbE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;机架 (Rack) 级别&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;机架-rack-级别&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%9c%ba%e6%9e%b6-rack-%e7%ba%a7%e5%88%ab&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;每机架 20–40 台服务器（1U/2U）&lt;/li&gt;
+&lt;li&gt;机架顶部交换机 (ToR)：25–100GbE 下联 × 40 口，上联 4–8 × 100/400GbE&lt;/li&gt;
+&lt;li&gt;机架内延迟：&amp;lt; 10μs&lt;/li&gt;
+&lt;li&gt;机架间延迟：~100μs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;集群 (Cluster) 级别&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;集群-cluster-级别&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e9%9b%86%e7%be%a4-cluster-%e7%ba%a7%e5%88%ab&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;网络等级&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;范围&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;延迟&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;带宽&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;机架内 (ToR)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~40 台服务器&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;&amp;lt; 10μs&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;40 × 25GbE&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;POD (EC)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~1,000 台&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~50μs&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~100GbE 上行&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;集群&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~10,000 台&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~200μs&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;200–400GbE 核心&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;WSC 全站&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;&amp;gt; 100,000 台&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–10ms&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;-&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;存储层次&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;存储层次&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%ad%98%e5%82%a8%e5%b1%82%e6%ac%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;层级&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;类型&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;容量/服务器&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;延迟&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;持久性&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;L1&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;DRAM&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;128–512GB&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~100ns&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;易失&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;L2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;NVMe SSD&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–10TB&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~10μs&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;持久&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;L3&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;机械硬盘&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;10–24TB&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~5ms&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;持久&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;L4&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;归档存储&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;远端&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;秒级&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;持久&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;6.4 WSC 的能效设计&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;64-wsc-的能效设计&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#64-wsc-%e7%9a%84%e8%83%bd%e6%95%88%e8%ae%be%e8%ae%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;每瓦性能 (Performance per Watt)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;每瓦性能-performance-per-watt&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%af%8f%e7%93%a6%e6%80%a7%e8%83%bd-performance-per-watt&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;WSC 的核心衡量指标是&lt;strong&gt;每瓦每秒的操作数 (ops/J)&lt;/strong&gt;，而非单位成本的峰值性能。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;处理器选择的影响&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高性能服务器 CPU：性能高但功耗高，适合延迟敏感服务&lt;/li&gt;
+&lt;li&gt;低功耗 CPU：性能功耗比好，适合批量处理&lt;/li&gt;
+&lt;li&gt;ARM 服务器：Apple M1/M2, AWS Graviton → 比 x86 更好的能效比&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;处理器利用率&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;处理器利用率&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%a4%84%e7%90%86%e5%99%a8%e5%88%a9%e7%94%a8%e7%8e%87&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;WSC 中处理器平均利用率通常为 &lt;strong&gt;10–50%&lt;/strong&gt;（远低于峰值），原因：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;流量波动（夜间低谷）&lt;/li&gt;
+&lt;li&gt;用户响应时间要求 → 预留余量处理流量尖峰&lt;/li&gt;
+&lt;li&gt;负载不均衡（部分服务是热点）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;低利用率下的能效策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;DVFS&lt;/strong&gt;：低负载时降压降频&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;空闲节点睡眠&lt;/strong&gt;：关闭部分服务器&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;负载整合&lt;/strong&gt;：将负载集中到部分服务器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;冷却技术&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;冷却技术&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%86%b7%e5%8d%b4%e6%8a%80%e6%9c%af&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;冷却方式&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;典型 PUE&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;建设成本&lt;/th&gt;
+					&lt;th style=&#34;text-align: left&#34;&gt;适用条件&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;空气冷却 (CRAC)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.3–1.6&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;低&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;通用&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;蒸发冷却&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.1–1.2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;中&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;干燥气候&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;自由冷却&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.05–1.15&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;中&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;寒冷气候&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;液冷 (直接)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.02–1.08&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;高&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;高密度部署&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Google 的能效设计&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;google-的能效设计&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#google-%e7%9a%84%e8%83%bd%e6%95%88%e8%ae%be%e8%ae%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Google 的 WSC 在能效设计上有几个关键创新：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;12V 配电架构&lt;/strong&gt;：减少配电损耗（传统 48V → 12V 的损耗）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;热管理优化&lt;/strong&gt;：避免热点，均衡温度&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;电池后备 (BBU)&lt;/strong&gt;：替代大型 UPS 降低配电损耗&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;定制服务器&lt;/strong&gt;：去掉不必要的组件（如显示芯片、不用的 PCIe 插槽）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;6.5 WSC 的软件栈&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;65-wsc-的软件栈&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#65-wsc-%e7%9a%84%e8%bd%af%e4%bb%b6%e6%a0%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;两层服务架构&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;两层服务架构&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e4%b8%a4%e5%b1%82%e6%9c%8d%e5%8a%a1%e6%9e%b6%e6%9e%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;用户请求
+    ↓
+ 前端层 (Front-end)
+    → Web 服务器 (Nginx, Apache)
+    → 应用逻辑 (搜索、推荐、身份验证)
+    ↓
+ 中间层 (Middle-tier)
+    → 缓存 (Memcached, Redis)
+    → 会话管理
+    ↓
+ 后端层 (Back-end)
+    → 数据库 (Bigtable, Spanner, MySQL)
+    → 存储 (GFS, HDFS)
+    → 批处理 (MapReduce, Spark)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;数据中心操作系统&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;数据中心操作系统&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%95%b0%e6%8d%ae%e4%b8%ad%e5%bf%83%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;WSC 的软件栈本质上是一个&amp;quot;数据中心操作系统&amp;quot;，管理所有服务器的资源：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;资源管理&lt;/strong&gt;：Borg (Google), Kubernetes (开源), YARN&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调度&lt;/strong&gt;：作业调度、资源分配、负载均衡&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;监控&lt;/strong&gt;：实时监控、告警、自动故障处理&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;服务发现&lt;/strong&gt;：Kubernetes Service, Consul, ZooKeeper&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;MapReduce 编程模型&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;mapreduce-编程模型&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#mapreduce-%e7%bc%96%e7%a8%8b%e6%a8%a1%e5%9e%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Google 的 MapReduce 是 WSC 批量数据处理的经典模型：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;输入数据 → 分片 → Map Phase → Shuffle → Reduce Phase → 输出
+
+Map(k1, v1) → list(k2, v2)
+Reduce(k2, list(v2)) → list(v3)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;示例：词频统计&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;map&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;word&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;document&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;split&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;n&#34;&gt;emit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;word&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;reduce&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;word&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;counts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;total&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;sum&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;counts&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;emit&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;word&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;total&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;微服务架构&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;微服务架构&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%be%ae%e6%9c%8d%e5%8a%a1%e6%9e%b6%e6%9e%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;传统单体应用 → 拆分为多个独立部署的微服务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个服务独立部署、独立扩展&lt;/li&gt;
+&lt;li&gt;服务间通过 RPC (gRPC/Thrift) 通信&lt;/li&gt;
+&lt;li&gt;服务发现、负载均衡由基础设施层完成&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;6.6 容错与可用性&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;66-容错与可用性&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#66-%e5%ae%b9%e9%94%99%e4%b8%8e%e5%8f%af%e7%94%a8%e6%80%a7&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;故障是常态&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;故障是常态&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%95%85%e9%9a%9c%e6%98%af%e5%b8%b8%e6%80%81&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在数万台服务器的 WSC 中，故障不是&amp;quot;如果&amp;quot;而是&amp;quot;什么时候&amp;quot;：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;故障类型&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;频率（10K 服务器）&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;磁盘故障&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–5 次/天&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;网络故障&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–2 次/天&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;电源故障&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1 次/周&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;内存错误&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–10 次/天&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;软件故障&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数+次/天&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;操作错误&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数次/月&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;冗余策略&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;冗余策略&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%86%97%e4%bd%99%e7%ad%96%e7%95%a5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;级别&lt;/th&gt;
+					&lt;th style=&#34;text-align: left&#34;&gt;冗余方式&lt;/th&gt;
+					&lt;th style=&#34;text-align: left&#34;&gt;容错能力&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数据&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;三副本 (GFS/HDFS)&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;容忍 2 副本故障&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;计算&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;任务重试&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;容忍单个节点故障&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;网络&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;多路径&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;容忍链路/交换机故障&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;电源&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;N+1 UPS + 发电机&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;容忍单路断电&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;位置&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;多可用区&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;容忍整个数据中心故障&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;可用性指标&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;可用性指标&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%8f%af%e7%94%a8%e6%80%a7%e6%8c%87%e6%a0%87&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;等级&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;年度停机时间&lt;/th&gt;
+					&lt;th style=&#34;text-align: left&#34;&gt;典型服务&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;99.9%&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;8.7 小时&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;内部工具&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;99.99%&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;52.6 分钟&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;一般消费者服务&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;99.999%&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;5.3 分钟&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;核心服务&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;99.9999%&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;31.5 秒&lt;/td&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;关键系统&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;你在设计芯片时考虑的是 MTTF——芯片本身的可靠性指标（通过设计规则检查、DFT 测试来保证）。WSC 则在系统层面用冗余和重试来提供高可用性，即使在底层硬件不是 100% 可靠的情况下。
+这就是&amp;quot;靠冗余不是靠完美&amp;quot;的工程哲学——与其花数亿美元把单芯片做到 99.9999% 的可靠，不如用 3 个 99.9% 可靠的服务器通过软件实现同等可用性，成本低得多。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;6.7 网络架构&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;67-网络架构&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#67-%e7%bd%91%e7%bb%9c%e6%9e%b6%e6%9e%84&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Clos 网络拓扑&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;clos-网络拓扑&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#clos-%e7%bd%91%e7%bb%9c%e6%8b%93%e6%89%91&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;大多数 WSC 使用 &lt;strong&gt;Clos 网络&lt;/strong&gt;（也称为 Leaf-Spine）：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;              Spine 1    Spine 2    Spine 3    Spine 4
+                 \          |          |         /
+                  \         |          |        /
+    Leaf 1 ────────┼────────┼──────────┼────────┼─────── ToR 1
+    Leaf 2 ────────┼────────┼──────────┼────────┼─────── ToR 2
+    Leaf 3 ────────┼────────┼──────────┼────────┼─────── ToR 3&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;特点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任意两台服务器之间跳数固定（3 跳）&lt;/li&gt;
+&lt;li&gt;通过增加更多 Spine 交换机线性增加带宽&lt;/li&gt;
+&lt;li&gt;任意交换机故障只会减少带宽，不会中断连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;网络拥塞控制&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;网络拥塞控制&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e7%bd%91%e7%bb%9c%e6%8b%a5%e5%a1%9e%e6%8e%a7%e5%88%b6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ECN (Explicit Congestion Notification)&lt;/strong&gt;：交换机标记拥塞包&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DCTCP&lt;/strong&gt;：数据中心 TCP，根据 ECN 进行精细化的拥塞控制&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;RDMA over Converged Ethernet (RoCEv2)&lt;/strong&gt;：远程直接内存访问，减少 CPU 开销&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;6.8 综合案例：Google WSC&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;68-综合案例google-wsc&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#68-%e7%bb%bc%e5%90%88%e6%a1%88%e4%be%8bgoogle-wsc&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Google 的 WSC 是业界最成熟的 WSC 实现：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;特性&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;Google WSC&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;控制器&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Borg (集群管理), Omega (调度)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;文件系统&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;GFS → Colossus&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数据库&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Bigtable, Spanner, MegaStore&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;计算框架&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;MapReduce, Flume, Dataflow&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;网络&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Jupiter (定制 Clos 网络)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;硬件&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;定制服务器（Google 自研主板）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;冷却&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;定制冷却方案（自由冷却 + 蒸发）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;PUE&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.08–1.15&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;关键架构原则&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;同质硬件&lt;/strong&gt;：简化管理、采购和维护&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;软件定义容错&lt;/strong&gt;：在软件层面处理故障，硬件允许适度不可靠&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自动化运维&lt;/strong&gt;：减少人工干预，提高效率&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;端到端 QoS&lt;/strong&gt;：从用户请求到后端存储的全链路服务质量保证&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;6.9 WSC 的经济学&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;69-wsc-的经济学&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#69-wsc-%e7%9a%84%e7%bb%8f%e6%b5%8e%e5%ad%a6&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;规模经济效应&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;规模经济效应&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e8%a7%84%e6%a8%a1%e7%bb%8f%e6%b5%8e%e6%95%88%e5%ba%94&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;
+  &lt;p&gt;10x 规模的 WSC 的成本只有 7–8x。剩下 2–3x 的效率优势来自规模经济、专业化设计和议价能力。&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;规模&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;典型成本/服务器/月&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;每计算单元成本&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;小型 (100台)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;$200–300&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.0x&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;中型 (1,000台)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;$150–200&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;0.8x&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;大型 (10,000台)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;$100–150&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;0.7x&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;超大型 (&amp;gt;100,000台)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;$70–100&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;0.5–0.6x&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;6.10 常见谬误与陷阱&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;610-常见谬误与陷阱&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#610-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;假设服务器的峰值负载是满负荷&lt;/strong&gt;：WSC 的平均利用率通常只有 10–50%&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;低估电力成本&lt;/strong&gt;：电力（含冷却）占 TCO 的 20%+，且电费越来越贵&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;误认为网络带宽是无限的&lt;/strong&gt;：网络拥塞是一致性、存储和 ML 训练的主要瓶颈&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;认为容错可以事后加&lt;/strong&gt;：容错必须从第一天就设计在架构中&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;忽略操作错误&lt;/strong&gt;：人为错误是 WSC 故障的主要原因之一&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;过度依赖单一厂商&lt;/strong&gt;：锁定风险、成本上升&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;6.11 总结&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;611-总结&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#611-%e6%80%bb%e7%bb%93&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本章核心要点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;WSC 是规模化的分布式系统&lt;/strong&gt;，利用请求级并行实现大规模服务&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TCO 驱动设计决策&lt;/strong&gt;——电力（PUE）、硬件成本（规模经济）、维护成本&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;商品硬件 + 软件容错&lt;/strong&gt;——硬件不需要 100% 可靠，软件层提供可用性&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Clos 网络&lt;/strong&gt;提供可扩展的总对总带宽&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;软件栈&lt;/strong&gt;（Kubernetes, MapReduce, 微服务）是数据中心的操作系统&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;容错是常态&lt;/strong&gt;——设计时必须假设组件会故障，冗余和重试是基本策略&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;能效是关键&lt;/strong&gt;——PUE、DVFS、空闲节点睡眠、液冷等技术的综合运用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;下一章 → 第 7 章：领域专用架构 (Domain-Specific Architectures)&lt;/strong&gt;&lt;/p&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>

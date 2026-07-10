@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="index, follow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>计算机体系结构学习笔记 — 第7章 领域专用架构 – Lv的小站</title>
+  <meta name="description" content="" /><link rel="canonical" href="https://cambridgelv.github.io/docs/ca-notes/ch07-dsa/" itemprop="url" />
+
+<meta property="og:title" content="计算机体系结构学习笔记 — 第7章 领域专用架构">
+<meta
+  property="og:description"
+  content="
+    
+      
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="https://cambridgelv.github.io/docs/ca-notes/ch07-dsa/"><meta property="article:section" content="docs">
+
+<meta
+  property="article:published_time"
+  content="2026-07-10T10:00:00+08:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2026-07-10T10:07:37+08:00">
+
+
+
+	<meta itemprop="name" content="计算机体系结构学习笔记 — 第7章 领域专用架构">
+	<meta itemprop="description" content="Lv的小站 - 芯片架构、数字中端、计算机体系结构学习笔记">
+	<meta itemprop="datePublished" content="2026-07-10T10:00:00+08:00">
+	<meta itemprop="dateModified" content="2026-07-10T10:07:37+08:00">
+	<meta itemprop="wordCount" content="3657">
+	<meta itemprop="keywords" content="计算机体系结构,领域专用架构,DSA,TPU,加速器">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="计算机体系结构学习笔记 — 第7章 领域专用架构">
+	<meta name="twitter:description" content="Lv的小站 - 芯片架构、数字中端、计算机体系结构学习笔记">
+
+    <link rel="preload" href="/css/compiled/main.min.cab6ca91ef67bf58dd994e3dc2e80052930bc9a2a07c35158fe06c6f03cfcbdc.css" as="style" integrity="sha256-yrbKke9nv1jdmU49wugAUpMLyaKgfDUVj&#43;BsbwPPy9w=" />
+    <link href="/css/compiled/main.min.cab6ca91ef67bf58dd994e3dc2e80052930bc9a2a07c35158fe06c6f03cfcbdc.css" rel="stylesheet" integrity="sha256-yrbKke9nv1jdmU49wugAUpMLyaKgfDUVj&#43;BsbwPPy9w=" />
+
+  
+
+
+
+
+
+
+<script src="/js/main-head.min.bbb353731723c08eaf67b231610392e3665384806ddb6bee51d4a965494c762e.js" integrity="sha256-u7NTcxcjwI6vZ7IxYQOS42ZThIBt22vuUdSpZUlMdi4="></script>
+
+  
+  <link rel="stylesheet" href="/css/katex.min.6aff82415cedb412f2c82c8c2c57239419d1e6b45f37df0079ef776bc0f2e08fc61f5cb62aeee1f80fb4ee99c229a86d01055999cdbd206b00a82422abdaa230.css" integrity="sha512-av&#43;CQVzttBLyyCyMLFcjlBnR5rRfN98Aee93a8Dy4I/GH1y2Ku7h&#43;A&#43;07pnCKahtAQVZmc29IGsAqCQiq9qiMA==" />
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">跳至内容</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="32" width="32" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo-dark.svg" alt="Dark Logo" height="32" width="32" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Lv的小站</span>
+</a>
+<a
+  title=""
+  href="/docs"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:font-medium"
+><span class="hx:text-center">体系结构笔记</span>
+</a><a
+  title=""
+  href="/blog"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">博客</span>
+</a><a
+  title=""
+  href="/about"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">关于</span>
+</a><button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="搜索文档..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">搜索文档...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/CambridgeLv" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a><button type="button" aria-label="菜单" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+              <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">体系结构笔记</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div>
+              <div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch03-ilp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第3章 指令级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch02-memory-hierarchy/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch04-dlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第4章 数据级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch05-tlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第5章 线程级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch06-wsc/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第6章 仓库级计算机</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/docs/ca-notes/ch07-dsa/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第7章 领域专用架构</span>
+    </a>
+  </div>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#71-%e5%bc%95%e8%a8%80--%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81-dsa"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.1 引言 — 为什么需要 DSA</a>
+            </li>
+          <li>
+              <a
+                href="#72-dsa-%e7%9a%84%e8%ae%be%e8%ae%a1%e7%a9%ba%e9%97%b4"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.2 DSA 的设计空间</a>
+            </li>
+          <li>
+              <a
+                href="#73-%e7%bb%8f%e5%85%b8-dsa-%e6%a1%88%e4%be%8b-1google-tpu"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.3 经典 DSA 案例 1：Google TPU</a>
+            </li>
+          <li>
+              <a
+                href="#74-%e7%bb%8f%e5%85%b8-dsa-%e6%a1%88%e4%be%8b-2nvidia-gpu"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.4 经典 DSA 案例 2：NVIDIA GPU</a>
+            </li>
+          <li>
+              <a
+                href="#75-fpga-%e4%b8%8e-asic-%e7%9a%84%e6%9d%83%e8%a1%a1"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.5 FPGA 与 ASIC 的权衡</a>
+            </li>
+          <li>
+              <a
+                href="#76-dsa-%e7%9a%84%e8%ae%be%e8%ae%a1%e6%96%b9%e6%b3%95%e8%ae%ba"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.6 DSA 的设计方法论</a>
+            </li>
+          <li>
+              <a
+                href="#77-dsa-%e7%9a%84%e5%8a%9f%e8%80%97%e5%88%86%e6%9e%90"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.7 DSA 的功耗分析</a>
+            </li>
+          <li>
+              <a
+                href="#78-dsa-%e7%9a%84%e6%9c%aa%e6%9d%a5%e8%b6%8b%e5%8a%bf"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.8 DSA 的未来趋势</a>
+            </li>
+          <li>
+              <a
+                href="#79-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.9 常见谬误与陷阱</a>
+            </li>
+          <li>
+              <a
+                href="#710-%e6%80%bb%e7%bb%93"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >7.10 总结</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/appendixc-pipelining/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch01-fundamentals/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第1章 量化设计与分析基础</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+              <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">博客</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="false"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/dft-1-introduction/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">VLSI测试原理与架构 — 第1章 Introduction</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/dft-0-introduction/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">VLSI测试原理与架构 — 第0章 开始</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/first-post/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">开篇</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+              <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+    
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+            <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch03-ilp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第3章 指令级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch02-memory-hierarchy/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch04-dlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第4章 数据级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch05-tlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第5章 线程级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch06-wsc/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第6章 仓库级计算机</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/docs/ca-notes/ch07-dsa/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第7章 领域专用架构</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/appendixc-pipelining/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch01-fundamentals/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第1章 量化设计与分析基础</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+        
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+    
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="切换主题"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="切换主题"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">浅色</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">深色</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">跟随系统</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        浅色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        深色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        跟随系统
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="目录">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#71-%e5%bc%95%e8%a8%80--%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81-dsa">7.1 引言 — 为什么需要 DSA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e9%80%9a%e7%94%a8%e5%a4%84%e7%90%86%e5%99%a8%e7%9a%84%e7%93%b6%e9%a2%88">通用处理器的瓶颈
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#dsa-%e7%9a%84%e5%ae%9a%e4%b9%89">DSA 的定义
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#dsa-%e7%9a%84%e4%b8%89%e4%b8%aa%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99">DSA 的三个关键设计原则
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#72-dsa-%e7%9a%84%e8%ae%be%e8%ae%a1%e7%a9%ba%e9%97%b4">7.2 DSA 的设计空间
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%9b%9b%e4%b8%aa%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1%e7%bb%b4%e5%ba%a6">四个关键设计维度
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%b2%be%e5%ba%a6%e4%b8%8e%e6%80%a7%e8%83%bd%e7%9a%84%e6%9d%83%e8%a1%a1">精度与性能的权衡
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#73-%e7%bb%8f%e5%85%b8-dsa-%e6%a1%88%e4%be%8b-1google-tpu">7.3 经典 DSA 案例 1：Google TPU
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tpu-v1-2015">TPU v1 (2015)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tpu-vs-cpu-vs-gpu-%e6%8e%a8%e7%90%86%e6%80%a7%e8%83%bd%e5%af%b9%e6%af%94">TPU vs CPU vs GPU (推理性能对比)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#tpu-v2v3v4-%e7%9a%84%e6%bc%94%e8%bf%9b">TPU v2/v3/v4 的演进
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#74-%e7%bb%8f%e5%85%b8-dsa-%e6%a1%88%e4%be%8b-2nvidia-gpu">7.4 经典 DSA 案例 2：NVIDIA GPU
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#gpu-%e4%bd%9c%e4%b8%ba-dsa">GPU 作为 DSA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#gpu-vs-tpu-%e7%9a%84%e6%9e%b6%e6%9e%84%e5%af%b9%e6%af%94">GPU vs TPU 的架构对比
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#75-fpga-%e4%b8%8e-asic-%e7%9a%84%e6%9d%83%e8%a1%a1">7.5 FPGA 与 ASIC 的权衡
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#76-dsa-%e7%9a%84%e8%ae%be%e8%ae%a1%e6%96%b9%e6%b3%95%e8%ae%ba">7.6 DSA 的设计方法论
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e8%ae%be%e8%ae%a1%e6%b5%81%e7%a8%8b">设计流程
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bd%97%e7%91%9f%e5%a1%94%e7%9f%b3%e6%96%b9%e6%b3%95">罗瑟塔石方法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#dsa-%e7%9a%84-roofline-%e6%a8%a1%e5%9e%8b">DSA 的 Roofline 模型
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#77-dsa-%e7%9a%84%e5%8a%9f%e8%80%97%e5%88%86%e6%9e%90">7.7 DSA 的功耗分析
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%8a%9f%e8%80%97%e6%80%a7%e8%83%bd%e6%9d%83%e8%a1%a1">功耗/性能权衡
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%b8%93%e7%94%a8%e5%8c%96%e7%9a%84%e8%83%bd%e6%95%88%e6%94%b6%e7%9b%8a%e6%9d%a5%e6%ba%90">专用化的能效收益来源
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#78-dsa-%e7%9a%84%e6%9c%aa%e6%9d%a5%e8%b6%8b%e5%8a%bf">7.8 DSA 的未来趋势
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%8f%af%e9%87%8d%e6%9e%84-dsa">可重构 DSA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#3d-%e9%9b%86%e6%88%90%e4%b8%8e%e8%bf%91%e5%ad%98%e8%ae%a1%e7%ae%97">3D 集成与近存计算
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%9a%97%e7%a1%85-dark-silicon-%e4%b8%8e-dsa">暗硅 (Dark Silicon) 与 DSA
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#79-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1">7.9 常见谬误与陷阱
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#710-%e6%80%bb%e7%bb%93">7.10 总结
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><div class="hx:flex hx:items-start hx:gap-x-2 hx:font-medium hx:text-xs">
+            <div class="hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">标签</div>
+            <div class="hx:flex hx:flex-wrap hx:gap-y-1">
+              <a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">#计算机体系结构</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E9%A2%86%E5%9F%9F%E4%B8%93%E7%94%A8%E6%9E%B6%E6%9E%84/">#领域专用架构</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/dsa/">#DSA</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/tpu/">#TPU</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E5%8A%A0%E9%80%9F%E5%99%A8/">#加速器</a>
+            </div>
+          </div>
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>返回顶部</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/docs/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">笔记概览</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/docs/ca-notes/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">计算机体系结构学习笔记</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">计算机体系结构学习笔记 — 第7章 领域专用架构</div>
+  </div>
+
+        <div class="content">
+          
+            <div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mb-4">
+              <h1 class="hx:mb-0">计算机体系结构学习笔记 — 第7章 领域专用架构</h1>
+              
+            </div>
+          
+          
+          <blockquote>
+  <p><strong>原著</strong>: <em>Computer Architecture: A Quantitative Approach</em>, 6th Edition — John L. Hennessy &amp; David A. Patterson</p>
+<p>领域专用架构（DSA）是后 Dennard 时代性能增长的新引擎。本章覆盖 DSA 的设计原则、经典案例（TPU、GPU）以及与传统通用处理器和 GPU 的对比。</p>
+
+</blockquote>
+<h2>7.1 引言 — 为什么需要 DSA<span class="hx:absolute hx:-mt-20" id="71-引言--为什么需要-dsa"></span>
+    <a href="#71-%e5%bc%95%e8%a8%80--%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81-dsa" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>通用处理器的瓶颈<span class="hx:absolute hx:-mt-20" id="通用处理器的瓶颈"></span>
+    <a href="#%e9%80%9a%e7%94%a8%e5%a4%84%e7%90%86%e5%99%a8%e7%9a%84%e7%93%b6%e9%a2%88" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>通用处理器（CPU/GPP）的设计目标是<strong>在所有应用上都有过得去的性能</strong>。为此付出了巨大代价：</p>
+<ul>
+<li>复杂的乱序执行逻辑（面积 + 功耗）</li>
+<li>分支预测和推测执行（功耗 + 复杂度）</li>
+<li>通用 ISA 的解码开销（x86 的变长指令）</li>
+</ul>
+<p><strong>应用越专一 → 通用处理器的浪费越大</strong>。</p>
+<h3>DSA 的定义<span class="hx:absolute hx:-mt-20" id="dsa-的定义"></span>
+    <a href="#dsa-%e7%9a%84%e5%ae%9a%e4%b9%89" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>领域专用架构 (Domain-Specific Architecture)</strong> 是为某一类特定应用领域设计的处理器/加速器，在该领域内提供远超通用处理器的性能/功耗效率。</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">特性</th>
+					<th style="text-align: center">通用处理器 (CPU)</th>
+					<th style="text-align: center">DSA</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">应用范围</td>
+					<td style="text-align: center">所有应用</td>
+					<td style="text-align: center">特定领域（如 ML、视频、网络）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">性能/瓦</td>
+					<td style="text-align: center">基准</td>
+					<td style="text-align: center">10–100x 提升</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">编程难度</td>
+					<td style="text-align: center">低</td>
+					<td style="text-align: center">中到高</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">设计成本</td>
+					<td style="text-align: center">分摊到所有应用</td>
+					<td style="text-align: center">需要足够量</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">灵活性</td>
+					<td style="text-align: center">极高</td>
+					<td style="text-align: center">有限</td>
+			</tr>
+	</tbody>
+</table>
+<h3>DSA 的三个关键设计原则<span class="hx:absolute hx:-mt-20" id="dsa-的三个关键设计原则"></span>
+    <a href="#dsa-%e7%9a%84%e4%b8%89%e4%b8%aa%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1%e5%8e%9f%e5%88%99" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>原则 1：专用存储层次</strong>
+DSA 通常有自己定制化的片上存储层次，不需要通用缓存一致性。</p>
+<p><strong>原则 2：利用更宽的数据路径</strong>
+在特定精度下做大量计算，而非通用 64-bit 浮点。</p>
+<p><strong>原则 3：减少控制逻辑</strong>
+使用简单的控制逻辑（如顺序执行、VLIW 风格的调度），把更多晶体管交给计算单元。</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">你做数字中端这么多年，DSA 对你来说应该很熟悉——你在华为和英特尔做的芯片，无论是基带处理还是网络加速，本质上都是 DSA。它们不是通用 CPU，而是针对特定通信协议/网络处理优化的专用硬件。
+这就是为什么懂架构的人越来越吃香——在 Dennard scaling 终结后，性能增长全靠架构创新，而 DSA 是其中最有力的一种。</div>
+  </div>
+</div>
+
+<h2>7.2 DSA 的设计空间<span class="hx:absolute hx:-mt-20" id="72-dsa-的设计空间"></span>
+    <a href="#72-dsa-%e7%9a%84%e8%ae%be%e8%ae%a1%e7%a9%ba%e9%97%b4" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>四个关键设计维度<span class="hx:absolute hx:-mt-20" id="四个关键设计维度"></span>
+    <a href="#%e5%9b%9b%e4%b8%aa%e5%85%b3%e9%94%ae%e8%ae%be%e8%ae%a1%e7%bb%b4%e5%ba%a6" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>DSA Design</mtext><mo>=</mo><mtext>Parallelism</mtext><mo>×</mo><mtext>Data Type</mtext><mo>×</mo><mtext>Storage</mtext><mo>×</mo><mtext>Control</mtext></mrow><annotation encoding="application/x-tex">\text{DSA Design} = \text{Parallelism} \times \text{Data Type} \times \text{Storage} \times \text{Control}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">DSA Design</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">Parallelism</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Data Type</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Storage</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord">Control</span></span></span></span></span></span><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">维度</th>
+					<th>选项</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center"><strong>并行方式</strong></td>
+					<td>SIMD, SIMT, 多核, 空间架构 (Systolic Array)</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>数据类型/精度</strong></td>
+					<td>8-bit INT, 16-bit FP, BF16, TF32, FP32, FP64</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>片上存储</strong></td>
+					<td>SRAM scratchpad, 多 bank, 软流水</td>
+			</tr>
+			<tr>
+					<td style="text-align: center"><strong>控制流</strong></td>
+					<td>顺序执行, VLIW, 有限状态机</td>
+			</tr>
+	</tbody>
+</table>
+<h3>精度与性能的权衡<span class="hx:absolute hx:-mt-20" id="精度与性能的权衡"></span>
+    <a href="#%e7%b2%be%e5%ba%a6%e4%b8%8e%e6%80%a7%e8%83%bd%e7%9a%84%e6%9d%83%e8%a1%a1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Energy</mtext><mo>∝</mo><msup><mtext>Bit-width</mtext><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\text{Energy} \propto \text{Bit-width}^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Energy</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8984em;"></span><span class="mord"><span class="mord text"><span class="mord">Bit-width</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8984em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><p>更低精度 → 更低功耗 + 更高吞吐 + 更小的存储需求。</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">精度</th>
+					<th style="text-align: center">位宽</th>
+					<th style="text-align: center">AI 推理适用</th>
+					<th style="text-align: center">每瓦性能（相对 FP32）</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">FP32</td>
+					<td style="text-align: center">32-bit</td>
+					<td style="text-align: center">训练</td>
+					<td style="text-align: center">1x</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">FP16</td>
+					<td style="text-align: center">16-bit</td>
+					<td style="text-align: center">训练/推理</td>
+					<td style="text-align: center">4x</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">BF16</td>
+					<td style="text-align: center">16-bit</td>
+					<td style="text-align: center">训练</td>
+					<td style="text-align: center">4x</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TF32</td>
+					<td style="text-align: center">19-bit</td>
+					<td style="text-align: center">训练(NVIDIA)</td>
+					<td style="text-align: center">2–3x</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">INT8</td>
+					<td style="text-align: center">8-bit</td>
+					<td style="text-align: center">推理</td>
+					<td style="text-align: center">16x</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">INT4</td>
+					<td style="text-align: center">4-bit</td>
+					<td style="text-align: center">极限推理</td>
+					<td style="text-align: center">64x</td>
+			</tr>
+	</tbody>
+</table>
+<h2>7.3 经典 DSA 案例 1：Google TPU<span class="hx:absolute hx:-mt-20" id="73-经典-dsa-案例-1google-tpu"></span>
+    <a href="#73-%e7%bb%8f%e5%85%b8-dsa-%e6%a1%88%e4%be%8b-1google-tpu" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>TPU v1 (2015)<span class="hx:absolute hx:-mt-20" id="tpu-v1-2015"></span>
+    <a href="#tpu-v1-2015" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>专为 Google 的神经网络推理设计的 ASIC。</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">参数</th>
+					<th style="text-align: center">TPU v1</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">制程</td>
+					<td style="text-align: center">28nm</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">频率</td>
+					<td style="text-align: center">700 MHz</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">功耗</td>
+					<td style="text-align: center">40–75W (TDP)</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">计算核心</td>
+					<td style="text-align: center">65,536 个 8-bit MAC</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">矩阵乘法单元</td>
+					<td style="text-align: center">256 × 256 Systolic Array</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">片上内存</td>
+					<td style="text-align: center">24MB (8MB 累加器 + 16MB 统一缓冲)</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">外部内存</td>
+					<td style="text-align: center">8GB DDR3</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">性能</td>
+					<td style="text-align: center">92 TOPS (INT8)</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>TPU 的架构特点</strong>：</p>
+<ol>
+<li>
+<p><strong>Systolic Array (脉动阵列)</strong>：256×256 的 MAC 阵列，数据在阵列内「脉动」流动，避免了复杂的跨 bar 互连布线</p>
+</li>
+<li>
+<p><strong>指令集风格</strong>：CISC 风格，指令包含权重加载、矩阵乘、激活函数等复杂操作——本质上是一个 VLIW 处理器</p>
+</li>
+<li>
+<p><strong>专用存储层次</strong>：权重存放在专用 16MB 缓冲区，减少对主存的依赖</p>
+</li>
+<li>
+<p><strong>确定性执行</strong>：无分支预测、无乱序、无猜测执行</p>
+</li>
+</ol>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0"><p>TPU 的 Systolic Array 是一个经典的空间架构设计——数据在 PE (Processing Element) 之间流动，而不是从中央寄存器文件取数。这对物理设计（综合 + APR）非常友好：</p>
+<ul>
+<li>数据流规则 → 时序收敛容易</li>
+<li>PE 阵列高度规则 → APR 效果好</li>
+<li>本地互联 → 功耗低
+你在做综合时如果用过自定义 datapath，应该能体会到规整架构的时序优势。</li>
+</ul></div>
+  </div>
+</div>
+
+<h3>TPU vs CPU vs GPU (推理性能对比)<span class="hx:absolute hx:-mt-20" id="tpu-vs-cpu-vs-gpu-推理性能对比"></span>
+    <a href="#tpu-vs-cpu-vs-gpu-%e6%8e%a8%e7%90%86%e6%80%a7%e8%83%bd%e5%af%b9%e6%af%94" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">指标</th>
+					<th style="text-align: center">Haswell CPU</th>
+					<th style="text-align: center">K80 GPU</th>
+					<th style="text-align: center">TPU v1</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">峰值 TOPS</td>
+					<td style="text-align: center">0.6</td>
+					<td style="text-align: center">2.8</td>
+					<td style="text-align: center">92</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TOPS/W</td>
+					<td style="text-align: center">0.004</td>
+					<td style="text-align: center">0.01</td>
+					<td style="text-align: center">1.2–2.3</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">TOPS/美元 (!)</td>
+					<td style="text-align: center">-</td>
+					<td style="text-align: center">-</td>
+					<td style="text-align: center">1.9–4.5x GPU</td>
+			</tr>
+	</tbody>
+</table>
+<p>TPU v1 的每瓦性能是 GPU 的 30–50x，是 CPU 的 300x+。</p>
+<h3>TPU v2/v3/v4 的演进<span class="hx:absolute hx:-mt-20" id="tpu-v2v3v4-的演进"></span>
+    <a href="#tpu-v2v3v4-%e7%9a%84%e6%bc%94%e8%bf%9b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">代际</th>
+					<th style="text-align: center">年份</th>
+					<th style="text-align: center">制程</th>
+					<th style="text-align: left">主要改进</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">v1</td>
+					<td style="text-align: center">2015</td>
+					<td style="text-align: center">28nm</td>
+					<td style="text-align: left">推理专用，INT8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">v2</td>
+					<td style="text-align: center">2017</td>
+					<td style="text-align: center">16nm</td>
+					<td style="text-align: left">支持训练，BF16，水冷</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">v3</td>
+					<td style="text-align: center">2018</td>
+					<td style="text-align: center">16nm</td>
+					<td style="text-align: left">2x 性能，128GB HBM</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">v4</td>
+					<td style="text-align: center">2021</td>
+					<td style="text-align: center">7nm</td>
+					<td style="text-align: left">4096 芯片互联，10^18 FLOPS</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>TPU 的核心教训</strong>：</p>
+<blockquote>
+  <p>针对具体领域（ML 推理/训练）做专用架构，可以在 1% 的功耗范围内做到 100% 的合理性能。</p>
+
+</blockquote>
+<h2>7.4 经典 DSA 案例 2：NVIDIA GPU<span class="hx:absolute hx:-mt-20" id="74-经典-dsa-案例-2nvidia-gpu"></span>
+    <a href="#74-%e7%bb%8f%e5%85%b8-dsa-%e6%a1%88%e4%be%8b-2nvidia-gpu" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>虽然 GPU 也属于 DLP 架构，但 NVIDIA 的 GPU 在 ML 领域的成功使其成为 DSA 的重要案例。</p>
+<h3>GPU 作为 DSA<span class="hx:absolute hx:-mt-20" id="gpu-作为-dsa"></span>
+    <a href="#gpu-%e4%bd%9c%e4%b8%ba-dsa" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">通用计算 (GP-GPU)</th>
+					<th style="text-align: center">ML DSA (Tensor Core)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">通用 CUDA 核心</td>
+					<td style="text-align: center">专用的 4×4 矩阵乘加单元</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">FP32 精度</td>
+					<td style="text-align: center">FP16/BF16/INT8</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">通用存储层次</td>
+					<td style="text-align: center">优化的张量存储</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">复杂调度</td>
+					<td style="text-align: center">简化调度</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>Tensor Core (2017, Volta)</strong>：</p>
+<ul>
+<li>每个 Tensor Core 每个周期完成 4×4×4 矩阵乘法 + 加法</li>
+<li>一个 SM 中有 8 个 Tensor Core</li>
+<li>每个 SM 的峰值：8 × 4 × 4 × 4 = 512 FLOPS/周期 (FP16)</li>
+</ul>
+<h3>GPU vs TPU 的架构对比<span class="hx:absolute hx:-mt-20" id="gpu-vs-tpu-的架构对比"></span>
+    <a href="#gpu-vs-tpu-%e7%9a%84%e6%9e%b6%e6%9e%84%e5%af%b9%e6%af%94" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">特性</th>
+					<th style="text-align: center">NVIDIA GPU (V100)</th>
+					<th style="text-align: center">Google TPU v3</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">计算核心</td>
+					<td style="text-align: center">5120 CUDA + 640 Tensor Core</td>
+					<td style="text-align: center">2× 128×128 Systolic Array</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">精度</td>
+					<td style="text-align: center">支持 9 种精度</td>
+					<td style="text-align: center">BF16</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">片上存储</td>
+					<td style="text-align: center">6MB L2 + 16MB 共享内存</td>
+					<td style="text-align: center">32MB</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">板级存储</td>
+					<td style="text-align: center">32GB HBM2</td>
+					<td style="text-align: center">32GB HBM2</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">互联</td>
+					<td style="text-align: center">NVLink (8 chips)</td>
+					<td style="text-align: center">自定义环网</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">灵活性</td>
+					<td style="text-align: center">高（通用 CUDA）</td>
+					<td style="text-align: center">低（ML 专用）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">应用</td>
+					<td style="text-align: center">训练+推理+通用计算</td>
+					<td style="text-align: center">ML推理（v1），训练（v3）</td>
+			</tr>
+	</tbody>
+</table>
+<h2>7.5 FPGA 与 ASIC 的权衡<span class="hx:absolute hx:-mt-20" id="75-fpga-与-asic-的权衡"></span>
+    <a href="#75-fpga-%e4%b8%8e-asic-%e7%9a%84%e6%9d%83%e8%a1%a1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">特性</th>
+					<th style="text-align: center">FPGA</th>
+					<th style="text-align: center">ASIC</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">设计成本</td>
+					<td style="text-align: center">低（无需光罩）</td>
+					<td style="text-align: center">极高（7nm 光罩 &gt; $5M）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">单位成本</td>
+					<td style="text-align: center">中（FPGA 本身贵）</td>
+					<td style="text-align: center">极低（大量出货后）</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">性能</td>
+					<td style="text-align: center">中（ASIC 的 10–20%）</td>
+					<td style="text-align: center">最高</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">功耗</td>
+					<td style="text-align: center">高（ASIC 的 3–5x）</td>
+					<td style="text-align: center">最低</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">灵活性</td>
+					<td style="text-align: center">可重配置</td>
+					<td style="text-align: center">固定功能</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">上市时间</td>
+					<td style="text-align: center">快</td>
+					<td style="text-align: center">12–24 个月</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>什么时候用 FPGA</strong>：</p>
+<ul>
+<li>中等量（&lt; 10K 台）</li>
+<li>标准/协议频繁变化</li>
+<li>软件开发与硬件开发并行</li>
+</ul>
+<p><strong>什么时候用 ASIC</strong>：</p>
+<ul>
+<li>大量出货（&gt; 100K 台）</li>
+<li>对功耗/性能要求极致</li>
+<li>功能固定</li>
+</ul>
+<p><strong>微软 Catapult 项目</strong>：在数据中心服务器中插入 FPGA，用于：</p>
+<ul>
+<li>Bing 搜索排名加速（2x 延迟改进）</li>
+<li>网络加速（低延迟 RDMA）</li>
+<li>可动态重配置适应不同负载</li>
+</ul>
+<h2>7.6 DSA 的设计方法论<span class="hx:absolute hx:-mt-20" id="76-dsa-的设计方法论"></span>
+    <a href="#76-dsa-%e7%9a%84%e8%ae%be%e8%ae%a1%e6%96%b9%e6%b3%95%e8%ae%ba" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>设计流程<span class="hx:absolute hx:-mt-20" id="设计流程"></span>
+    <a href="#%e8%ae%be%e8%ae%a1%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>应用分析 → 瓶颈识别 → 架构探索 → 模拟验证 → 实现</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<ol>
+<li><strong>应用分析</strong>：理解目标负载的计算模式、数据流、访存特征</li>
+<li><strong>瓶颈识别</strong>：Amdahl 定律分析，找出最耗时的部分</li>
+<li><strong>架构探索</strong>：设计空间探索（并行度、精度、存储大小、带宽）</li>
+<li><strong>模拟</strong>：Cycle-approximate 模型验证性能</li>
+<li><strong>实现</strong>：RTL 设计、综合、物理设计</li>
+</ol>
+<h3>罗瑟塔石方法<span class="hx:absolute hx:-mt-20" id="罗瑟塔石方法"></span>
+    <a href="#%e7%bd%97%e7%91%9f%e5%a1%94%e7%9f%b3%e6%96%b9%e6%b3%95" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>Hennessy &amp; Patterson 提出的 DSA 设计方法：</p>
+<ol>
+<li><strong>Trial-and-Error ISAs</strong>：先做功能模拟器，迭代 ISA 设计</li>
+<li><strong>HLL to ISA</strong>：高级语言到 ISA 的映射效率是关键</li>
+<li><strong>Compiling Recording</strong>：编译器可以记录典型程序的执行模式</li>
+<li><strong>ISA Simplification</strong>：去除不需要的复杂指令</li>
+<li><strong>Continuous Co-design</strong>：SW/HW 协同设计，硬件和软件一起迭代</li>
+</ol>
+<h3>DSA 的 Roofline 模型<span class="hx:absolute hx:-mt-20" id="dsa-的-roofline-模型"></span>
+    <a href="#dsa-%e7%9a%84-roofline-%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>Roofline 模型</strong>：可视化分析性能瓶颈的工具。</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>性能
+  ↑                     ┌─── 计算上限 (峰值 FLOPS)
+  │                     │
+  │      ┌──────────────┤
+  │     /               │
+  │    /                │
+  │   /                 │
+  │  /                  │
+  │ / 内存带宽上限      │
+  └──────────────────────────────→ 运算强度 (ops/byte)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<ul>
+<li><strong>运算强度低</strong> → 内存带宽瓶颈（左下方）</li>
+<li><strong>运算强度高</strong> → 计算瓶颈（右上方）</li>
+<li><strong>&ldquo;Ridge Point&rdquo;</strong>：从带宽受限到计算受限的转折点</li>
+</ul>
+<h2>7.7 DSA 的功耗分析<span class="hx:absolute hx:-mt-20" id="77-dsa-的功耗分析"></span>
+    <a href="#77-dsa-%e7%9a%84%e5%8a%9f%e8%80%97%e5%88%86%e6%9e%90" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>功耗/性能权衡<span class="hx:absolute hx:-mt-20" id="功耗性能权衡"></span>
+    <a href="#%e5%8a%9f%e8%80%97%e6%80%a7%e8%83%bd%e6%9d%83%e8%a1%a1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>能量延迟积 (Energy-Delay Product, EDP)</strong>：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mi>D</mi><mi>P</mi><mo>=</mo><mi>E</mi><mi>n</mi><mi>e</mi><mi>r</mi><mi>g</mi><mi>y</mi><mo>×</mo><mi>D</mi><mi>e</mi><mi>l</mi><mi>a</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">EDP = Energy \times Delay</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">De</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><ul>
+<li>通用 CPU：EDP 最高（控制逻辑多、缓存大）</li>
+<li>GPU：EDP 中等（SIMT 架构，控制简单）</li>
+<li>DSA：EDP 最低（专用化程度最高）</li>
+</ul>
+<h3>专用化的能效收益来源<span class="hx:absolute hx:-mt-20" id="专用化的能效收益来源"></span>
+    <a href="#%e4%b8%93%e7%94%a8%e5%8c%96%e7%9a%84%e8%83%bd%e6%95%88%e6%94%b6%e7%9b%8a%e6%9d%a5%e6%ba%90" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: left">收益来源</th>
+					<th style="text-align: left">原理</th>
+					<th style="text-align: center">典型收益</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left"><strong>更少控制逻辑</strong></td>
+					<td style="text-align: left">无需分支预测/乱序</td>
+					<td style="text-align: center">3–5x</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>更窄的数据宽度</strong></td>
+					<td style="text-align: left">使用特定精度</td>
+					<td style="text-align: center">2–10x (INT8 vs FP32)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>更简单的存储</strong></td>
+					<td style="text-align: left">Scratchpad vs 缓存</td>
+					<td style="text-align: center">2–3x</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>规则数据访问</strong></td>
+					<td style="text-align: left">预取、流式</td>
+					<td style="text-align: center">2–5x</td>
+			</tr>
+			<tr>
+					<td style="text-align: left"><strong>并行度匹配</strong></td>
+					<td style="text-align: left">设计满足负载需求</td>
+					<td style="text-align: center">2–4x</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>总收益</strong>：在合适领域，10–100x 的每瓦性能提升。</p>
+<h2>7.8 DSA 的未来趋势<span class="hx:absolute hx:-mt-20" id="78-dsa-的未来趋势"></span>
+    <a href="#78-dsa-%e7%9a%84%e6%9c%aa%e6%9d%a5%e8%b6%8b%e5%8a%bf" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>可重构 DSA<span class="hx:absolute hx:-mt-20" id="可重构-dsa"></span>
+    <a href="#%e5%8f%af%e9%87%8d%e6%9e%84-dsa" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li><strong>CGRA (Coarse-Grained Reconfigurable Array)</strong>：粗粒度可重构阵列，介于 FPGA 和 ASIC 之间</li>
+<li><strong>可重构数据路径</strong>：运行时可配置的计算和数据流</li>
+<li><strong>形态可变的加速器</strong>：在不同模式下切换</li>
+</ul>
+<h3>3D 集成与近存计算<span class="hx:absolute hx:-mt-20" id="3d-集成与近存计算"></span>
+    <a href="#3d-%e9%9b%86%e6%88%90%e4%b8%8e%e8%bf%91%e5%ad%98%e8%ae%a1%e7%ae%97" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li><strong>HBM + 逻辑</strong>：3D 堆叠内存减少数据搬运</li>
+<li><strong>近内存计算 (Near-Memory Computing)</strong>：在内存附近做计算</li>
+<li><strong>存内计算 (Processing-in-Memory, PIM)</strong>：在内存阵列内部做计算</li>
+</ul>
+<h3>暗硅 (Dark Silicon) 与 DSA<span class="hx:absolute hx:-mt-20" id="暗硅-dark-silicon-与-dsa"></span>
+    <a href="#%e6%9a%97%e7%a1%85-dark-silicon-%e4%b8%8e-dsa" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>随着工艺微缩，芯片中能同时工作的晶体管比例越来越小（<strong>暗硅</strong>）。DSA 通过：</p>
+<ul>
+<li>空间复用（不同专用单元在不同时间工作）</li>
+<li>掉电管理（不用的单元完全关闭）</li>
+<li>异构集成（多种专用核心 + 少量通用核心）</li>
+</ul>
+<p>利用暗硅问题——与其让晶体管闲着，不如用来做专用加速器。</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">暗硅是你在做低功耗设计时实际面对的问题——为什么有那么多 power domain？为什么要加电源门控？因为工艺越先进，漏电越大，不用的模块必须彻底断电，否则静态功耗就会吃掉整个功耗预算。
+DSA 的设计哲学和你的低功耗经验是一致的：只在需要的时候、用最有效的方式、做特定的事情。</div>
+  </div>
+</div>
+
+<h2>7.9 常见谬误与陷阱<span class="hx:absolute hx:-mt-20" id="79-常见谬误与陷阱"></span>
+    <a href="#79-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><ol>
+<li><strong>认为 DSA 适用于所有应用</strong>：DSA 在通用计算场景效果不佳，需要领域足够大才有 ROI</li>
+<li><strong>低估设计成本</strong>：ASIC 的 NRE 成本极高，需要足够产量分摊</li>
+<li><strong>忽略软件生态</strong>：没有好的编译器/SDK，DSA 再强也难推广</li>
+<li><strong>过度专用化</strong>：太专一可能导致需求变化时硬件作废</li>
+<li><strong>认为 DSA 永远是 ASIC</strong>：FPGA 和 CGRA 在灵活性和性能之间提供了有用折中</li>
+<li><strong>低估数据搬运的开销</strong>：加速器再快，数据送不进去也是白搭</li>
+<li><strong>忽视热密度问题</strong>：加速器的高利用率可能导致热密度集中在局部区域</li>
+</ol>
+<h2>7.10 总结<span class="hx:absolute hx:-mt-20" id="710-总结"></span>
+    <a href="#710-%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>本章核心要点：</p>
+<ol>
+<li><strong>DSA 是后 Dennard 时代的主要性能增长引擎</strong>——通过专用化大幅提升每瓦性能</li>
+<li><strong>三个设计原则</strong>：专用存储层次、窄数据路径、最少控制逻辑</li>
+<li><strong>Google TPU</strong> 是 DSA 的经典案例——Systolic Array + 专用存储，在推理中实现 30–50x 的每瓦性能提升</li>
+<li><strong>GPU 从通用计算向 ML DSA 演进</strong>（Tensor Core 的引入）</li>
+<li><strong>Roofline 模型</strong>是 DSA 性能分析的基本工具，用于识别带宽还是计算瓶颈</li>
+<li><strong>DSA 与传统 CPU 互补</strong>——异构 SoC (CPU + GPU + NPU) 是未来趋势</li>
+<li><strong>暗硅 + DSA</strong>：让晶体管做有用的事，而不是闲着</li>
+</ol>
+<hr>
+<p><strong>下一章 → 附录 C：流水线基础与中级概念 (Pipelining)</strong></p>
+          
+        </div>
+        
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">
+      最后更新于 <time datetime="2026-07-10T10:07:37.000Z">2026-07-10</time> • CambridgeLv</div><div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/docs/ca-notes/ch06-wsc/"
+        title="计算机体系结构学习笔记 — 第6章 仓库级计算机"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>计算机体系结构学习笔记 — 第6章 仓库级计算机</a><a
+        href="/docs/ca-notes/appendixc-pipelining/"
+        title="计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>由 Hextra 驱动<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2026 Hextra Project.</div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="搜索文档..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="搜索文档..."
+          aria-label="搜索文档..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="搜索结果"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>无结果</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.min.b92364177596421c7ae15e83b3b0ed2c17ddcf4eedb8f07f9bbecc43aade8258.js" integrity="sha256-uSNkF3WWQhx64V6Ds7DtLBfdz07tuPB/m77MQ6reglg="></script>
+<script defer src="/js/flexsearch.433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c.js" integrity="sha256-Qz6UGopXPruZMfwW/HUmara5P1aawvtPPcZoguBBb0w=" crossorigin="anonymous"></script><script defer src="/zh-cn.search.min.d2317a291d120891bff635c663a36430adc86ca85e06a2b34951853da7f792ba.js" integrity="sha256-0jF6KR0SCJG/9jXGY6NkMK3IbKheBqKzSVGFPaf3kro="></script>
+    <script defer src="/zh-cn.search-dialog.min.43f138c37a644bf0d959fbe0da2b6cd7a2356c7d131e12960231cb40a4e76b60.js" integrity="sha256-Q/E4w3pkS/DZWfvg2its16I1bH0THhKWAjHLQKTna2A="></script>
+  </body>
+</html>

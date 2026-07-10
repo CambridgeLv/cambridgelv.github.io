@@ -1,0 +1,751 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lv的小站 – 乱序执行</title>
+    <link>https://cambridgelv.github.io/tags/%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C/</link>
+    <description>Recent content in 乱序执行 on Lv的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 10 Jul 2026 10:30:00 +0800</lastBuildDate>
+    
+	  <atom:link href="https://cambridgelv.github.io/tags/%E4%B9%B1%E5%BA%8F%E6%89%A7%E8%A1%8C/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>计算机体系结构学习笔记 — 第3章 指令级并行</title>
+      <link>https://cambridgelv.github.io/docs/ca-notes/ch03-ilp/</link>
+      <pubDate>Fri, 10 Jul 2026 10:30:00 +0800</pubDate>
+      
+      <guid>https://cambridgelv.github.io/docs/ca-notes/ch03-ilp/</guid>
+      <description>
+        
+        
+        &lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;原著&lt;/strong&gt;: &lt;em&gt;Computer Architecture: A Quantitative Approach&lt;/em&gt;, 6th Edition — John L. Hennessy &amp;amp; David A. Patterson&lt;/p&gt;
+&lt;p&gt;指令级并行（ILP）是超标量处理器的核心。本章覆盖流水线、分支预测、乱序执行、寄存器重命名、多发射等技术。&lt;/p&gt;
+
+&lt;/blockquote&gt;
+&lt;h2&gt;3.1 引言 — 什么是指令级并行&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;31-引言--什么是指令级并行&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#31-%e5%bc%95%e8%a8%80--%e4%bb%80%e4%b9%88%e6%98%af%e6%8c%87%e4%bb%a4%e7%ba%a7%e5%b9%b6%e8%a1%8c&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;ILP 的基本概念&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;ilp-的基本概念&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#ilp-%e7%9a%84%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;指令级并行 (Instruction-Level Parallelism)&lt;/strong&gt; 是指程序中指令之间可以重叠执行的程度。两条指令如果互相独立（没有数据依赖、控制依赖或资源冲突），就可以并行执行。&lt;/p&gt;
+&lt;p&gt;ILP 的来源：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;流水线 (Pipelining)&lt;/strong&gt;：在不同阶段重叠执行多条指令&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;多发射 (Multiple Issue)&lt;/strong&gt;：每个周期发射多条指令&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;乱序执行 (Out-of-Order Execution)&lt;/strong&gt;：不按程序顺序执行，提高利用率&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;猜测执行 (Speculation)&lt;/strong&gt;：在不确定结果时先执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;ILP 是你做 RV32I 核心最核心的部分。流水线、转发、分支预测，这些在附录 C 里有基础概念，第三章则把这些提升到高级技术层面——超标量、乱序、VLIW。
+简单来说：如果附录 C 教你做 5 级流水线，那第三章教你怎么做那些能跑 SPEC 的商用处理器。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;流水线回顾&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;流水线回顾&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%9b%9e%e9%a1%be&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;5 级 RISC 流水线（附录 C 基础）：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;IF → ID → EX → MEM → WB&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;流水线冒险 (Hazards)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;结构冒险&lt;/strong&gt;：硬件资源冲突&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据冒险&lt;/strong&gt;：指令间数据依赖&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;控制冒险&lt;/strong&gt;：分支指令导致的取指不确定性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;数据冒险分类 (Tomasulo 标记法)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;数据冒险分类-tomasulo-标记法&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%95%b0%e6%8d%ae%e5%86%92%e9%99%a9%e5%88%86%e7%b1%bb-tomasulo-%e6%a0%87%e8%ae%b0%e6%b3%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;依赖类型&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;名称&lt;/th&gt;
+					&lt;th&gt;含义&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;转发方案&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;RAW&lt;/strong&gt;&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;真依赖 (Read After Write)&lt;/td&gt;
+					&lt;td&gt;后一条读取前一条的结果&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;必须转发/等待&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;WAR&lt;/strong&gt;&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;反依赖 (Write After Read)&lt;/td&gt;
+					&lt;td&gt;后一条覆盖前一条要读的寄存器&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;寄存器重命名消除&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;&lt;strong&gt;WAW&lt;/strong&gt;&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;输出依赖 (Write After Write)&lt;/td&gt;
+					&lt;td&gt;两条写同一寄存器&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;寄存器重命名消除&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;3.2 流水线的高级技术&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;32-流水线的高级技术&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#32-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e9%ab%98%e7%ba%a7%e6%8a%80%e6%9c%af&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;深流水线&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;深流水线&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%b7%b1%e6%b5%81%e6%b0%b4%e7%ba%bf&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;现代处理器采用 14–20+ 级流水线（甚至更深），核心原因：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每级逻辑更少 → 频率更高&lt;/li&gt;
+&lt;li&gt;但分支误预测惩罚更大&lt;/li&gt;
+&lt;li&gt;转发逻辑更复杂&lt;/li&gt;
+&lt;li&gt;流水线停顿开销更大&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;示例&lt;/strong&gt;：Intel Pentium 4 (NetBurst) 有 20–31 级流水线，频率达到 3.8GHz，但因分支误预测惩罚太大，总体 IPC 并不理想。&lt;/p&gt;
+&lt;h3&gt;多发射 (Multiple Issue)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;多发射-multiple-issue&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%a4%9a%e5%8f%91%e5%b0%84-multiple-issue&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;每个周期发射多条指令。两种实现方式：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;特性&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;静态多发射 (VLIW)&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;动态多发射 (超标量)&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;指令分组&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;编译器完成&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;硬件完成&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;数据依赖检查&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;编译器&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;硬件（乱序窗口）&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;硬件复杂度&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;低&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;高&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;向后兼容&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;差（指令格式改变）&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;好&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;典型代表&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Intel Itanium&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;x86, ARM, RISC-V 超标量&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;超标量处理器的基本结构&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;取指 → 译码 → 重命名 → 发射 → 执行 → 写回 → 提交
+       ↓                              ↓
+    (并行译码n条)              (多个功能单元并行执行)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;VLIW (Very Long Instruction Word)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;vliw-very-long-instruction-word&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#vliw-very-long-instruction-word&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;VLIW 将多条独立操作打包成一条长指令，由编译器确保指令间的独立性。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;硬件简单（不需要复杂的调度逻辑）&lt;/li&gt;
+&lt;li&gt;功耗效率高&lt;/li&gt;
+&lt;li&gt;可预测性强&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;编译器压力大&lt;/li&gt;
+&lt;li&gt;代码膨胀（空操作填充）&lt;/li&gt;
+&lt;li&gt;向后不兼容（指令格式绑定深度）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;VLIW 在 DSP 和 GPU 中很常见，通用处理器已经几乎放弃了（Itanium 是前车之鉴）。但最近 AI 加速器的指令调度又有点 VLIW 的风格——编译器提前排好管线。这说明 VLIW 在领域专用场景下其实很有效。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;3.3 分支预测&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;33-分支预测&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#33-%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;分支预测的重要性&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;分支预测的重要性&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b%e7%9a%84%e9%87%8d%e8%a6%81%e6%80%a7&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;对于 15 级流水线的处理器：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每 5–6 条指令就有一条分支&lt;/li&gt;
+&lt;li&gt;分支方向的确定一般在 EX 级完成&lt;/li&gt;
+&lt;li&gt;每次分支误预测浪费 10+ 个周期&lt;/li&gt;
+&lt;li&gt;误预测率每降低 1%，性能提升约 2–3%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;静态分支预测&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;静态分支预测&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e9%9d%99%e6%80%81%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;策略&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;预测率&lt;/th&gt;
+					&lt;th&gt;描述&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;总是跳转&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;50–60%&lt;/td&gt;
+					&lt;td&gt;向后分支（循环）预测跳转&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;总是不跳转&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;40–50%&lt;/td&gt;
+					&lt;td&gt;简单实现&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;向后跳转/向前不跳转&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~70%&lt;/td&gt;
+					&lt;td&gt;常见循环分支准确&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;配置文件引导&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~80%&lt;/td&gt;
+					&lt;td&gt;用 profile 数据指导编译期预测&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;动态分支预测&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;动态分支预测&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%8a%a8%e6%80%81%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;1-位饱和计数器&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;1-位饱和计数器&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#1-%e4%bd%8d%e9%a5%b1%e5%92%8c%e8%ae%a1%e6%95%b0%e5%99%a8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;记录上次分支的结果，预测相同方向。准确率 ~80%（对循环的最后一次预测失败）。&lt;/p&gt;
+&lt;h4&gt;2-位饱和计数器&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;2-位饱和计数器&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#2-%e4%bd%8d%e9%a5%b1%e5%92%8c%e8%ae%a1%e6%95%b0%e5%99%a8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;有 4 个状态：&lt;strong&gt;强不跳转、弱不跳转、弱跳转、强跳转&lt;/strong&gt;。需要连续两次误预测才翻转。&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;    ┌─────────┐    不跳转    ┌─────────┐
+    │强不跳转 │ ←───────── │弱不跳转 │
+    └────┬────┘            └────┬────┘
+         │                      │
+    跳转 │                 跳转 │
+         │                      │
+         ▼                      ▼
+    ┌─────────┐    不跳转    ┌─────────┐
+    │弱跳转   │ ←───────── │强跳转   │
+    └─────────┘             └─────────┘&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h4&gt;相关预测器 (Correlating Predictor)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;相关预测器-correlating-predictor&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e7%9b%b8%e5%85%b3%e9%a2%84%e6%b5%8b%e5%99%a8-correlating-predictor&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;利用&lt;strong&gt;最近分支的历史&lt;/strong&gt;来预测当前分支。因为分支结果往往相关：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// 分支 b1
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;   &lt;span class=&#34;c1&#34;&gt;// 分支 b2 — 结果常与 b1 相关
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;$(m,n)$ 预测器&lt;/strong&gt;：使用最近 m 个分支的全局历史作为索引，每个历史模式对应一个 n-bit 饱和计数器。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(1,2)：1 位历史 + 每历史 2 位计数器 = 2 个 2-bit 表&lt;/li&gt;
+&lt;li&gt;(2,2)：2 位历史 + 每历史 2 位计数器 = 4 个 2-bit 表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Tournament 预测器&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tournament-预测器&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tournament-%e9%a2%84%e6%b5%8b%e5%99%a8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;组合&lt;strong&gt;全局预测器&lt;/strong&gt;和&lt;strong&gt;局部预测器&lt;/strong&gt;，再有一个选择器在两者之间选择。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Alpha 21264 的 Tournament 预测器&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;局部预测器：基于每条分支的单独历史&lt;/li&gt;
+&lt;li&gt;全局预测器：基于全局分支历史&lt;/li&gt;
+&lt;li&gt;选择器：使用 2 位计数器选择预测器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总预测准确率可达 95% 以上。&lt;/p&gt;
+&lt;h4&gt;混合预测器 (TAGE)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;混合预测器-tage&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%b7%b7%e5%90%88%e9%a2%84%e6%b5%8b%e5%99%a8-tage&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;TAGE (TAgged GEometric)&lt;/strong&gt; 是现代处理器的主流预测器：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用多个不同长度的全局历史表&lt;/li&gt;
+&lt;li&gt;长的历史表捕捉长时间的相关性&lt;/li&gt;
+&lt;li&gt;短的捕捉刚到期的相关性&lt;/li&gt;
+&lt;li&gt;每个表带 tag（标签位）避免别名&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;TAGE 在各种 SPEC 程序中都能达到 96%+ 的预测率。&lt;/p&gt;
+&lt;h4&gt;分支目标缓冲 (BTB)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;分支目标缓冲-btb&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%88%86%e6%94%af%e7%9b%ae%e6%a0%87%e7%bc%93%e5%86%b2-btb&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h4&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 伪代码：BTB 的访问逻辑
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BTB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PC&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exists&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;predicted_target&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BTB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PC&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;].&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;target&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;predicted_taken&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;predicted_taken&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 不跳转
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;BTB 预测分支的&lt;strong&gt;目标地址&lt;/strong&gt;。对于条件分支，BTB 提供目标地址；对于无条件跳转，直接取目标地址。&lt;/p&gt;
+&lt;h3&gt;分支误预测惩罚&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;分支误预测惩罚&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%88%86%e6%94%af%e8%af%af%e9%a2%84%e6%b5%8b%e6%83%a9%e7%bd%9a&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;对于 n 级流水线的标量处理器：
+&lt;/p&gt;
+&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;B&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;_&lt;/mi&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mtext&gt; &lt;/mtext&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;Branch\_Penalty = n - 1 \space cycles&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1.0044em;vertical-align:-0.31em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.05017em;&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02778em;&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;an&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mord&#34; style=&#34;margin-right:0.02778em;&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;na&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;lt&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.6667em;vertical-align:-0.0833em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.8889em;vertical-align:-0.1944em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;mspace&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;cyc&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.01968em;&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;es&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;p&gt;对于超标量处理器（每周期发射 k 条指令）：
+&lt;/p&gt;
+&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;B&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;h&lt;/mi&gt;&lt;mi mathvariant=&#34;normal&#34;&gt;_&lt;/mi&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;≈&lt;/mo&gt;&lt;mo stretchy=&#34;false&#34;&gt;(&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mo stretchy=&#34;false&#34;&gt;)&lt;/mo&gt;&lt;mo&gt;×&lt;/mo&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mtext&gt; &lt;/mtext&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;Branch\_Penalty \approx (n - 1) \times k \space instructions\;lost&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1.0044em;vertical-align:-0.31em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.05017em;&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02778em;&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;an&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;h&lt;/span&gt;&lt;span class=&#34;mord&#34; style=&#34;margin-right:0.02778em;&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.13889em;&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;e&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;na&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;lt&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.03588em;&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;≈&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mopen&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;−&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;mclose&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mbin&#34;&gt;×&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2222em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.6944em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.03148em;&#34;&gt;k&lt;/span&gt;&lt;span class=&#34;mspace&#34;&gt; &lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;in&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.02778em;&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;u&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;o&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;s&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34; style=&#34;margin-right:0.01968em;&#34;&gt;l&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;t&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;p&gt;这就是为什么随着流水线加深和发射宽度增加，分支预测的重要性急剧上升。&lt;/p&gt;
+&lt;h2&gt;3.4 乱序执行与寄存器重命名&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;34-乱序执行与寄存器重命名&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#34-%e4%b9%b1%e5%ba%8f%e6%89%a7%e8%a1%8c%e4%b8%8e%e5%af%84%e5%ad%98%e5%99%a8%e9%87%8d%e5%91%bd%e5%90%8d&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;为什么需要乱序执行&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;为什么需要乱序执行&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e4%b9%b1%e5%ba%8f%e6%89%a7%e8%a1%8c&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;当一条指令因为数据依赖而停顿，后续无关指令应该可以跳过它继续执行。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;乱序执行的核心思想&lt;/strong&gt;：尽可能快地执行&lt;strong&gt;就绪&lt;/strong&gt;的指令，而不是必须按程序顺序。&lt;/p&gt;
+&lt;h3&gt;Tomasulo 算法&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;tomasulo-算法&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#tomasulo-%e7%ae%97%e6%b3%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Tomasulo 算法的三个关键组件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;保留站 (Reservation Stations)&lt;/strong&gt;：等待就绪的操作数，负责监视公共数据总线 (CDB)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;公共数据总线 (Common Data Bus)&lt;/strong&gt;：广播结果给所有等待它的保留站&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;寄存器重命名 (Register Renaming)&lt;/strong&gt;：通过寄存器别名表 (RAT) 消除 WAR 和 WAW 依赖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;操作流程&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;1. 指令发射：从指令队列取指令
+   → 检查是否存在功能单元的保留站空位
+   → 从 RAT 读取寄存器 tag（不是值！）
+   → 如果操作数就绪（在寄存器中），直接拿到值
+   → 如果不就绪（在某个保留站中等待），记录该保留站的 tag
+
+2. 指令执行：当保留站中的操作数全部就绪后
+   → 执行运算
+   → 结果放到 CDB 上
+
+3. 写结果：通过 CDB 广播结果
+   → 所有等待该结果的保留站拿到值
+   → RAT 更新
+   → 提交逻辑记录&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;&lt;p&gt;Tomasulo 是硬件调度器的经典。你在 RV32I 核心里暂时用不到这个（那是乱序处理器的范畴），但理解它的思想很重要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;寄存器重命名把架构寄存器和物理寄存器解耦，让硬件能自由调度&lt;/li&gt;
+&lt;li&gt;保留站类似于你写 RTL 时的 issue queue/FIFO&lt;/li&gt;
+&lt;li&gt;CDB 的广播设计在高频率下是个时序挑战——如果一个 cycle 内太多结果要广播，fanout 太大&lt;/li&gt;
+&lt;/ul&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;寄存器重命名的实现&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;寄存器重命名的实现&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%af%84%e5%ad%98%e5%99%a8%e9%87%8d%e5%91%bd%e5%90%8d%e7%9a%84%e5%ae%9e%e7%8e%b0&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;架构寄存器 (Architectural Register)&lt;/strong&gt;：程序员/编译器看到的寄存器（如 x0–x31）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;物理寄存器 (Physical Register)&lt;/strong&gt;：硬件实际的寄存器文件（可能 64–256 个）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;RAT (Register Alias Table)&lt;/strong&gt;：将架构寄存器映射到物理寄存器&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;pre&gt;&lt;code&gt;原始程序：          after renaming：
+add x1, x2, x3  →  add p40, p38, p39
+add x1, x4, x5  →  add p41, p42, p43  // x1 → 新的物理寄存器
+add x6, x1, x7  →  add p44, p41, p45  // 使用最新的映射&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;第二条指令对 &lt;code&gt;x1&lt;/code&gt; 的写不会因为 WAR/WAW 依赖而阻塞第一条指令&lt;/li&gt;
+&lt;li&gt;第三条指令的 &lt;code&gt;x1&lt;/code&gt; 自动指向最新的版本（p41）&lt;/li&gt;
+&lt;li&gt;第一条指令的结果写入 p40 而不是 p41，互不干扰&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;重排序缓冲 (ROB)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;重排序缓冲-rob&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e9%87%8d%e6%8e%92%e5%ba%8f%e7%bc%93%e5%86%b2-rob&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;ROB (Reorder Buffer) 是乱序处理器的提交点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;指令按程序顺序写入 ROB&lt;/li&gt;
+&lt;li&gt;乱序执行结束后通过 CDB 写入 ROB&lt;/li&gt;
+&lt;li&gt;只有最旧的指令的物理寄存器结果才能提交到架构寄存器&lt;/li&gt;
+&lt;li&gt;支持精确异常（exception 发生时，ROB 中所有后续指令结果被丢弃）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;精确异常 (Precise Exception)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;精确异常-precise-exception&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e7%b2%be%e7%a1%ae%e5%bc%82%e5%b8%b8-precise-exception&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;乱序处理器必须保证异常发生时，处理器的状态与程序顺序执行到异常点一致。&lt;/p&gt;
+&lt;p&gt;ROB 使精确异常成为可能：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;异常发生时，标记引发异常的 ROB 条目&lt;/li&gt;
+&lt;li&gt;清空 ROB 中所有更新指令（不提交到架构状态）&lt;/li&gt;
+&lt;li&gt;将架构状态恢复到异常点之前&lt;/li&gt;
+&lt;li&gt;跳转到异常处理程序&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;3.5 猜测执行 (Speculation)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;35-猜测执行-speculation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#35-%e7%8c%9c%e6%b5%8b%e6%89%a7%e8%a1%8c-speculation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;控制猜测&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;控制猜测&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%8e%a7%e5%88%b6%e7%8c%9c%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;分支预测 + 猜测执行&lt;/strong&gt;：预测分支方向，沿预测路径取指和执行。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;恢复机制&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;分支误预测时，清空预测路径上所有指令的 ROB 条目&lt;/li&gt;
+&lt;li&gt;分支指令后的所有架构寄存器恢复&lt;/li&gt;
+&lt;li&gt;从正确目标地址重新取指&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;数据猜测&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;数据猜测&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%95%b0%e6%8d%ae%e7%8c%9c%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;加载猜测 (Load Speculation)&lt;/strong&gt;：假设加载不会触发异常&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;值预测 (Value Prediction)&lt;/strong&gt;：预测指令的结果值（预测正确则跳过执行）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内存依赖预测 (Memory Dependency Prediction)&lt;/strong&gt;：预测加载和存储之间的顺序关系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;猜测执行的问题&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;猜测执行的问题&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e7%8c%9c%e6%b5%8b%e6%89%a7%e8%a1%8c%e7%9a%84%e9%97%ae%e9%a2%98&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;功耗浪费&lt;/strong&gt;：误预测路径上的所有指令消耗了功耗但没产生有效结果&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全漏洞&lt;/strong&gt;：Spectre / Meltdown 攻击利用的是猜测执行的副作用对缓存的影响&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;硬件复杂度&lt;/strong&gt;：恢复机制需要足够的缓冲和清空逻辑&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;Spectre/Meltdown 这两个漏洞就是猜测执行的直接后果——CPU 在预测路径上执行的指令可能把不应该有权限的数据加载到缓存中，攻击者通过时间差就能推断出缓存状态。
+做架构设计时，猜测执行的安全性已经成为一个必须考虑的因素，而不只是性能和功耗。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;3.6 超标量实现技术&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;36-超标量实现技术&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#36-%e8%b6%85%e6%a0%87%e9%87%8f%e5%ae%9e%e7%8e%b0%e6%8a%80%e6%9c%af&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;发射宽度与 IPC&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;发射宽度与-ipc&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%8f%91%e5%b0%84%e5%ae%bd%e5%ba%a6%e4%b8%8e-ipc&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;处理器&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;发射宽度&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;典型 IPC&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;发布年份&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Intel Pentium&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;0.5–1.0&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1993&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Intel Core 2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;4&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1.5–2.5&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2006&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Intel Skylake&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;6&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2.0–3.5&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2015&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Apple M1 (Firestorm)&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;8&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;3.0–4.5&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2020&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;IPC 瓶颈&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;指令级并行有限（平均 2–4 条无关指令/窗口）&lt;/li&gt;
+&lt;li&gt;分支预测不够完美&lt;/li&gt;
+&lt;li&gt;缓存缺失增加&lt;/li&gt;
+&lt;li&gt;功能单元不够&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;取指与译码&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;取指与译码&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%8f%96%e6%8c%87%e4%b8%8e%e8%af%91%e7%a0%81&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;取指带宽&lt;/strong&gt;：每周期取 16–32 字节指令（x86 变长指令需要复杂的前端解码）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指令缓冲&lt;/strong&gt;：取指队列缓存预取的指令&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;预解码&lt;/strong&gt;：在译码前标记指令边界和分支&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;功能单元组成&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;功能单元组成&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%8a%9f%e8%83%bd%e5%8d%95%e5%85%83%e7%bb%84%e6%88%90&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;功能单元类型&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;典型数量&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;延迟&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;整数 ALU&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2–6&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1 cycle&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;整数乘法&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;3–5 cycles&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;分支单元&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–2 cycles&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;浮点加&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1–2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;3–4 cycles&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;浮点乘&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;1&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;4–5 cycles&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;加载/存储&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2–3&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;3–4 cycles (L1 hit)&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;调度窗口 (Issue Window / Scheduler)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;调度窗口-issue-window--scheduler&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e8%b0%83%e5%ba%a6%e7%aa%97%e5%8f%a3-issue-window--scheduler&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;处理器&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;调度窗口大小&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Intel Core 2&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~32 entries&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Intel Skylake&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~97 entries&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;Apple M1&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;~630 entries&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;更大的调度窗口 → 更多的待调度的就绪指令 → 更高的 ILP 利用 → 更大的功耗和面积&lt;/p&gt;
+&lt;h2&gt;3.7 代码调度与编译器优化&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;37-代码调度与编译器优化&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#37-%e4%bb%a3%e7%a0%81%e8%b0%83%e5%ba%a6%e4%b8%8e%e7%bc%96%e8%af%91%e5%99%a8%e4%bc%98%e5%8c%96&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;循环展开 (Loop Unrolling)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;循环展开-loop-unrolling&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%be%aa%e7%8e%af%e5%b1%95%e5%bc%80-loop-unrolling&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 原循环
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 展开后
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;好处&lt;/strong&gt;：减少循环控制开销，增加 ILP（更多独立指令供调度）
+&lt;strong&gt;代价&lt;/strong&gt;：代码膨胀&lt;/p&gt;
+&lt;h3&gt;软件流水 (Software Pipelining)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;软件流水-software-pipelining&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e8%bd%af%e4%bb%b6%e6%b5%81%e6%b0%b4-software-pipelining&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;重排循环体指令，使得不同迭代的指令重叠执行，类似硬件的流水线概念。&lt;/p&gt;
+&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 软件流水后的效果（伪代码）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// cycle 1: 迭代 i 的循环体前段 + 迭代 i+1 的中段 + 迭代 i+2 的后段
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;复制代码&#34;
+    aria-label=&#34;复制代码&#34;
+    data-copied-label=&#34;已复制！&#34;
+  &gt;
+    &lt;div class=&#34;hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;全局调度 (Global Scheduling)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;全局调度-global-scheduling&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%85%a8%e5%b1%80%e8%b0%83%e5%ba%a6-global-scheduling&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;跨越基本块的指令调度，需要处理控制流。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;追踪调度 (Trace Scheduling)&lt;/strong&gt;：编译器选择一条最热门路径（trace）作为假设的执行路径，沿该路径全局调度指令，对偏离路径的情况插入补偿代码。VLIW 编译器常用。&lt;/p&gt;
+&lt;h3&gt;超级块 (Superblock) 与超块 (Hyperblock)&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;超级块-superblock-与超块-hyperblock&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e8%b6%85%e7%ba%a7%e5%9d%97-superblock-%e4%b8%8e%e8%b6%85%e5%9d%97-hyperblock&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;超级块&lt;/strong&gt;：只有一个入口（优化后的追踪路径），多个出口&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;超块&lt;/strong&gt;：通过 if-conversion 将条件分支转换为谓词代码后的基本块集合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;3.8 功耗感知的 ILP 设计&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;38-功耗感知的-ilp-设计&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#38-%e5%8a%9f%e8%80%97%e6%84%9f%e7%9f%a5%e7%9a%84-ilp-%e8%ae%be%e8%ae%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;ILP 的设计在功耗方面代价很大：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;功能&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;功耗占比（典型处理器）&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;取指/译码&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;15–25%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;调度/乱序窗口&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;15–25%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;寄存器文件&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;5–15%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;分支预测&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2–5%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;功能单元&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;10–20%&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;缓存/存储层次&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;25–40%&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;ILP 的收益递减&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从 2 发射到 4 发射：IPC 提升 ~60%，功耗增加 ~100%&lt;/li&gt;
+&lt;li&gt;从 4 发射到 8 发射：IPC 提升 ~30%，功耗增加 ~200%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这就是为什么现代处理器在追求 ILP 的同时必须考虑&lt;strong&gt;每瓦性能&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2&gt;3.9 综合案例：Apple M1 的 ILP 设计&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;39-综合案例apple-m1-的-ilp-设计&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#39-%e7%bb%bc%e5%90%88%e6%a1%88%e4%be%8bapple-m1-%e7%9a%84-ilp-%e8%ae%be%e8%ae%a1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Apple M1 (Firestorm 大核) 是 ILP 设计的现代典范：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;发射宽度&lt;/strong&gt;：8（解码宽度 8）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调度窗口&lt;/strong&gt;：~630 entries（远大于竞争对手）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ROB&lt;/strong&gt;：~630 entries&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;物理寄存器&lt;/strong&gt;：~384&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;功能单元&lt;/strong&gt;：6 ALU, 3 分支, 3 加载, 2 存储&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;L1 指令缓存&lt;/strong&gt;：192KB (！)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分支预测&lt;/strong&gt;：TAGE 衍生的混合预测器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;M1 Firestorm 的 IPC 在 SPEC06 中达到 3.5–4.5，远高于同期的 x86 处理器（2.0–3.0），说明&lt;strong&gt;大调度窗口 + 高发射宽度 + 好的分支预测 = 高 IPC&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2&gt;3.10 常见谬误与陷阱&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;310-常见谬误与陷阱&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#310-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;假设 IPC 与发射宽度成正比&lt;/strong&gt;：实际 IPC 受限于程序内的 ILP（平均不到 4），盲目增加发射宽度没用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;忽视分支预测的全局影响&lt;/strong&gt;：每 1% 的误预测率损失可能对应 1–2% 的性能&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;认为深流水线总是好的&lt;/strong&gt;：Pentium 4 的经验证明，深度需要平衡&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;忽略功耗墙&lt;/strong&gt;：ILP 具有功耗收益递减特征&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;假设乱序执行总能提高性能&lt;/strong&gt;：媒体和 DSP 处理中，序执行配合编译器调度可能更高效&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;低估寄存器重命名的面积代价&lt;/strong&gt;：物理寄存器文件和 RAT 的功耗可观&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;忽视存储层次对 ILP 的影响&lt;/strong&gt;：内存延迟决定了指令调度窗口至少需要覆盖缓存缺失惩罚&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;认为编译器可以替代硬件调度&lt;/strong&gt;：静态调度和动态调度各有优势，两者互补&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;3.11 总结&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;311-总结&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#311-%e6%80%bb%e7%bb%93&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本章核心要点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ILP 是通过重叠执行独立指令来提高性能&lt;/strong&gt;，其来源包括流水线、多发射、乱序执行和猜测执行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据依赖&lt;/strong&gt;（RAW/WAR/WAW）是限制 ILP 的根本因素，&lt;strong&gt;寄存器重命名&lt;/strong&gt;消除 WAR 和 WAW&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;分支预测&lt;/strong&gt;是提升 ILP 的关键——深流水线和高发射宽度使预测准确率的重要性倍增&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;乱序执行&lt;/strong&gt;通过 Tomasulo 算法的保留站 + CDB + RAT 实现，&lt;strong&gt;ROB&lt;/strong&gt; 支持精确异常&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;超标量&lt;/strong&gt;宽度和调度窗口大小决定硬件能利用的 ILP 上限&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;编译器优化&lt;/strong&gt;（循环展开、软件流水、全局调度）补充硬件的 ILP 挖掘能力&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ILP 有收益递减效应&lt;/strong&gt;— 功耗和复杂度随发射宽度超线性增长，IPC 提升亚线性增长&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;下一章 → 第 4 章：数据级并行 (Data-Level Parallelism)&lt;/strong&gt;&lt;/p&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>

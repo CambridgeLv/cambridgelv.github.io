@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="index, follow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念 – Lv的小站</title>
+  <meta name="description" content="" /><link rel="canonical" href="https://cambridgelv.github.io/docs/ca-notes/appendixc-pipelining/" itemprop="url" />
+
+<meta property="og:title" content="计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念">
+<meta
+  property="og:description"
+  content="
+    
+      
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="https://cambridgelv.github.io/docs/ca-notes/appendixc-pipelining/"><meta property="article:section" content="docs">
+
+<meta
+  property="article:published_time"
+  content="2026-07-10T10:00:00+08:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2026-07-10T10:07:37+08:00">
+
+
+
+	<meta itemprop="name" content="计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念">
+	<meta itemprop="description" content="Lv的小站 - 芯片架构、数字中端、计算机体系结构学习笔记">
+	<meta itemprop="datePublished" content="2026-07-10T10:00:00+08:00">
+	<meta itemprop="dateModified" content="2026-07-10T10:07:37+08:00">
+	<meta itemprop="wordCount" content="3680">
+	<meta itemprop="keywords" content="计算机体系结构,流水线,冒险,转发,分支预测">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念">
+	<meta name="twitter:description" content="Lv的小站 - 芯片架构、数字中端、计算机体系结构学习笔记">
+
+    <link rel="preload" href="/css/compiled/main.min.cab6ca91ef67bf58dd994e3dc2e80052930bc9a2a07c35158fe06c6f03cfcbdc.css" as="style" integrity="sha256-yrbKke9nv1jdmU49wugAUpMLyaKgfDUVj&#43;BsbwPPy9w=" />
+    <link href="/css/compiled/main.min.cab6ca91ef67bf58dd994e3dc2e80052930bc9a2a07c35158fe06c6f03cfcbdc.css" rel="stylesheet" integrity="sha256-yrbKke9nv1jdmU49wugAUpMLyaKgfDUVj&#43;BsbwPPy9w=" />
+
+  
+
+
+
+
+
+
+<script src="/js/main-head.min.bbb353731723c08eaf67b231610392e3665384806ddb6bee51d4a965494c762e.js" integrity="sha256-u7NTcxcjwI6vZ7IxYQOS42ZThIBt22vuUdSpZUlMdi4="></script>
+
+  
+  <link rel="stylesheet" href="/css/katex.min.6aff82415cedb412f2c82c8c2c57239419d1e6b45f37df0079ef776bc0f2e08fc61f5cb62aeee1f80fb4ee99c229a86d01055999cdbd206b00a82422abdaa230.css" integrity="sha512-av&#43;CQVzttBLyyCyMLFcjlBnR5rRfN98Aee93a8Dy4I/GH1y2Ku7h&#43;A&#43;07pnCKahtAQVZmc29IGsAqCQiq9qiMA==" />
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">跳至内容</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-1 hx:md:gap-2 hx:h-[var(--hextra-navbar-height)] hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="32" width="32" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo-dark.svg" alt="Dark Logo" height="32" width="32" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">Lv的小站</span>
+</a>
+<a
+  title=""
+  href="/docs"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:font-medium"
+><span class="hx:text-center">体系结构笔记</span>
+</a><a
+  title=""
+  href="/blog"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">博客</span>
+</a><a
+  title=""
+  href="/about"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">关于</span>
+</a><button
+    type="button"
+    class="hextra-search-trigger"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="hextra-search-dialog"
+    aria-label="搜索文档..."
+  ><svg class="hextra-search-trigger-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span class="hextra-search-trigger-label">搜索文档...</span>
+    <kbd class="hextra-search-trigger-kbd">CTRL K</kbd>
+  </button>
+          <a class="hx:p-1 hx:md:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/CambridgeLv" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a><button type="button" aria-label="菜单" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-1 hx:rounded-sm hx:p-1 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class="hx:mx-auto hx:flex hextra-max-page-width">
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-[var(--hextra-navbar-height)] hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--hextra-navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+              <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">体系结构笔记</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div>
+              <div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch03-ilp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第3章 指令级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch02-memory-hierarchy/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch04-dlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第4章 数据级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch05-tlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第5章 线程级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch06-wsc/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第6章 仓库级计算机</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch07-dsa/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第7章 领域专用架构</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/docs/ca-notes/appendixc-pipelining/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</span>
+    </a>
+  </div>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#c1-%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%85%a5%e9%97%a8"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.1 流水线入门</a>
+            </li>
+          <li>
+              <a
+                href="#c2-%e6%95%b0%e6%8d%ae%e5%86%92%e9%99%a9%e4%b8%8e%e8%bd%ac%e5%8f%91"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.2 数据冒险与转发</a>
+            </li>
+          <li>
+              <a
+                href="#c3-%e6%8e%a7%e5%88%b6%e5%86%92%e9%99%a9"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.3 控制冒险</a>
+            </li>
+          <li>
+              <a
+                href="#c4-%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%8e%a7%e5%88%b6%e6%9a%82%e5%81%9c%e4%b8%8e%e5%86%b2%e5%88%b7"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.4 流水线控制：暂停与冲刷</a>
+            </li>
+          <li>
+              <a
+                href="#c5-%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.5 异常处理</a>
+            </li>
+          <li>
+              <a
+                href="#c6-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e5%b1%80%e9%99%90%e4%b8%8e%e6%94%b9%e8%bf%9b"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.6 流水线的局限与改进</a>
+            </li>
+          <li>
+              <a
+                href="#c7-%e7%bb%bc%e5%90%88rv32i-%e6%a0%b8%e5%bf%83%e7%9a%84%e6%b5%81%e6%b0%b4%e7%ba%bf%e8%ae%be%e8%ae%a1"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.7 综合：RV32I 核心的流水线设计</a>
+            </li>
+          <li>
+              <a
+                href="#c8-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.8 常见谬误与陷阱</a>
+            </li>
+          <li>
+              <a
+                href="#c9-%e6%80%bb%e7%bb%93"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >C.9 总结</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch01-fundamentals/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第1章 量化设计与分析基础</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+              <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">博客</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="false"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/dft-1-introduction/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">VLSI测试原理与架构 — 第1章 Introduction</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/dft-0-introduction/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">VLSI测试原理与架构 — 第0章 开始</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/blog/first-post/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">开篇</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+              <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+    
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+            <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:ltr:pr-8 hx:rtl:pl-8 hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch03-ilp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第3章 指令级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch02-memory-hierarchy/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第2章 存储层次</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch04-dlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第4章 数据级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch05-tlp/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第5章 线程级并行</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch06-wsc/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第6章 仓库级计算机</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch07-dsa/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第7章 领域专用架构</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/docs/ca-notes/appendixc-pipelining/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/docs/ca-notes/ch01-fundamentals/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">计算机体系结构学习笔记 — 第1章 量化设计与分析基础</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+        
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:hextra-focus-visible-inset hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+    
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="切换主题"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="切换主题"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">浅色</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">深色</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">跟随系统</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        浅色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        深色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        跟随系统
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="目录">
+    <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c1-%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%85%a5%e9%97%a8">C.1 流水线入门
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%bb%80%e4%b9%88%e6%98%af%e6%b5%81%e6%b0%b4%e7%ba%bf">什么是流水线
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e6%80%a7%e8%83%bd%e6%96%b9%e7%a8%8b">流水线的性能方程
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%86%92%e9%99%a9-hazards">流水线冒险 (Hazards)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%bb%93%e6%9e%84%e5%86%92%e9%99%a9">结构冒险
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c2-%e6%95%b0%e6%8d%ae%e5%86%92%e9%99%a9%e4%b8%8e%e8%bd%ac%e5%8f%91">C.2 数据冒险与转发
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e4%b8%89%e7%b1%bb%e6%95%b0%e6%8d%ae%e4%be%9d%e8%b5%96">三类数据依赖
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e4%b8%ad%e7%9a%84-raw-%e5%86%92%e9%99%a9">流水线中的 RAW 冒险
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e8%bd%ac%e5%8f%91-forwarding--bypassing">转发 (Forwarding / Bypassing)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e8%bd%ac%e5%8f%91%e6%a3%80%e6%b5%8b%e9%80%bb%e8%be%91">转发检测逻辑
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#load-use-%e5%86%92%e9%99%a9">Load-Use 冒险
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c3-%e6%8e%a7%e5%88%b6%e5%86%92%e9%99%a9">C.3 控制冒险
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%88%86%e6%94%af%e6%8c%87%e4%bb%a4%e7%9a%84%e5%a4%84%e7%90%86">分支指令的处理
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b%e5%9f%ba%e7%a1%80">分支预测基础
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%87%8f%e5%b0%91%e5%88%86%e6%94%af%e6%83%a9%e7%bd%9a%e7%9a%84%e7%a1%ac%e4%bb%b6%e6%8a%80%e6%9c%af">减少分支惩罚的硬件技术
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%bb%b6%e8%bf%9f%e5%88%86%e6%94%af-delayed-branch">延迟分支 (Delayed Branch)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c4-%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%8e%a7%e5%88%b6%e6%9a%82%e5%81%9c%e4%b8%8e%e5%86%b2%e5%88%b7">C.4 流水线控制：暂停与冲刷
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%9a%82%e5%81%9c-stall--bubble">暂停 (Stall / Bubble)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%86%b2%e5%88%b7-flush">冲刷 (Flush)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%8e%a7%e5%88%b6%e5%86%92%e9%99%a9%e7%9a%84%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%ae%9e%e7%8e%b0">控制冒险的流水线实现
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c5-%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86">C.5 异常处理
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%b2%be%e7%a1%ae%e5%bc%82%e5%b8%b8-precise-exception">精确异常 (Precise Exception)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e5%bc%82%e5%b8%b8%e4%bc%98%e5%85%88%e7%ba%a7">异常优先级
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e7%b2%be%e7%a1%ae%e5%bc%82%e5%b8%b8%e7%9a%84%e5%ae%9e%e7%8e%b0%e5%9b%b0%e9%9a%be">精确异常的实现困难
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c6-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e5%b1%80%e9%99%90%e4%b8%8e%e6%94%b9%e8%bf%9b">C.6 流水线的局限与改进
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%b7%b1%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e4%bb%a3%e4%bb%b7">深流水线的代价
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%8f%90%e9%ab%98%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%95%88%e7%8e%87%e7%9a%84%e9%80%94%e5%be%84">提高流水线效率的途径
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c7-%e7%bb%bc%e5%90%88rv32i-%e6%a0%b8%e5%bf%83%e7%9a%84%e6%b5%81%e6%b0%b4%e7%ba%bf%e8%ae%be%e8%ae%a1">C.7 综合：RV32I 核心的流水线设计
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%88%91%e4%bb%ac%e7%9a%84-rv32i-%e6%a0%b8%e5%bf%83%e9%87%87%e7%94%a8%e4%bb%80%e4%b9%88%e6%b5%81%e6%b0%b4%e7%ba%bf">我们的 RV32I 核心采用什么流水线？
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%a8%a1%e5%9d%97%e5%88%92%e5%88%86">流水线模块划分
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#%e8%bd%ac%e5%8f%91%e4%b8%8e%e6%8e%a7%e5%88%b6%e4%bf%a1%e5%8f%b7">转发与控制信号
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c8-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1">C.8 常见谬误与陷阱
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#c9-%e6%80%bb%e7%bb%93">C.9 总结
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><div class="hx:flex hx:items-start hx:gap-x-2 hx:font-medium hx:text-xs">
+            <div class="hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">标签</div>
+            <div class="hx:flex hx:flex-wrap hx:gap-y-1">
+              <a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">#计算机体系结构</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/">#流水线</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E5%86%92%E9%99%A9/">#冒险</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E8%BD%AC%E5%8F%91/">#转发</a><a class="hx:inline-block hx:whitespace-nowrap hx:mr-2 hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="/tags/%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/">#分支预测</a>
+            </div>
+          </div>
+        <button id="backToTop" tabindex="-1" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>返回顶部</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--hextra-navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        
+        <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/docs/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">笔记概览</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/docs/ca-notes/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">计算机体系结构学习笔记</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</div>
+  </div>
+
+        <div class="content">
+          
+            <div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mb-4">
+              <h1 class="hx:mb-0">计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</h1>
+              
+            </div>
+          
+          
+          <p>本文覆盖 5 级 RISC 流水线的全部基础与中级概念，与我们的 RV32I 核心项目直接对应。</p>
+<h2>C.1 流水线入门<span class="hx:absolute hx:-mt-20" id="c1-流水线入门"></span>
+    <a href="#c1-%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%85%a5%e9%97%a8" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>什么是流水线<span class="hx:absolute hx:-mt-20" id="什么是流水线"></span>
+    <a href="#%e4%bb%80%e4%b9%88%e6%98%af%e6%b5%81%e6%b0%b4%e7%ba%bf" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>流水线 (Pipelining)</strong> 允许多条指令的执行在时间上重叠。每个步骤称为一个<strong>流水级 (pipe stage)</strong>。</p>
+<p><strong>5 级 RISC 流水线</strong>：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">流水级</th>
+					<th>功能</th>
+					<th style="text-align: center">缩写</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">IF</td>
+					<td>取指令 (Instruction Fetch)</td>
+					<td style="text-align: center">IF</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">ID</td>
+					<td>指令译码 + 读寄存器 (Instruction Decode)</td>
+					<td style="text-align: center">ID</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">EX</td>
+					<td>执行 / ALU 运算 (Execute)</td>
+					<td style="text-align: center">EX</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MEM</td>
+					<td>数据内存访问 (Memory Access)</td>
+					<td style="text-align: center">MEM</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">WB</td>
+					<td>写回寄存器 (Write Back)</td>
+					<td style="text-align: center">WB</td>
+			</tr>
+	</tbody>
+</table>
+<h3>流水线的性能方程<span class="hx:absolute hx:-mt-20" id="流水线的性能方程"></span>
+    <a href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e6%80%a7%e8%83%bd%e6%96%b9%e7%a8%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>无流水线</strong>：
+</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>y</mi><mo>=</mo><mi>N</mi><mo>×</mo><mi>C</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi>s</mi><mi mathvariant="normal">_</mi><mi>p</mi><mi>e</mi><mi>r</mi><mi mathvariant="normal">_</mi><mi>i</mi><mi>n</mi><mi>s</mi><mi>t</mi><mi>r</mi><mi>u</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>×</mo><mi>C</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mi mathvariant="normal">_</mi><mi>T</mi><mi>i</mi><mi>m</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">Latency = N \times Cycles\_per\_instruction \times Cycle\_Time</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.03588em;">cy</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">yc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">es</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">p</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal">in</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">u</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0044em;vertical-align:-0.31em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">yc</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span><span class="mord" style="margin-right:0.02778em;">_</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">im</span><span class="mord mathnormal">e</span></span></span></span></span><p><strong>有流水线（理想情况）</strong>：
+</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mi>h</mi><mi>r</mi><mi>o</mi><mi>u</mi><mi>g</mi><mi>h</mi><mi>p</mi><mi>u</mi><mi>t</mi><mo>=</mo><mfrac><mrow><mi>N</mi><mo>+</mo><mi>S</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi>s</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>S</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi>s</mi></mrow></mfrac><mo>≈</mo><mi>N</mi><mtext>  </mtext><mtext>  </mtext><mo stretchy="false">(</mo><mi>w</mi><mi>h</mi><mi>e</mi><mi>n</mi><mtext>  </mtext><mi>N</mi><mo>≫</mo><mi>S</mi><mi>t</mi><mi>a</mi><mi>g</mi><mi>e</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Throughput = \frac{N + Stages - 1}{Stages} \approx N \;\; (when\;N \gg Stages)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">h</span><span class="mord mathnormal">ro</span><span class="mord mathnormal" style="margin-right:0.03588em;">ug</span><span class="mord mathnormal">h</span><span class="mord mathnormal">p</span><span class="mord mathnormal">u</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2408em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">St</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">es</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">St</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">es</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord mathnormal">h</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≫</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">St</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">es</span><span class="mclose">)</span></span></span></span></span><p>理想情况下，每周期完成一条指令，吞吐量提升 5 倍。</p>
+<h3>流水线冒险 (Hazards)<span class="hx:absolute hx:-mt-20" id="流水线冒险-hazards"></span>
+    <a href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%86%92%e9%99%a9-hazards" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>冒险是阻碍流水线连续运行的三种情况：</p>
+<ol>
+<li><strong>结构冒险 (Structural Hazard)</strong>：硬件资源冲突</li>
+<li><strong>数据冒险 (Data Hazard)</strong>：指令依赖关系</li>
+<li><strong>控制冒险 (Control Hazard)</strong>：分支/跳转导致的不确定性</li>
+</ol>
+<h3>结构冒险<span class="hx:absolute hx:-mt-20" id="结构冒险"></span>
+    <a href="#%e7%bb%93%e6%9e%84%e5%86%92%e9%99%a9" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>当多条指令同时需要同一个硬件资源时发生。</p>
+<p><strong>示例</strong>：统一指令和数据缓存的处理器中，Load 指令（MEM 级）和下一条指令的取指（IF 级）都要访问同一块 SRAM。</p>
+<p><strong>解决方案</strong>：哈佛架构（分离的指令 + 数据 L1 缓存），或插入气泡（Stall）。</p>
+<h2>C.2 数据冒险与转发<span class="hx:absolute hx:-mt-20" id="c2-数据冒险与转发"></span>
+    <a href="#c2-%e6%95%b0%e6%8d%ae%e5%86%92%e9%99%a9%e4%b8%8e%e8%bd%ac%e5%8f%91" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>三类数据依赖<span class="hx:absolute hx:-mt-20" id="三类数据依赖"></span>
+    <a href="#%e4%b8%89%e7%b1%bb%e6%95%b0%e6%8d%ae%e4%be%9d%e8%b5%96" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1">// RAW (Read After Write) — 真依赖
+</span></span></span><span class="line"><span class="cl"><span class="nf">ADD</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">x3</span>    <span class="c1">// 写 x1
+</span></span></span><span class="line"><span class="cl"><span class="nf">SUB</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x5</span>    <span class="c1">// 读 x1 ← 必须等待 ADD 写完
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// WAR (Write After Read) — 反依赖（寄存器重命名可消除）
+</span></span></span><span class="line"><span class="cl"><span class="nf">SUB</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x5</span>    <span class="c1">// 读 x1
+</span></span></span><span class="line"><span class="cl"><span class="nf">ADD</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">x3</span>    <span class="c1">// 写 x1 ← 读之后才写，没问题
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// WAW (Write After Write) — 输出依赖
+</span></span></span><span class="line"><span class="cl"><span class="nf">ADD</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">x3</span>    <span class="c1">// 写 x1
+</span></span></span><span class="line"><span class="cl"><span class="nf">SUB</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x5</span>    <span class="c1">// 写 x1 ← 最终结果是 SUB 的</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>流水线中只有 RAW 是真依赖，需要硬件处理。WAR 和 WAW 在 5 级流水线中不会出现（WB 是最后一个级，不可能重排）。</strong></p>
+<h3>流水线中的 RAW 冒险<span class="hx:absolute hx:-mt-20" id="流水线中的-raw-冒险"></span>
+    <a href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e4%b8%ad%e7%9a%84-raw-%e5%86%92%e9%99%a9" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>考虑 5 级流水线：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">ADD</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">x3</span>    <span class="c1">// IF ID EX MEM WB
+</span></span></span><span class="line"><span class="cl"><span class="nf">SUB</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x5</span>    <span class="c1">//    IF ID ── EX MEM WB
+</span></span></span><span class="line"><span class="cl">                        <span class="err">↑</span> <span class="err">需要</span> <span class="nf">x1</span><span class="err">，但</span> <span class="no">x1</span> <span class="err">还在</span> <span class="no">EX</span> <span class="err">级</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>不使用转发时</strong>：需要在 ID 级检测到依赖后插入 2 个气泡（stall）：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">ADD</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">x3</span>    <span class="c1">// IF ID EX MEM WB
+</span></span></span><span class="line"><span class="cl"><span class="nf">SUB</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x5</span>    <span class="c1">//    IF ID ST ST EX MEM WB
+</span></span></span><span class="line"><span class="cl">                                        <span class="err">↑</span> <span class="err">3</span> <span class="err">周期后才拿到</span> <span class="nf">x1</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>转发 (Forwarding / Bypassing)<span class="hx:absolute hx:-mt-20" id="转发-forwarding--bypassing"></span>
+    <a href="#%e8%bd%ac%e5%8f%91-forwarding--bypassing" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>转发</strong>是将 ALU/内存的计算结果直接从当前流水级传递给需要它的流水级，而不是等写回寄存器后再读。</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><pre><code>     ID→EX   EX→MEM   MEM→WB
+        ↓        ↓        ↓
+   ┌────┴────────┴────────┴──────┐
+   │      转发逻辑 (MUX)         │
+   └────────┬────────────────────┘
+            ↓
+          EX 阶段的 ALU 输入</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>转发路径</strong>：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: left">转发的源</th>
+					<th style="text-align: left">转发的目标</th>
+					<th style="text-align: center">延迟节约</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left">EX 结果 → EX ALU 入口</td>
+					<td style="text-align: left">下一条 ALU 指令</td>
+					<td style="text-align: center">2 cycles</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">MEM 结果 → EX ALU 入口</td>
+					<td style="text-align: left">隔一条的 ALU 指令</td>
+					<td style="text-align: center">1 cycle</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">MEM 结果 → MEM 访存地址</td>
+					<td style="text-align: left">Load 后紧跟着的 Store</td>
+					<td style="text-align: center">1 cycle</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">WB 结果 → EX ALU 入口</td>
+					<td style="text-align: left">隔两条的 ALU 指令</td>
+					<td style="text-align: center">0 (已写回)</td>
+			</tr>
+	</tbody>
+</table>
+<h3>转发检测逻辑<span class="hx:absolute hx:-mt-20" id="转发检测逻辑"></span>
+    <a href="#%e8%bd%ac%e5%8f%91%e6%a3%80%e6%b5%8b%e9%80%bb%e8%be%91" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>转发控制器的核心是比较寄存器的地址：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-verilog" data-lang="verilog"><span class="line"><span class="cl"><span class="c1">// 转发检测：EX 转发到 EX
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">EX</span><span class="o">/</span><span class="n">MEM</span><span class="p">.</span><span class="n">RegisterRd</span> <span class="o">!=</span> <span class="mh">0</span> 
+</span></span><span class="line"><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">EX</span><span class="o">/</span><span class="n">MEM</span><span class="p">.</span><span class="n">RegisterRd</span> <span class="o">==</span> <span class="n">ID</span><span class="o">/</span><span class="n">EX</span><span class="p">.</span><span class="n">RegisterRs1</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">forwardA</span> <span class="o">=</span> <span class="mh">10</span><span class="p">;</span> <span class="c1">// 从 EX/MEM 转发
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// MEM 转发到 EX
+</span></span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">MEM</span><span class="o">/</span><span class="n">WB</span><span class="p">.</span><span class="n">RegisterRd</span> <span class="o">!=</span> <span class="mh">0</span> 
+</span></span><span class="line"><span class="cl">    <span class="o">&amp;&amp;</span> <span class="n">MEM</span><span class="o">/</span><span class="n">WB</span><span class="p">.</span><span class="n">RegisterRd</span> <span class="o">==</span> <span class="n">ID</span><span class="o">/</span><span class="n">EX</span><span class="p">.</span><span class="n">RegisterRs1</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">forwardA</span> <span class="o">=</span> <span class="mh">01</span><span class="p">;</span> <span class="c1">// 从 MEM/WB 转发
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>五种转发情况</strong>：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">情况</th>
+					<th style="text-align: center">源指令位置</th>
+					<th style="text-align: center">目标指令位置</th>
+					<th style="text-align: center">转发路径</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">1</td>
+					<td style="text-align: center">EX</td>
+					<td style="text-align: center">EX</td>
+					<td style="text-align: center">EX→EX</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">2</td>
+					<td style="text-align: center">EX→MEM</td>
+					<td style="text-align: center">EX</td>
+					<td style="text-align: center">MEM→EX</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">3</td>
+					<td style="text-align: center">MEM→WB</td>
+					<td style="text-align: center">EX</td>
+					<td style="text-align: center">WB→EX</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">4</td>
+					<td style="text-align: center">EX</td>
+					<td style="text-align: center">MEM (Store)</td>
+					<td style="text-align: center">EX→MEM</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">5</td>
+					<td style="text-align: center">MEM→WB</td>
+					<td style="text-align: center">MEM (Store)</td>
+					<td style="text-align: center">MEM→MEM</td>
+			</tr>
+	</tbody>
+</table>
+<h3>Load-Use 冒险<span class="hx:absolute hx:-mt-20" id="load-use-冒险"></span>
+    <a href="#load-use-%e5%86%92%e9%99%a9" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>Load 指令的结果在 MEM 级末尾才可用，而后续指令在 EX 级开始就需要这个值——这是<strong>最坏情况的数据冒险</strong>：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">LW</span>   <span class="no">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">(</span><span class="no">x2</span><span class="p">)</span>     <span class="c1">// IF ID EX MEM WB
+</span></span></span><span class="line"><span class="cl"><span class="nf">ADD</span>  <span class="no">x3</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x4</span>    <span class="c1">//    IF ID EX MEM WB
+</span></span></span><span class="line"><span class="cl">                         <span class="err">↑</span> <span class="nf">x1</span> <span class="err">在</span> <span class="no">MEM</span> <span class="err">级才可用</span>
+</span></span><span class="line"><span class="cl">                         <span class="err">↑</span> <span class="nf">EX</span> <span class="err">级需要</span> <span class="no">x1</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>转发 + 插入一个气泡</strong>（最常用）</li>
+<li><strong>编译器调度</strong>：在 Load 和后一条之间插入不相关的指令</li>
+</ol>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">LW</span>   <span class="no">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">(</span><span class="no">x2</span><span class="p">)</span>     <span class="c1">// IF ID EX MEM WB
+</span></span></span><span class="line"><span class="cl"><span class="nf">NOP</span>                <span class="c1">//    IF ID ST ST EX MEM WB (bubble)
+</span></span></span><span class="line"><span class="cl"><span class="nf">ADD</span>  <span class="no">x3</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x4</span>    <span class="c1">//       IF ID ── EX MEM WB</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>编译器可以通过调度隐藏这个延迟</strong>：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">LW</span>   <span class="no">x1</span><span class="p">,</span> <span class="mi">0</span><span class="p">(</span><span class="no">x2</span><span class="p">)</span>     <span class="c1">// 先 Load
+</span></span></span><span class="line"><span class="cl"><span class="nf">LW</span>   <span class="no">x5</span><span class="p">,</span> <span class="mi">0</span><span class="p">(</span><span class="no">x6</span><span class="p">)</span>     <span class="c1">// 插入另一个不相关的 Load
+</span></span></span><span class="line"><span class="cl"><span class="nf">ADD</span>  <span class="no">x3</span><span class="p">,</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x4</span>    <span class="c1">// 这时 x1 已经就绪</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">Loader-Use 冒险是你做 RV32I 核心时必然会遇到的真问题。转发逻辑是 EX 级 datapath 中最容易出错的部分。做 RTL 时建议画清楚转发 MUX 的接线图和检测条件，把 5 种转发情况列全了再写代码——少一种就会出很难 debug 的 bug。</div>
+  </div>
+</div>
+
+<h2>C.3 控制冒险<span class="hx:absolute hx:-mt-20" id="c3-控制冒险"></span>
+    <a href="#c3-%e6%8e%a7%e5%88%b6%e5%86%92%e9%99%a9" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>分支指令的处理<span class="hx:absolute hx:-mt-20" id="分支指令的处理"></span>
+    <a href="#%e5%88%86%e6%94%af%e6%8c%87%e4%bb%a4%e7%9a%84%e5%a4%84%e7%90%86" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>分支指令在 EX 级确定条件是否满足、在 MEM 级确定目标地址：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">BEQ</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">TARGET</span>    <span class="c1">// IF ID EX MEM WB
+</span></span></span><span class="line"><span class="cl">                      <span class="c1">//    IF ID EX MEM WB (取 TARGET 地址)</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong>每次分支都插入 2 个气泡</strong> → 性能损失极大。</p>
+<h3>分支预测基础<span class="hx:absolute hx:-mt-20" id="分支预测基础"></span>
+    <a href="#%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b%e5%9f%ba%e7%a1%80" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: left">预测策略</th>
+					<th style="text-align: center">误预测惩罚</th>
+					<th style="text-align: center">平均 CPI 影响</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left">无预测（总是 stall）</td>
+					<td style="text-align: center">2 cycles</td>
+					<td style="text-align: center">0.4–0.7 CPI 增加</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">预测跳转</td>
+					<td style="text-align: center">2 cycles (预测错时)</td>
+					<td style="text-align: center">0.3–0.5 CPI 增加</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">预测不跳转</td>
+					<td style="text-align: center">2 cycles (预测错时)</td>
+					<td style="text-align: center">0.3–0.5 CPI 增加</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">1-bit 预测</td>
+					<td style="text-align: center">2 cycles</td>
+					<td style="text-align: center">0.1–0.2 CPI 增加</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">2-bit 预测</td>
+					<td style="text-align: center">2 cycles</td>
+					<td style="text-align: center">0.05–0.1 CPI 增加</td>
+			</tr>
+	</tbody>
+</table>
+<h3>减少分支惩罚的硬件技术<span class="hx:absolute hx:-mt-20" id="减少分支惩罚的硬件技术"></span>
+    <a href="#%e5%87%8f%e5%b0%91%e5%88%86%e6%94%af%e6%83%a9%e7%bd%9a%e7%9a%84%e7%a1%ac%e4%bb%b6%e6%8a%80%e6%9c%af" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>提前分支条件计算</strong>：将分支的条件比较从 EX 提前到 ID 级完成（硬件上加一个分支条件计算单元）。</p>
+<p><strong>分支目标地址计算提前到 ID</strong>：将 <code>PC + offset</code> 的计算从 EX 提前到 ID 级。</p>
+<p>结合这两项改进 → 分支误预测惩罚从 2 cycles 减少到 1 cycle。</p>
+<h3>延迟分支 (Delayed Branch)<span class="hx:absolute hx:-mt-20" id="延迟分支-delayed-branch"></span>
+    <a href="#%e5%bb%b6%e8%bf%9f%e5%88%86%e6%94%af-delayed-branch" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>编译器在分支指令后面放置一条<strong>总是在分支前执行的指令</strong>：</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1">// 延迟分支（槽中的指令总是执行）
+</span></span></span><span class="line"><span class="cl"><span class="nf">BEQ</span> <span class="no">x1</span><span class="p">,</span> <span class="no">x2</span><span class="p">,</span> <span class="no">TARGET</span>
+</span></span><span class="line"><span class="cl"><span class="nf">ADD</span> <span class="no">x3</span><span class="p">,</span> <span class="no">x4</span><span class="p">,</span> <span class="no">x5</span>    <span class="c1">// 分支延迟槽 — 总是执行
+</span></span></span><span class="line"><span class="cl"><span class="nl">TARGET:</span>
+</span></span><span class="line"><span class="cl"><span class="nf">SUB</span> <span class="no">x6</span><span class="p">,</span> <span class="no">x7</span><span class="p">,</span> <span class="no">x8</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<ul>
+<li>分支延迟槽的数量 = 分支确认前的流水级数</li>
+<li>编译器需要从分支前的代码中找一条不相关的指令放到延迟槽里</li>
+<li>RISC-V 没有延迟分支（简化设计），但 MIPS 有</li>
+</ul>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><div class="hx:select-none hx:text-xl" style="font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';">🧓</div></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">我们的 RV32I 核心你要决定要不要延迟分支。RISC-V 官方是「无延迟槽」的简化设计，但如果你追求高性能，加上延迟分支可以省一些转发逻辑。作为学习项目，建议先按 RISC-V 原版走，不要延迟槽。</div>
+  </div>
+</div>
+
+<h2>C.4 流水线控制：暂停与冲刷<span class="hx:absolute hx:-mt-20" id="c4-流水线控制暂停与冲刷"></span>
+    <a href="#c4-%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%8e%a7%e5%88%b6%e6%9a%82%e5%81%9c%e4%b8%8e%e5%86%b2%e5%88%b7" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>暂停 (Stall / Bubble)<span class="hx:absolute hx:-mt-20" id="暂停-stall--bubble"></span>
+    <a href="#%e6%9a%82%e5%81%9c-stall--bubble" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>在流水线中插入一个空操作，保持流水线数据不丢失。</p>
+<p><strong>硬件实现</strong>：</p>
+<ul>
+<li>在 ID/EX 寄存器中设置控制信号为 0（类似 NOP）</li>
+<li>保持 PC 不变（IF 级重复执行同一取指）</li>
+<li>保持 IF/ID 寄存器不变（ID 级重复译码）</li>
+</ul>
+<h3>冲刷 (Flush)<span class="hx:absolute hx:-mt-20" id="冲刷-flush"></span>
+    <a href="#%e5%86%b2%e5%88%b7-flush" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>清空流水线中某些级的指令（如分支预测错误）：</p>
+<p><strong>硬件实现</strong>：</p>
+<ul>
+<li>将 ID/EX、EX/MEM、MEM/WB 寄存器清零</li>
+<li>重置 PC 到正确目标地址</li>
+<li>从新的 PC 开始取指</li>
+</ul>
+<h3>控制冒险的流水线实现<span class="hx:absolute hx:-mt-20" id="控制冒险的流水线实现"></span>
+    <a href="#%e6%8e%a7%e5%88%b6%e5%86%92%e9%99%a9%e7%9a%84%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>分支指令通过流水线时：</p>
+<ol>
+<li><strong>IF 级</strong>：取分支指令</li>
+<li><strong>ID 级</strong>：译码并读取寄存器</li>
+<li><strong>EX 级</strong>：比较条件 + 计算目标地址</li>
+<li>如果分支<strong>不跳转</strong> → 继续顺序执行</li>
+<li>如果分支<strong>跳转</strong> → 冲刷 IF 和 ID 级，从目标地址重新取指</li>
+</ol>
+<h2>C.5 异常处理<span class="hx:absolute hx:-mt-20" id="c5-异常处理"></span>
+    <a href="#c5-%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>精确异常 (Precise Exception)<span class="hx:absolute hx:-mt-20" id="精确异常-precise-exception"></span>
+    <a href="#%e7%b2%be%e7%a1%ae%e5%bc%82%e5%b8%b8-precise-exception" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>异常发生时，流水线中的指令状态必须与程序顺序执行一致：</p>
+<ol>
+<li>异常指令之前的所有指令都已完成提交</li>
+<li>异常指令本身被标记为异常</li>
+<li>异常指令之后的所有指令都未提交</li>
+</ol>
+<p><strong>5 级流水线中的精确异常实现</strong>：</p>
+<table>
+	<thead>
+			<tr>
+					<th style="text-align: center">流水级</th>
+					<th style="text-align: left">异常处理</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">IF</td>
+					<td style="text-align: left">页错误 → 标记指令，进入 ID 后处理</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">ID</td>
+					<td style="text-align: left">非法指令 → 标记，进入 EX 后处理</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">EX</td>
+					<td style="text-align: left">算术异常 → 标记，进入 MEM 后处理</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">MEM</td>
+					<td style="text-align: left">数据访问异常 → 标记，进入 WB 前处理</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">WB</td>
+					<td style="text-align: left">异常确认 → 清空后续指令，保存异常 PC</td>
+			</tr>
+	</tbody>
+</table>
+<h3>异常优先级<span class="hx:absolute hx:-mt-20" id="异常优先级"></span>
+    <a href="#%e5%bc%82%e5%b8%b8%e4%bc%98%e5%85%88%e7%ba%a7" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>同一周期多个流水级同时发生异常时，按程序顺序优先级：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Exception Priority</mtext><mo>=</mo><mi>I</mi><mi>F</mi><mo>&lt;</mo><mi>I</mi><mi>D</mi><mo>&lt;</mo><mi>E</mi><mi>X</mi><mo>&lt;</mo><mi>M</mi><mi>E</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">\text{Exception Priority} = IF &lt; ID &lt; EX &lt; MEM</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Exception Priority</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">EX</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">MEM</span></span></span></span></span><p>即 MEM 级异常优先级最高（最「老」的指令）。</p>
+<h3>精确异常的实现困难<span class="hx:absolute hx:-mt-20" id="精确异常的实现困难"></span>
+    <a href="#%e7%b2%be%e7%a1%ae%e5%bc%82%e5%b8%b8%e7%9a%84%e5%ae%9e%e7%8e%b0%e5%9b%b0%e9%9a%be" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ol>
+<li><strong>多个异常同时发生</strong>：需要确定哪个异常先报告</li>
+<li><strong>自修改代码</strong>：指令覆盖了后面待取的指令</li>
+<li><strong>中断 (Interrupt)</strong>：外部中断需要流水线边界清理后才响应</li>
+</ol>
+<h2>C.6 流水线的局限与改进<span class="hx:absolute hx:-mt-20" id="c6-流水线的局限与改进"></span>
+    <a href="#c6-%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e5%b1%80%e9%99%90%e4%b8%8e%e6%94%b9%e8%bf%9b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>深流水线的代价<span class="hx:absolute hx:-mt-20" id="深流水线的代价"></span>
+    <a href="#%e6%b7%b1%e6%b5%81%e6%b0%b4%e7%ba%bf%e7%9a%84%e4%bb%a3%e4%bb%b7" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: center">流水级数</th>
+					<th style="text-align: center">频率收益</th>
+					<th style="text-align: center">分支误预测惩罚</th>
+					<th style="text-align: center">转发复杂度</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: center">5</td>
+					<td style="text-align: center">1x</td>
+					<td style="text-align: center">2 cycles</td>
+					<td style="text-align: center">低</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">10</td>
+					<td style="text-align: center">~1.5x</td>
+					<td style="text-align: center">7 cycles</td>
+					<td style="text-align: center">中</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">15</td>
+					<td style="text-align: center">~2x</td>
+					<td style="text-align: center">12 cycles</td>
+					<td style="text-align: center">高</td>
+			</tr>
+			<tr>
+					<td style="text-align: center">20+ (Pentium 4)</td>
+					<td style="text-align: center">~2.5x</td>
+					<td style="text-align: center">17+ cycles</td>
+					<td style="text-align: center">极高</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>Pentium 4 的经验</strong>：20 级流水线 → 分支误预测惩罚 20+ cycles → 分支预测需要 95%+ 的准确率才能弥补。</p>
+<h3>提高流水线效率的途径<span class="hx:absolute hx:-mt-20" id="提高流水线效率的途径"></span>
+    <a href="#%e6%8f%90%e9%ab%98%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%95%88%e7%8e%87%e7%9a%84%e9%80%94%e5%be%84" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ol>
+<li><strong>转发</strong>：消除大多数 RAW 冒险的停顿</li>
+<li><strong>分支预测</strong>：降低控制冒险的影响</li>
+<li><strong>预取 (Prefetch)</strong>：隐藏指令缓存的缺失延迟</li>
+<li><strong>多发射</strong>：每个周期执行多条指令</li>
+<li><strong>乱序执行</strong>：绕过流水线的阻塞点</li>
+</ol>
+<h2>C.7 综合：RV32I 核心的流水线设计<span class="hx:absolute hx:-mt-20" id="c7-综合rv32i-核心的流水线设计"></span>
+    <a href="#c7-%e7%bb%bc%e5%90%88rv32i-%e6%a0%b8%e5%bf%83%e7%9a%84%e6%b5%81%e6%b0%b4%e7%ba%bf%e8%ae%be%e8%ae%a1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>我们的 RV32I 核心采用什么流水线？<span class="hx:absolute hx:-mt-20" id="我们的-rv32i-核心采用什么流水线"></span>
+    <a href="#%e6%88%91%e4%bb%ac%e7%9a%84-rv32i-%e6%a0%b8%e5%bf%83%e9%87%87%e7%94%a8%e4%bb%80%e4%b9%88%e6%b5%81%e6%b0%b4%e7%ba%bf" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>推荐选择：</p>
+<ul>
+<li><strong>5 级流水线</strong>：IF → ID → EX → MEM → WB</li>
+<li><strong>全转发</strong>：5 种转发路径全部实现</li>
+<li><strong>简单分支预测</strong>：2-bit 饱和计数器</li>
+<li><strong>无延迟槽</strong>：RISC-V 标准</li>
+<li><strong>精确异常</strong>：支持</li>
+</ul>
+<h3>流水线模块划分<span class="hx:absolute hx:-mt-20" id="流水线模块划分"></span>
+    <a href="#%e6%b5%81%e6%b0%b4%e7%ba%bf%e6%a8%a1%e5%9d%97%e5%88%92%e5%88%86" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: left">模块</th>
+					<th>功能</th>
+					<th style="text-align: left">关键信号</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left">PC</td>
+					<td>程序计数器</td>
+					<td style="text-align: left">PC, PC_next, Stall_PC</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">IF</td>
+					<td>指令存储器</td>
+					<td style="text-align: left">IMEM_Addr, IMEM_Data</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">IF/ID</td>
+					<td>流水线寄存器</td>
+					<td style="text-align: left">IR, PC+4</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">ID</td>
+					<td>译码 + 寄存器文件</td>
+					<td style="text-align: left">A, B, Imm, func</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">ID/EX</td>
+					<td>流水线寄存器</td>
+					<td style="text-align: left">A, B, Imm, func</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">EX</td>
+					<td>ALU + 转发</td>
+					<td style="text-align: left">ALU_Result, Zero</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">EX/MEM</td>
+					<td>流水线寄存器</td>
+					<td style="text-align: left">ALU_Result, B (for Store)</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">MEM</td>
+					<td>数据存储器</td>
+					<td style="text-align: left">DMEM_Addr, DMEM_Data</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">MEM/WB</td>
+					<td>流水线寄存器</td>
+					<td style="text-align: left">ALU_Result, DMEM_Data</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">WB</td>
+					<td>写回</td>
+					<td style="text-align: left">Reg_Write_Data</td>
+			</tr>
+	</tbody>
+</table>
+<h3>转发与控制信号<span class="hx:absolute hx:-mt-20" id="转发与控制信号"></span>
+    <a href="#%e8%bd%ac%e5%8f%91%e4%b8%8e%e6%8e%a7%e5%88%b6%e4%bf%a1%e5%8f%b7" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><table>
+	<thead>
+			<tr>
+					<th style="text-align: left">信号</th>
+					<th>作用</th>
+					<th style="text-align: center">来源</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td style="text-align: left">ForwardA</td>
+					<td>ALU 输入 A 的转发选择</td>
+					<td style="text-align: center">转发检测单元</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">ForwardB</td>
+					<td>ALU 输入 B 的转发选择</td>
+					<td style="text-align: center">转发检测单元</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">Stall_F</td>
+					<td>IF 级暂停信号</td>
+					<td style="text-align: center">冒险检测单元</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">Stall_D</td>
+					<td>ID 级暂停信号</td>
+					<td style="text-align: center">冒险检测单元</td>
+			</tr>
+			<tr>
+					<td style="text-align: left">Flush_E</td>
+					<td>EX 级冲刷信号</td>
+					<td style="text-align: center">分支预测结果</td>
+			</tr>
+	</tbody>
+</table>
+<h2>C.8 常见谬误与陷阱<span class="hx:absolute hx:-mt-20" id="c8-常见谬误与陷阱"></span>
+    <a href="#c8-%e5%b8%b8%e8%a7%81%e8%b0%ac%e8%af%af%e4%b8%8e%e9%99%b7%e9%98%b1" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><ol>
+<li><strong>认为更多流水级总是更好</strong>：深度与分支惩罚的权衡，过深适得其反</li>
+<li><strong>忽略 Load-Use 冒险</strong>：编译器调度可以隐藏但硬件也必须支持</li>
+<li><strong>低估转发逻辑的复杂度</strong>：5 级流水线的转发 MUX 还简单，更深的需要交叉开关</li>
+<li><strong>认为分支预测不如编译器调度重要</strong>：动态预测对未知代码模式至关重要</li>
+<li><strong>忽略异常和中断的精确性要求</strong>：设计验证时必须覆盖指令边界处的异常</li>
+<li><strong>误认为所有流水线停顿都是等价的</strong>：结构冒险、数据冒险和控制冒险的恢复机制不同</li>
+<li><strong>低估自修改代码的影响</strong>：指令缓存一致性问题在 RISC 设计中被简化，但在某些场景仍需处理</li>
+</ol>
+<h2>C.9 总结<span class="hx:absolute hx:-mt-20" id="c9-总结"></span>
+    <a href="#c9-%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>本附录核心要点：</p>
+<ol>
+<li><strong>5 级流水线</strong>是处理器设计的入门基础：IF→ID→EX→MEM→WB</li>
+<li><strong>三类冒险</strong>（结构、数据、控制）是阻碍流水线连续运行的根本原因</li>
+<li><strong>转发</strong>消除大多数数据冒险（除了 Load-Use）</li>
+<li><strong>分支预测</strong>减少控制冒险的惩罚</li>
+<li><strong>精确异常</strong>保证异常时流水线状态与程序顺序一致</li>
+<li><strong>我们的 RV32I 核心</strong>应该实现：5 级流水线 + 全转发 + 2-bit 分支预测 + 无延迟槽 + 精确异常</li>
+</ol>
+<hr>
+<p><strong>这是本系列笔记的最后一篇。</strong></p>
+          
+        </div>
+        
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">
+      最后更新于 <time datetime="2026-07-10T10:07:37.000Z">2026-07-10</time> • CambridgeLv</div><div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/docs/ca-notes/ch07-dsa/"
+        title="计算机体系结构学习笔记 — 第7章 领域专用架构"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>计算机体系结构学习笔记 — 第7章 领域专用架构</a><a
+        href="/docs/ca-notes/ch01-fundamentals/"
+        title="计算机体系结构学习笔记 — 第1章 量化设计与分析基础"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >计算机体系结构学习笔记 — 第1章 量化设计与分析基础<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:mx-auto hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>由 Hextra 驱动<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2026 Hextra Project.</div></div>
+    </div></footer>
+    
+    <dialog
+    id="hextra-search-dialog"
+    class="hextra-search-dialog"
+    aria-label="搜索文档..."
+  >
+    <div class="hextra-search">
+      <div class="hextra-search-input-wrapper"><svg class="hextra-search-input-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input
+          class="hextra-search-input"
+          type="search"
+          role="combobox"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="搜索文档..."
+          aria-label="搜索文档..."
+          aria-controls="hextra-search-results"
+          aria-expanded="false"
+        /><button
+          type="button"
+          class="hextra-search-input-kbd"
+          data-search-close
+          aria-label="Close"
+        >ESC</button>
+      </div>
+      <div class="hextra-search-results-viewport" data-search-viewport>
+        <div class="hextra-search-results-inner hextra-scrollbar" data-search-inner>
+          <ul
+            id="hextra-search-results"
+            class="hextra-search-results"
+            role="listbox"
+            aria-label="搜索结果"
+          ></ul>
+          <div class="hextra-search-empty" data-search-empty hidden>无结果</div>
+        </div>
+      </div>
+      <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+    </div>
+  </dialog>
+    <script defer src="/js/main.min.b92364177596421c7ae15e83b3b0ed2c17ddcf4eedb8f07f9bbecc43aade8258.js" integrity="sha256-uSNkF3WWQhx64V6Ds7DtLBfdz07tuPB/m77MQ6reglg="></script>
+<script defer src="/js/flexsearch.433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c.js" integrity="sha256-Qz6UGopXPruZMfwW/HUmara5P1aawvtPPcZoguBBb0w=" crossorigin="anonymous"></script><script defer src="/zh-cn.search.min.d2317a291d120891bff635c663a36430adc86ca85e06a2b34951853da7f792ba.js" integrity="sha256-0jF6KR0SCJG/9jXGY6NkMK3IbKheBqKzSVGFPaf3kro="></script>
+    <script defer src="/zh-cn.search-dialog.min.43f138c37a644bf0d959fbe0da2b6cd7a2356c7d131e12960231cb40a4e76b60.js" integrity="sha256-Q/E4w3pkS/DZWfvg2its16I1bH0THhKWAjHLQKTna2A="></script>
+  </body>
+</html>
