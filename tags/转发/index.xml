@@ -1,0 +1,139 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lv的小站 – 转发</title>
+    <link>https://cambridgelv.github.io/tags/%E8%BD%AC%E5%8F%91/</link>
+    <description>Recent content in 转发 on Lv的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 09 Jul 2026 23:30:00 +0800</lastBuildDate>
+    
+	  <atom:link href="https://cambridgelv.github.io/tags/%E8%BD%AC%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>计算机体系结构学习笔记 — 附录C 流水线：基础与中级概念</title>
+      <link>https://cambridgelv.github.io/docs/ca-notes/appendixc-pipelining/</link>
+      <pubDate>Thu, 09 Jul 2026 23:30:00 +0800</pubDate>
+      
+      <guid>https://cambridgelv.github.io/docs/ca-notes/appendixc-pipelining/</guid>
+      <description>
+        
+        
+        &lt;p&gt;本文覆盖 5 级 RISC 流水线的全部基础概念，与我们的 RV32I 核心项目直接对应。&lt;/p&gt;
+&lt;h2&gt;C.1 流水线入门&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;c1-流水线入门&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#c1-%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%85%a5%e9%97%a8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;什么是流水线&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;什么是流水线&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e6%b5%81%e6%b0%b4%e7%ba%bf&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;流水线（Pipelining）允许多条指令的执行在时间上重叠。每个步骤称为一个&lt;strong&gt;流水级（pipe stage）&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5 级 RISC 流水线&lt;/strong&gt;：&lt;/p&gt;
+&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;流水级&lt;/th&gt;
+					&lt;th&gt;功能&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;IF&lt;/td&gt;
+					&lt;td&gt;取指令，PC+4&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;ID&lt;/td&gt;
+					&lt;td&gt;译码，读寄存器堆，立即数生成&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;EX&lt;/td&gt;
+					&lt;td&gt;ALU 运算，分支条件判定&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;MEM&lt;/td&gt;
+					&lt;td&gt;数据存储器访问&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;WB&lt;/td&gt;
+					&lt;td&gt;结果写回寄存器堆&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;性能公式&lt;/strong&gt;：
+&lt;/p&gt;
+&lt;span class=&#34;katex-display&#34;&gt;&lt;span class=&#34;katex&#34;&gt;&lt;span class=&#34;katex-mathml&#34;&gt;&lt;math xmlns=&#34;http://www.w3.org/1998/Math/MathML&#34; display=&#34;block&#34;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;p&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mspace width=&#34;1em&#34;/&gt;&lt;mtext&gt;(理想条件下，n 级流水线)&lt;/mtext&gt;&lt;/mrow&gt;&lt;annotation encoding=&#34;application/x-tex&#34;&gt;Speedup = n \quad\text{(理想条件下，n 级流水线)}&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&#34;katex-html&#34; aria-hidden=&#34;true&#34;&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:0.8889em;vertical-align:-0.1944em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;Sp&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;ee&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;u&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mrel&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:0.2778em;&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;base&#34;&gt;&lt;span class=&#34;strut&#34; style=&#34;height:1em;vertical-align:-0.25em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord mathnormal&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;mspace&#34; style=&#34;margin-right:1em;&#34;&gt;&lt;/span&gt;&lt;span class=&#34;mord text&#34;&gt;&lt;span class=&#34;mord&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mord cjk_fallback&#34;&gt;理想条件下，&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;n &lt;/span&gt;&lt;span class=&#34;mord cjk_fallback&#34;&gt;级流水线&lt;/span&gt;&lt;span class=&#34;mord&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;p&gt;实际限制：流水级不平衡、流水线寄存器开销、冒险。&lt;/p&gt;
+&lt;h3&gt;三大冒险&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;三大冒险&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e4%b8%89%e5%a4%a7%e5%86%92%e9%99%a9&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;类型&lt;/th&gt;
+					&lt;th&gt;原因&lt;/th&gt;
+					&lt;th&gt;解决方案&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;结构冒险&lt;/td&gt;
+					&lt;td&gt;资源冲突&lt;/td&gt;
+					&lt;td&gt;分离 I$/D$&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;数据冒险&lt;/td&gt;
+					&lt;td&gt;RAW 依赖&lt;/td&gt;
+					&lt;td&gt;转发+stall&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;控制冒险&lt;/td&gt;
+					&lt;td&gt;分支/跳转&lt;/td&gt;
+					&lt;td&gt;分支预测+flush&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;转发（Forwarding）&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;转发forwarding&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e8%bd%ac%e5%8f%91forwarding&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;转发路径&lt;/strong&gt;：EX/MEM → EX 输入，MEM/WB → EX 输入
+&lt;strong&gt;无法转发的情况&lt;/strong&gt;：load-use（需 stall 1 周期）&lt;/p&gt;
+&lt;h3&gt;分支预测&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;分支预测&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e5%88%86%e6%94%af%e9%a2%84%e6%b5%8b&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th&gt;策略&lt;/th&gt;
+					&lt;th&gt;实现&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;误预测惩罚&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td&gt;Always Not Taken&lt;/td&gt;
+					&lt;td&gt;默认 PC+4&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2 cycles&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td&gt;2-bit 饱和计数器&lt;/td&gt;
+					&lt;td&gt;4 状态 FSM&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;2 cycles&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;流水线寄存器&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;流水线寄存器&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#%e6%b5%81%e6%b0%b4%e7%ba%bf%e5%af%84%e5%ad%98%e5%99%a8&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;每个流水级之间插入：IF/ID、ID/EX、EX/MEM、MEM/WB&lt;/p&gt;
+&lt;h2&gt;C.2 综合案例：MIPS R4000&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;c2-综合案例mips-r4000&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#c2-%e7%bb%bc%e5%90%88%e6%a1%88%e4%be%8bmips-r4000&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;8 级整数流水线（100–250 MHz），比 5 级深，分支惩罚增加到 3 cycles。
+从 5 级到 8 级是&lt;strong&gt;频率 vs 复杂度&lt;/strong&gt;的经典 trade-off。&lt;/p&gt;
+&lt;h2&gt;C.3 记分牌算法&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;c3-记分牌算法&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#c3-%e8%ae%b0%e5%88%86%e7%89%8c%e7%ae%97%e6%b3%95&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;动态调度的前身：顺序发射、乱序执行、记分牌跟踪资源。
+四个阶段：Issue → Read Operands → Execute → Write Result
+局限：无寄存器重命名，被 Tomasulo 算法取代（见第 3 章）。&lt;/p&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;&lt;p&gt;我们做的 RV32I 核心就是 5 级 RISC 流水线。综合时注意流水线寄存器之间的组合逻辑路径（如 ALU → Forward MUX → ALU）的时序约束。&lt;/p&gt;
+&lt;p&gt;加深流水线 → 频率更高 → 但分支惩罚更大。这就是架构师做 trade-off 的地方。&lt;/p&gt;
+&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,81 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lv的小站 – DSA</title>
+    <link>https://cambridgelv.github.io/tags/dsa/</link>
+    <description>Recent content in DSA on Lv的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 09 Jul 2026 23:55:00 +0800</lastBuildDate>
+    
+	  <atom:link href="https://cambridgelv.github.io/tags/dsa/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>计算机体系结构学习笔记 — 第7章 领域专用体系结构</title>
+      <link>https://cambridgelv.github.io/docs/ca-notes/ch07-dsa/</link>
+      <pubDate>Thu, 09 Jul 2026 23:55:00 +0800</pubDate>
+      
+      <guid>https://cambridgelv.github.io/docs/ca-notes/ch07-dsa/</guid>
+      <description>
+        
+        
+        &lt;p&gt;DSA（Domain-Specific Architecture）是后 Dennard 时代性能增长的新引擎。&lt;/p&gt;
+&lt;h2&gt;DSA 优势&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;dsa-优势&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#dsa-%e4%bc%98%e5%8a%bf&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;通用 CPU 单线程增长仅 ~3.5%/年&lt;/li&gt;
+&lt;li&gt;DSA 相比通用 CPU：能效比 10–100×&lt;/li&gt;
+&lt;li&gt;关键：专用存储层次 + 低精度 + 大规模并行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Google TPU（脉动阵列）&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;google-tpu脉动阵列&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#google-tpu%e8%84%89%e5%8a%a8%e9%98%b5%e5%88%97&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+	&lt;thead&gt;
+			&lt;tr&gt;
+					&lt;th style=&#34;text-align: left&#34;&gt;参数&lt;/th&gt;
+					&lt;th style=&#34;text-align: center&#34;&gt;TPU v1&lt;/th&gt;
+			&lt;/tr&gt;
+	&lt;/thead&gt;
+	&lt;tbody&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;工艺&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;28nm&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;MAC 单元&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;65,536 (256×256 脉动阵列)&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;片上内存&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;28 MB SRAM&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+					&lt;td style=&#34;text-align: left&#34;&gt;性能&lt;/td&gt;
+					&lt;td style=&#34;text-align: center&#34;&gt;CPU 的 50–100×，GPU 的 15–30×&lt;/td&gt;
+			&lt;/tr&gt;
+	&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;DSA 设计准则&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;dsa-设计准则&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#dsa-%e8%ae%be%e8%ae%a1%e5%87%86%e5%88%99&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;仅做领域必需的操作&lt;/li&gt;
+&lt;li&gt;专用存储层次匹配数据流&lt;/li&gt;
+&lt;li&gt;精度够用就行&lt;/li&gt;
+&lt;li&gt;大规模并行&lt;/li&gt;
+&lt;li&gt;消除控制开销&lt;/li&gt;
+&lt;li&gt;软硬件协同设计&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200&#34;&gt;
+  &lt;div class=&#34;hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2&#34;&gt;&lt;div class=&#34;hx:select-none hx:text-xl&#34; style=&#34;font-family: &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;;&#34;&gt;🧓&lt;/div&gt;&lt;/div&gt;
+
+  &lt;div class=&#34;hx:w-full hx:min-w-0 hx:leading-7&#34;&gt;
+    &lt;div class=&#34;hx:mt-6 hx:leading-7 hx:first:mt-0&#34;&gt;TPU 的脉动阵列是时序分析的经典案例：65,536 个 MAC 同时工作 → 巨大的时钟负载 → 精细的 CTS。DSA 比通用 CPU 更容易综合——控制逻辑少、数据路径规整。&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>

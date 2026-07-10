@@ -1,0 +1,42 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lv的小站 – 开篇</title>
+    <link>https://cambridgelv.github.io/tags/%E5%BC%80%E7%AF%87/</link>
+    <description>Recent content in 开篇 on Lv的小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 24 Oct 2024 19:00:00 +0800</lastBuildDate>
+    
+	  <atom:link href="https://cambridgelv.github.io/tags/%E5%BC%80%E7%AF%87/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>开篇</title>
+      <link>https://cambridgelv.github.io/blog/first-post/</link>
+      <pubDate>Thu, 24 Oct 2024 19:00:00 +0800</pubDate>
+      
+      <guid>https://cambridgelv.github.io/blog/first-post/</guid>
+      <description>
+        
+        
+        &lt;p&gt;&lt;figure&gt;
+    &lt;img src=&#34;https://cambridgelv.github.io/images/1.jpg&#34; title=&#34;The Start&#34; alt=&#34;Alt text&#34;  data-zoomable loading=&#34;lazy&#34; /&gt;
+    &lt;figcaption&gt;The Start&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;1 为什么开博客&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;1-为什么开博客&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#1-%e4%b8%ba%e4%bb%80%e4%b9%88%e5%bc%80%e5%8d%9a%e5%ae%a2&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;感觉年纪越来越大，需要记录一下学到的知识技能，总结过往的经验教训，顺便可能记录记录生活&lt;/p&gt;
+&lt;h2&gt;2 会发布什么&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;2-会发布什么&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#2-%e4%bc%9a%e5%8f%91%e5%b8%83%e4%bb%80%e4%b9%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;主要侧重于数字/模拟芯片的前后端相关知识，脚本知识，可能也会有点日常生活娱乐？&lt;/p&gt;
+&lt;h2&gt;3 会高产么&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;3-会高产么&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#3-%e4%bc%9a%e9%ab%98%e4%ba%a7%e4%b9%88&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;此章节的永久链接&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;目前看来有点困难&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>
